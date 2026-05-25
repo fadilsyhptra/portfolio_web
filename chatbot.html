@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Twin AI Assistant</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="chat-header">
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Portfolio</a>
+    <div class="bot-identity">
+      <div class="status-indicator"></div>
+      <span>AN-TWIN v1.0 (Online)</span>
+    </div>
+  </div>
+
+  <main class="chat-wrapper">
+    <div class="chat-box" id="chat-output">
+      <div class="message system-msg">
+        Sistem diinisialisasi. Knowledge base profil sukses dimuat secara aman.
+      </div>
+      <div class="message bot-msg">
+        Halo! Saya representasi digital dari Alex Nolan. Ada yang ingin kamu ketahui tentang latar belakang, kompetensi pemrograman, atau proyek AI yang sedang saya kembangkan?
+      </div>
+    </div>
+
+    <form class="chat-input-area" id="chat-form">
+      <input type="text" id="user-input" placeholder="Ketik pesan interaktif di sini..." autocomplete="off" required>
+      <button type="submit" id="send-btn" aria-label="Kirim Pesan"><i class="fas fa-paper-plane"></i></button>
+    </form>
+  </main>
+
+  <script src="assets/js/chatbot.js"></script>
+</body>
+</html>

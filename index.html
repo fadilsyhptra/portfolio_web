@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Nolan | Futuristic Portfolio</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div id="loader"><div class="spinner"></div></div>
+
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">AN . ARCH</a>
+      <button class="menu-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+      <nav>
+        <ul>
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">Tentang</a></li>
+          <li><a href="#skills" class="nav-link">Skill</a></li>
+          <li><a href="#projects" class="nav-link">Project</a></li>
+          <li><a href="#experience" class="nav-link">Pengalaman</a></li>
+          <li><a href="#contact" class="nav-link">Kontak</a></li>
+          <li><a href="chatbot.html" style="color: var(--neon-cyan);"><i class="fas fa-robot"></i> AI Twin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="hero">
+    <h1 style="font-weight: 700;">BUILD THE FUTURE<br><span style="background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WITH INTELLIGENCE</span></h1>
+    <p>Selamat datang di platform digital saya. Tempat kreasi kode berkinerja tinggi berpadu dengan logika cerdas Artificial Intelligence.</p>
+    <a href="chatbot.html" class="btn-cyber"><i class="fas fa-comments"></i> Bicara Dengan AI Saya</a>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">// TENTANG SAYA</h2>
+    <div class="glass-card item-padding" style="max-width: 800px; margin: 0 auto;">
+      <p style="line-height: 1.8; color: var(--text-main);">Halo! Saya seorang inovator teknologi yang gemar menyusun arsitektur perangkat lunak yang bersih. Dengan latar belakang analitis kuat, fokus utama saya adalah menjembatani kompleksitas machine learning ke dalam aplikasi web terdistribusi yang interaktif dan responsif.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title">// KEMAMPUAN TEKNIS</h2>
+    <div class="grid-container">
+      <div class="glass-card item-padding">
+        <h3><i class="fas fa-code" style="color: var(--neon-cyan); margin-right: 10px;"></i> Languages</h3>
+        <p style="margin-top: 15px; color: var(--text-muted); line-height: 1.6;">C++, JavaScript, Python, SQL, HTML/CSS</p>
+      </div>
+      <div class="glass-card item-padding">
+        <h3><i class="fas fa-brain" style="color: var(--neon-purple); margin-right: 10px;"></i> AI Architecture</h3>
+        <p style="margin-top: 15px; color: var(--text-muted); line-height: 1.6;">Prompt Engineering, RAG Systems, LLM Orchestration, Vector DB</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="section-title">// MINI PORTFOLIO</h2>
+    <div class="grid-container">
+      <div class="glass-card item-padding">
+        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">AetherMind RAG Engine</h4>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Sistem pencarian informasi kontekstual cerdas berbasis data lokal dengan latensi ultra-rendah.</p>
+        <span style="font-size: 0.8rem; color: var(--neon-cyan);">Python • FastAPI • ChromaDB</span>
+      </div>
+      <div class="glass-card item-padding">
+        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">CyberFlow Optimizer</h4>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Optimasi script struktur data C++ demi meminimalkan resiko eksekusi komputasi Time Limit Exceeded (TLE).</p>
+        <span style="font-size: 0.8rem; color: var(--neon-purple);">C++ • Algorithm Dev</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2 class="section-title">// REKAM JEJAK</h2>
+    <div class="glass-card item-padding" style="margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 10px;">
+        <strong style="color: var(--neon-cyan);">Lead AI Specialist</strong>
+        <span style="color: var(--text-muted);">2024 - Sekarang</span>
+      </div>
+      <p style="font-size: 0.95rem; color: var(--text-muted);">Nexus Media Tech — Mengembangkan pipeline otomatisasi agen kecerdasan buatan untuk kebutuhan analisis data berskala masif.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">// HUBUNGI SAYA</h2>
+    <div class="glass-card item-padding" style="max-width: 600px; margin: 0 auto;">
+      <form id="contact-form" onsubmit="event.preventDefault(); alert('Pesan berhasil terkirim via enkripsi simulasi!');">
+        <input type="text" class="input-field" placeholder="Nama Lengkap" required>
+        <input type="email" class="input-field" placeholder="Alamat Email Secure" required>
+        <textarea class="input-field" rows="5" placeholder="Deskripsi Proyek / Pesan Anda" required></textarea>
+        <button type="submit" class="btn-cyber" style="border: none; width: 100%; cursor: pointer;">KIRIM SINYAL</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 AN . ARCH Corp. All Rights Reserved. Designed for Ultra-Performance Rendering.</p>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
