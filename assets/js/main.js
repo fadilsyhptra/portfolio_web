@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Loading Screen Disposer
   const loader = document.getElementById('loader');
   if (loader) {
     window.addEventListener('load', () => {
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Responsive Hamburger Menu Logic
   const menuToggle = document.querySelector('.menu-toggle');
   const navMenu = document.querySelector('nav ul');
   
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
       menuToggle.querySelector('i').classList.toggle('fa-times');
     });
     
-    // Tutup menu otomatis jika salah satu navigasi diklik pada layar seluler
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', () => {
         navMenu.classList.remove('active');
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Dynamic Active Navigation Tracking On Scroll
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.nav-link');
 
