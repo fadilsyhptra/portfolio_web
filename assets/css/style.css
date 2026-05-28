@@ -305,3 +305,34 @@ footer {
     font-size: 1.05rem;
   }
 }
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  gap: 15px;
+}
+
+.exp-title {
+  color: var(--neon-cyan);
+  font-size: 1.1rem;
+}
+
+.exp-date {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .exp-date {
+    white-space: normal;
+  }
+}
