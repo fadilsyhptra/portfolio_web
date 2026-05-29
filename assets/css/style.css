@@ -439,7 +439,11 @@ footer {
   }
 }
 
-//Hero Section
+/* ==========================================================================
+   HERO SECTION (Formasi Terkunci & Tanpa Duplikasi)
+   ========================================================================== */
+
+/* 1. Base Desktop Layout */
 #hero {
   height: 100vh;
   display: flex;
@@ -709,7 +713,10 @@ footer {
   }
 }
 
-//Project Section
+/* ==========================================================================
+   ENHANCED PROJECTS SECTION
+   ========================================================================== */
+/* Featured Project */
 .featured-project {
   display: flex;
   gap: 30px;
@@ -803,6 +810,7 @@ footer {
 }
 .btn-cyber-small:hover { box-shadow: 0 0 15px rgba(157, 78, 221, 0.5); transform: translateY(-2px); }
 
+/* Regular Project Cards */
 .projects-grid {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 }
@@ -842,6 +850,7 @@ footer {
   flex-grow: 1;
 }
 
+/* Responsive Projects */
 @media (max-width: 768px) {
   .featured-project { flex-direction: column; }
   .featured-img-wrapper { min-height: 200px; }
