@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fadil Syahputra | Main Page Portfolio</title>
+  <title>Muhammad Fadil Syahputra | Portfolio</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,7 +13,7 @@
 
   <header>
     <div class="nav-container">
-      <a href="#" class="logo">Fadil Portfolio</a>
+      <a href="#" class="logo">Fadil Syahputra</a>
       <button class="menu-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
       <nav>
         <ul>
@@ -29,10 +29,31 @@
     </div>
   </header>
 
-  <section id="hero">
-    <h1 style="font-weight: 700;">BUILD THE FUTURE<br><span style="background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WITH INTELLIGENCE</span></h1>
-    <p>Welcome to My Digital Platform, a portfolio website integrated with an AI chatbot that allows visitors to learn more about me, my projects, experiences, and skills interactively.</p>
-    <a href="chatbot.html" class="btn-cyber"><i class="fas fa-comments"></i>Talk with my AI</a>
+  <section id="hero" class="hero-modern">
+    <div class="hero-content">
+      <div class="status-badge">
+        <span class="pulse-dot"></span> SYSTEM ONLINE
+      </div>
+      <h1 class="hero-title">
+        <span class="line-1">BUILD THE FUTURE</span>
+        <span class="line-2 gradient-text">WITH INTELLIGENCE</span>
+      </h1>
+      <p class="hero-desc">Welcome to My Digital Platform, a portfolio website integrated with an AI chatbot that allows visitors to learn more about me, my projects, experiences, and skills interactively.</p>
+      <div class="hero-cta">
+        <a href="chatbot.html" class="btn-cyber"><i class="fas fa-comments"></i> Talk with my AI</a>
+        <a href="#projects" class="btn-outline"><i class="fas fa-project-diagram"></i> Explore Work</a>
+      </div>
+    </div>
+    
+    <div class="hero-visual">
+      <div class="ai-core-container">
+        <div class="ai-ring ring-outer"></div>
+        <div class="ai-ring ring-inner"></div>
+        <div class="ai-core"></div>
+        <div class="floating-data data-1">10110</div>
+        <div class="floating-data data-2">SYS.OP</div>
+      </div>
+    </div>
   </section>
 
   <section id="about">
@@ -121,44 +142,93 @@
   </section>
 
   <section id="projects">
-    <h2 class="section-title">Projects</h2>
-    <div class="grid-container">
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Case Study Data Analytics</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">This is an optional test from RevoU to practice data analyst skills using a case study. The case study involves a deep understanding of filtering data with SQL. We need to answer 3 questions in 2 different approaches: using AI and without AI.</p>
-        <span style="font-size: 0.8rem; color: var(--neon-cyan);">Python • SQL</span>
+    <h2 class="section-title">Projects Overview</h2>
+    
+    <!-- 1. FEATURED PROJECT (Highlight Utama) -->
+    <div class="featured-project glass-card">
+      <div class="featured-img-wrapper">
+        <div class="placeholder-img" style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);">
+          <i class="fas fa-chart-pie" style="font-size: 4rem; color: var(--neon-cyan);"></i>
+        </div>
       </div>
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Soil Moisture Sensor</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">For my 2026 physics practical exam, I built a soil moisture sensor using an ESP8266. It measures how wet the soil is and helped me get hands on experience with electronics and sensors.</p>
-        <span style="font-size: 0.8rem; color: var(--neon-purple);">C++ • Arduino IDE</span>
-      </div>
-    </div>
-    <br>
-    <div class="grid-container">
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Math Learning Module - SNBT Club</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">I worked on a math learning module for SNBT Club, and I built the whole thing in Overleaf using LaTeX to keep everything clean and well-formatted. The module covers core SNBT topics, explanations, and practice problems, arranged so the material feels easier to follow. This project also helped me get more confident with LaTeX and with organizing learning content in a clear way.</p>
-        <span style="font-size: 0.8rem; color: var(--neon-cyan);">LaText • Overleaf</span>
-      </div>
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Firefighting avoider robot</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Our robot is built to move around an arena on its own, avoid obstacles, and put out small flames. This project helped our team sharpen our robotics skills, creativity, and teamwork.</p>
-        <span style="font-size: 0.8rem; color: var(--neon-purple);">C++ • Arduino IDE • Team Coordination</span>
+      <div class="featured-content">
+        <div class="project-badge"><i class="fas fa-star"></i> Featured Project</div>
+        <h3 class="featured-title">Case Study Data Analytics</h3>
+        <p class="featured-desc">This is an optional test from RevoU to practice data analyst skills using a case study. The case study involves a deep understanding of filtering data with SQL. We answered 3 questions in 2 different approaches: using AI and without AI.</p>
+        <div class="tech-stack-pills">
+          <span><i class="fab fa-python"></i> Python</span>
+          <span><i class="fas fa-database"></i> SQL</span>
+        </div>
+        <a href="#" class="btn-cyber-small">View Case Study <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
-    <br>
-    <div class="grid-container">
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Diamonoid (Game)</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">This game tells the story of a fox who wants to give diamonds to his girlfriend, but he has to enter another dimension to get the diamonds. When he entered that dimension he was very surprised because he saw many traps and obstacles in front of him. This game can be downloaded on itch io for windows and android versions.</p>
-        <span style="font-size: 0.8rem; color: var(--neon-cyan);">C# • Unity</span>
+
+    <div class="grid-container projects-grid" style="margin-top: 40px;">
+      
+      <!-- Project 2 -->
+      <div class="project-card glass-card">
+        <div class="card-img-wrapper">
+          <div class="placeholder-img" style="background: linear-gradient(135deg, #141e30, #243b55);">
+            <i class="fas fa-seedling" style="font-size: 3rem; color: var(--neon-purple);"></i>
+          </div>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Soil Moisture Sensor</h4>
+          <p class="card-desc">For my 2026 physics practical exam, I built a soil moisture sensor using an ESP8266. It measures how wet the soil is.</p>
+          <div class="tech-stack-pills">
+            <span>C++</span><span>Arduino IDE</span>
+          </div>
+        </div>
       </div>
-      <div class="glass-card item-padding">
-        <h4 style="font-family: var(--font-cyber); font-size: 1.2rem; margin-bottom: 10px;">Earthquake Data Center (Website)</h4>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">This is one of my project in web development, which i titled "Earthquake Data Center Website". I created this website for website design competition, it's called by "DIFEST (Digital Festival)"</p>
-        <span style="font-size: 0.8rem; color: var(--neon-purple);">HTML • CSS • JavaScript</span>
+
+      <!-- Project 3 -->
+      <div class="project-card glass-card">
+        <div class="card-img-wrapper">
+          <div class="placeholder-img" style="background: linear-gradient(135deg, #1f1c2c, #928dab);">
+            <i class="fas fa-square-root-alt" style="font-size: 3rem; color: var(--neon-cyan);"></i>
+          </div>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Math Learning Module</h4>
+          <p class="card-desc">I worked on a math learning module for SNBT Club, built in Overleaf using LaTeX to keep everything well-formatted.</p>
+          <div class="tech-stack-pills">
+            <span>LaTeX</span><span>Overleaf</span>
+          </div>
+        </div>
       </div>
+
+      <!-- Project 4 -->
+      <div class="project-card glass-card">
+        <div class="card-img-wrapper">
+          <div class="placeholder-img" style="background: linear-gradient(135deg, #4b134f, #c94b4b);">
+            <i class="fas fa-fire-extinguisher" style="font-size: 3rem; color: #ff6b6b;"></i>
+          </div>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Firefighting Robot</h4>
+          <p class="card-desc">Our robot is built to move around an arena on its own, avoid obstacles, and put out small flames.</p>
+          <div class="tech-stack-pills">
+            <span>C++</span><span>Robotics</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="project-card glass-card">
+        <div class="card-img-wrapper">
+          <div class="placeholder-img" style="background: linear-gradient(135deg, #000000, #434343);">
+            <i class="fas fa-gamepad" style="font-size: 3rem; color: var(--neon-purple);"></i>
+          </div>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Diamonoid (Game)</h4>
+          <p class="card-desc">A dimension-hopping fox game with traps and obstacles. Available on itch.io for Windows and Android.</p>
+          <div class="tech-stack-pills">
+            <span>C#</span><span>Unity</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -203,6 +273,24 @@
         <span class="exp-date">November 2023 – October 2024</span>
       </div>
       <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;">Collaborated with the Student Council President to plan organizational programs, served as the chief organizer for workshop events and school ambassador selections, and worked together with Putra Putri UPI Purwakarta in collaborative activities.</p>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <div class="glass-card quote-container">
+      
+      <div class="quote-avatar-wrapper">
+        <img src="assets/img/fadil-profile.jpg" alt="Muhammad Fadil Syahputra" class="quote-avatar">
+      </div>
+      
+      <div class="quote-main-content">
+        <div class="quote-vision">CORE BELIEF</div>
+        <p class="quote-text">
+          “Datasets can survive missing values. But people? We slowly break when we keep acting like the missing parts of us don’t matter.”
+        </p>
+        <span class="quote-author">- Muhammad Fadil Syahputra</span>
+      </div>
+
     </div>
   </section>
 
