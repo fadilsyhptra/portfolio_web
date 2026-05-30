@@ -49,3 +49,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// RESET SCRIPT NAVIGASI
+const toggleBtn = document.querySelector('.menu-toggle');
+const mobileMenu = document.querySelector('.nav-menu');
+const allLinks = document.querySelectorAll('.nav-link');
+
+if (toggleBtn && mobileMenu) {
+  // Aksi Klik Tombol Burger
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Mencegah bentrokan event
+    toggleBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+
+  // Otomatis tutup jika link menu diklik
+  allLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      toggleBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    });
+  });
+
+  // Otomatis tutup jika pengguna mengklik area luar menu
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+      toggleBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    }
+  });
+}

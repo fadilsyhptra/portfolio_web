@@ -94,31 +94,118 @@ body::after {
   transform: translateY(-5px);
 }
 
-header {
+/* ==========================================================================
+   HUD TACTICAL NAVBAR - COMPLETE RESET
+   ========================================================================== */
+.tactical-navbar {
   position: fixed;
-  top: 0; width: 100%; z-index: 100;
-  background: rgba(10, 10, 18, 0.7);
+  top: 0; left: 0; width: 100%; height: 75px;
+  background: rgba(10, 10, 18, 0.85);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-glass);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
+
 .nav-container {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between;
-  align-items: center; padding: 20px;
+  max-width: 1300px; height: 100%; margin: 0 auto; padding: 0 30px;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.logo {
-  font-family: var(--font-cyber);
-  font-weight: 700; font-size: 1.5rem;
-  background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-decoration: none;
+
+/* Kiri: Zone Brand & Burger */
+.nav-left-zone {
+  display: flex; align-items: center; min-width: 200px;
 }
-nav ul { display: flex; list-style: none; gap: 30px; }
-nav a {
-  text-decoration: none; color: var(--text-main);
-  font-weight: 500; font-size: 0.95rem; transition: var(--transition-smooth);
+
+.nav-brand {
+  font-family: var(--font-cyber); font-size: 1.1rem; font-weight: 700;
+  color: var(--text-main); text-decoration: none; letter-spacing: 2px;
+  display: block;
 }
-nav a:hover, nav a.active { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+.brand-accent { color: #00f2fe; text-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
+
+/* Tombol Burger (Mati secara default di Desktop) */
+.menu-toggle {
+  display: none; flex-direction: column; justify-content: space-between;
+  width: 25px; height: 18px; background: transparent; border: none; cursor: pointer; padding: 0;
+}
+.menu-toggle .bar {
+  width: 100%; height: 2px; background-color: #00f2fe; /* Warna Solid Cyan */
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.8); transition: 0.3s ease-in-out;
+}
+
+/* Tengah: Menu Link */
+.nav-menu { display: flex; align-items: center; gap: 25px; }
+.nav-link {
+  font-family: var(--font-cyber); font-size: 0.8rem; font-weight: 500;
+  color: var(--text-muted); text-decoration: none; letter-spacing: 1px;
+  padding: 8px 12px; position: relative; transition: var(--transition-smooth);
+}
+.nav-link i { font-size: 0.75rem; margin-right: 6px; opacity: 0; transition: 0.3s; }
+.nav-link:hover, .nav-link.active { color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.6); }
+.nav-link.active i { opacity: 1; color: #00f2fe; }
+
+/* Kanan: AI Button */
+.ai-core-btn {
+  font-family: var(--font-cyber); font-size: 0.8rem; font-weight: 700; color: var(--neon-purple);
+  text-decoration: none; padding: 10px 18px; border: 1px solid var(--neon-purple);
+  background: rgba(157, 78, 221, 0.05); border-radius: 4px; display: flex; align-items: center; gap: 10px;
+  transition: var(--transition-smooth); box-shadow: 0 0 15px rgba(157, 78, 221, 0.1);
+}
+.ai-core-btn:hover { background: var(--neon-purple); color: var(--bg-dark); box-shadow: 0 0 25px rgba(157, 78, 221, 0.45); }
+.nav-actions .pulse-dot { width: 6px; height: 6px; background-color: #00ff66; border-radius: 50%; box-shadow: 0 0 8px #00ff66; animation: pulseRegistry 1.5s infinite; }
+@keyframes pulseRegistry { 0%, 100% { transform: scale(0.9); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
+
+/* ==========================================================================
+   BREAKPOINT RESPONSIF (MOBILE MODE)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .nav-left-zone {
+    min-width: auto !important; 
+    width: auto;
+  }
+
+  /* Hilangkan brand teks nama Fadil Syahputra */
+  .nav-brand { 
+    display: none !important; 
+  }
+
+  /* Paksa tombol burger mentok ke ujung paling kiri container */
+  .menu-toggle { 
+    display: flex !important;
+    margin-right: auto;
+  }
+  
+  /* Memastikan container navbar membagi ruang secara merata antara burger (kiri) dan AI Twin (kanan) */
+  .nav-container { 
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Sistem Dropdown Menu Mobile */
+  .nav-menu {
+    position: fixed; top: 75px; left: 0; width: 100%; background: rgba(10, 10, 18, 0.98);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 242, 254, 0.2); flex-direction: column;
+    align-items: flex-start; gap: 0; padding: 10px 0;
+    /* Efek Animasi Slide */
+    opacity: 0; transform: translateY(-15px); pointer-events: none; transition: all 0.3s ease-in-out;
+  }
+  
+  /* Saat Aktif */
+  .nav-menu.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .nav-link { width: 100%; padding: 15px 25px; font-size: 0.85rem; text-align: left; border-left: 3px solid transparent; }
+  .nav-link:hover, .nav-link.active { background: rgba(0, 242, 254, 0.05); border-left-color: #00f2fe; }
+
+  /* Animasi Transformasi Burger -> (X) */
+  .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+  .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background-color: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
+}
 
 section {
   padding: 100px 20px;
@@ -208,12 +295,6 @@ footer {
     margin-left: auto; 
   }
 
-  nav ul {
-    position: fixed; top: 75px; left: -100%; width: 100%; height: calc(100vh - 75px);
-    background: var(--bg-dark); flex-direction: column; align-items: center;
-    padding-top: 50px; transition: 0.4s ease;
-  }
-  nav ul.active { left: 0; }
 }
 
 /* ==========================================================================

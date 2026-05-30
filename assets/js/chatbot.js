@@ -1,5 +1,5 @@
 /**
- * CORE AGENT DIGITAL TWIN - INTEGRASI GROQ API MURNI VANILLA JS
+ * CORE AGENT DIGITAL TWIN - INTEGRASI GROQ API MURNI VANILLA JS (TACTICAL HUD v1.0)
  */
 
 const GROQ_CONFIG = {
@@ -48,36 +48,76 @@ async function loadPersonalKnowledgeBase() {
     console.log("Knowledge Base System injected successfully.");
   } catch (error) {
     console.error("Critical AI Base Error:", error);
-    personalKnowledgePrompt = "Anda adalah asisten AI dari Alex Nolan, namun gagal memuat data biografi lengkap secara dinamis.";
+    personalKnowledgePrompt = "Anda adalah asisten AI dari Muhammad Fadil Syahputra, namun gagal memuat data biografi lengkap secara dinamis.";
   }
 }
 
-// 2. Manipulasi Elemen DOM & Manajemen Antarmuka Bubble Chat
+// 2. Manipulasi Elemen DOM & Manajemen Antarmuka Terminal HUD
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 
+// MODIFIKASI: Menggunakan struktur pembungkus pesan kompleks bertema siber
 function appendMessage(text, isUser = false) {
-  const msgDiv = document.createElement('div');
-  msgDiv.classList.add('message', isUser ? 'user-msg' : 'bot-msg');
-  msgDiv.textContent = text;
-  chatOutput.appendChild(msgDiv);
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('message-wrapper', isUser ? 'user-wrapper' : 'bot-wrapper');
+
+  // Cetakan template HTML berdasarkan identitas pengirim
+  wrapper.innerHTML = isUser ? `
+    <div class="chat-avatar user-avatar">
+      <i class="fas fa-user-astronaut fallback-icon"></i>
+    </div>
+    <div class="message user-msg">
+      <span class="msg-sender">USER // GUEST</span>
+      ${escapeHTML(text)}
+    </div>
+  ` : `
+    <div class="chat-avatar">
+      <img src="assets/avatar.jpg" alt="AI Twin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <i class="fas fa-robot fallback-icon" style="display: none;"></i>
+    </div>
+    <div class="message bot-msg">
+      <span class="msg-sender">SYS // FADIL_AI</span>
+      ${text}
+    </div>
+  `;
+
+  chatOutput.appendChild(wrapper);
   chatOutput.scrollTop = chatOutput.scrollHeight;
-  return msgDiv;
+  return wrapper;
 }
 
+// MODIFIKASI: Menyelaraskan indikator mengetik dengan struktur avatar bot baru
 function createTypingIndicator() {
-  const indicatorDiv = document.createElement('div');
-  indicatorDiv.classList.add('message', 'bot-msg');
-  indicatorDiv.id = 'temp-typing';
-  indicatorDiv.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-  chatOutput.appendChild(indicatorDiv);
+  const indicatorWrapper = document.createElement('div');
+  indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
+  indicatorWrapper.id = 'temp-typing';
+
+  indicatorWrapper.innerHTML = `
+    <div class="chat-avatar">
+      <img src="assets/avatar.jpg" alt="AI Twin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+      <i class="fas fa-robot fallback-icon" style="display: none;"></i>
+    </div>
+    <div class="message bot-msg">
+      <span class="msg-sender">SYS // NEURAL_PROCESSING</span>
+      <div class="typing-indicator"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  
+  chatOutput.appendChild(indicatorWrapper);
   chatOutput.scrollTop = chatOutput.scrollHeight;
 }
 
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
   if (indicator) indicator.remove();
+}
+
+// Helper untuk mencegah serangan XSS dari input mentah pengguna
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
 }
 
 // 3. Transaksi Data Post Request ke Server Edge Groq Cloud
@@ -114,7 +154,8 @@ async function fetchGroqAIResponse(userMessageText) {
     }
 
     const jsonResult = await response.json();
-    const aiCleanReply = jsonResult.choices[0].message.content;
+    // Mengganti baris pemisah karakter newline (\n) menjadi tag break baris HTML agar rapi di terminal
+    const aiCleanReply = jsonResult.choices[0].message.content.replace(/\n/g, "<br>");
     
     removeTypingIndicator();
     appendMessage(aiCleanReply);

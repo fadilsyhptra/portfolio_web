@@ -11,21 +11,41 @@
 
   <div id="loader"><div class="spinner"></div></div>
 
-  <header>
+  <!-- SYSTEM NAV BARU (RESET VERSION) -->
+  <header class="tactical-navbar">
     <div class="nav-container">
-      <a href="#" class="logo">Fadil Syahputra</a>
-      <button class="menu-toggle" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
-      <nav>
-        <ul>
-          <li><a href="#hero" class="nav-link active">Home</a></li>
-          <li><a href="#about" class="nav-link">About Me</a></li>
-          <li><a href="#education" class="nav-link">Education</a></li>
-          <li><a href="#skills" class="nav-link">Skill</a></li>
-          <li><a href="#projects" class="nav-link">Projects</a></li>
-          <li><a href="#experience" class="nav-link">Experience</a></li>
-          <li><a href="#" style="color: var(--neon-cyan);"><i class="fas fa-robot"></i> AI Twin</a></li>
-        </ul>
+      
+      <!-- Bagian Kiri: Nama Brand (Desktop) & Burger Menu (Mobile) -->
+      <div class="nav-left-zone">
+        <a href="#" class="nav-brand">
+          <span class="brand-accent">FADIL</span> SYAHPUTRA
+        </a>
+        
+        <button class="menu-toggle" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+
+      <!-- Bagian Tengah: Navigasi Utama -->
+      <nav class="nav-menu">
+        <a href="#hero" class="nav-link active"><i class="fas fa-terminal"></i> HOME</a>
+        <a href="#about" class="nav-link">ABOUT</a>
+        <a href="#education" class="nav-link">EDUCATION</a>
+        <a href="#skills" class="nav-link">SKILL</a>
+        <a href="#projects" class="nav-link">PROJECTS</a>
+        <a href="#experience" class="nav-link">EXPERIENCE</a>
       </nav>
+
+      <!-- Bagian Kanan: Tombol AI -->
+      <div class="nav-actions">
+        <a href="chatbot.html" class="ai-core-btn">
+          <span class="pulse-dot"></span>
+          <i class="fas fa-robot"></i> AI TWIN
+        </a>
+      </div>
+
     </div>
   </header>
 

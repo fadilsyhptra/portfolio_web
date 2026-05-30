@@ -10,27 +10,51 @@
 </head>
 <body>
 
+  <!-- HEADER -->
   <div class="chat-header">
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Portfolio</a>
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-chevron-left"></i> <span>RETURN // PORTFOLIO</span>
+    </a>
     <div class="bot-identity">
-      <div class="status-indicator"></div>
-      <span>AN-TWIN v1.0 (Online)</span>
+      <div class="identity-text">
+        <span class="bot-name">AI-TWIN // FADIL</span>
+        <span class="bot-status"><span class="status-indicator"></span> SYS_ONLINE</span>
+      </div>
     </div>
   </div>
 
+  <!-- MAIN CHAT INTERFACE -->
   <main class="chat-wrapper">
+    <!-- Area percakapan utama -->
     <div class="chat-box" id="chat-output">
+      
+      <!-- Pesan Sistem -->
       <div class="message system-msg">
-        Sistem diinisialisasi. Knowledge base profil sukses dimuat secara aman.
+        <i class="fas fa-microchip"></i> [SYS.INIT] Knowledge base profil sukses dimuat secara aman. Menunggu input...
       </div>
-      <div class="message bot-msg">
-        Halo! Saya representasi digital dari Alex Nolan. Ada yang ingin kamu ketahui tentang latar belakang, kompetensi pemrograman, atau proyek AI yang sedang saya kembangkan?
+
+      <!-- Pesan AI Bot -->
+      <div class="message-wrapper bot-wrapper">
+        <div class="chat-avatar">
+          <!-- Ganti 'avatar.jpg' dengan gambar hasil generate AI wajahmu sendiri agar makin personal -->
+          <img src="assets/avatar.jpg" alt="AI Twin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <i class="fas fa-robot fallback-icon" style="display: none;"></i>
+        </div>
+        <div class="message bot-msg">
+          <span class="msg-sender">SYS // FADIL_AI</span>
+          Halo! Saya representasi digital dari Fadil. Ada yang ingin kamu ketahui tentang latar belakang, kompetensi pemrograman, atau proyek AI yang sedang saya kembangkan?
+        </div>
       </div>
+
     </div>
 
+    <!-- Area Input Pesan (Command Line Style) -->
     <form class="chat-input-area" id="chat-form">
-      <input type="text" id="user-input" placeholder="Ketik pesan interaktif di sini..." autocomplete="off" required>
-      <button type="submit" id="send-btn" aria-label="Kirim Pesan"><i class="fas fa-paper-plane"></i></button>
+      <span class="cmd-prompt">C:\></span>
+      <input type="text" id="user-input" placeholder="Masukkan query perintah..." autocomplete="off" required>
+      <button type="submit" id="send-btn" aria-label="Kirim Pesan">
+        <span>TRANSMIT</span> <i class="fas fa-satellite-dish"></i>
+      </button>
     </form>
   </main>
 

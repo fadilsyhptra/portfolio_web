@@ -1,88 +1,261 @@
+/* ==========================================================================
+   CYBERPUNK CHATBOT INTERFACE (Tactical Terminal)
+   ========================================================================== */
+
+/* Header Area */
 .chat-header {
-  position: fixed; top: 0; left: 0; width: 100%; height: 70px;
-  background: rgba(10, 10, 18, 0.8); backdrop-filter: blur(25px);
-  border-bottom: 1px solid var(--border-glass);
+  position: fixed; top: 0; left: 0; width: 100%; height: 75px;
+  background: rgba(10, 10, 18, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 242, 254, 0.2);
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0 30px; z-index: 100;
+  padding: 0 40px; z-index: 100;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 .back-btn {
-  color: var(--text-muted); text-decoration: none; font-size: 0.95rem;
-  transition: var(--transition-smooth); display: flex; align-items: center; gap: 8px;
+  color: var(--text-muted); text-decoration: none; 
+  font-family: var(--font-cyber); font-size: 0.85rem; letter-spacing: 1px;
+  transition: var(--transition-smooth); display: flex; align-items: center; gap: 12px;
 }
-.back-btn:hover { color: var(--neon-cyan); }
+.back-btn:hover { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
 
-.bot-identity { display: flex; align-items: center; gap: 10px; font-family: var(--font-cyber); font-size: 0.9rem; }
-.status-indicator { width: 8px; height: 8px; background: #00ff66; border-radius: 50%; box-shadow: 0 0 10px #00ff66; }
+.bot-identity {
+  display: flex; align-items: center; gap: 15px;
+}
+.identity-text {
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+.bot-name {
+  font-family: var(--font-cyber); font-size: 0.95rem; color: var(--text-main); letter-spacing: 1px;
+}
+.bot-status {
+  font-family: monospace; font-size: 0.75rem; color: #00ff66; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 6px; margin-top: 4px;
+}
+.status-indicator {
+  width: 6px; height: 6px; background: #00ff66; border-radius: 50%; box-shadow: 0 0 10px #00ff66;
+  animation: pulse 2s infinite;
+}
 
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+/* Main Chat Container (Glass Terminal Window) */
 .chat-wrapper {
-  max-width: 900px; margin: 90px auto 0 auto;
-  height: calc(100vh - 110px); display: flex; flex-direction: column;
-  padding: 0 20px;
+  max-width: 950px;
+  margin: 110px auto 40px auto;
+  height: calc(100vh - 150px);
+  display: flex; flex-direction: column;
+  background: rgba(10, 10, 18, 0.6);
+  border: 1px solid rgba(0, 242, 254, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 242, 254, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scanline / Grid Effect Inside Terminal */
+.chat-wrapper::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+  background-size: 25px 25px;
+  pointer-events: none; z-index: 0;
 }
 
 .chat-box {
-  flex: 1; overflow-y: auto; padding: 20px 0;
-  display: flex; flex-direction: column; gap: 20px;
-  scroll-behavior: smooth;
+  flex: 1; overflow-y: auto; padding: 35px;
+  display: flex; flex-direction: column; gap: 25px;
+  z-index: 1; scroll-behavior: smooth;
 }
 
 /* Custom Scrollbar */
-.chat-box::-webkit-scrollbar { width: 5px; }
-.chat-box::-webkit-scrollbar-track { background: transparent; }
-.chat-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
+.chat-box::-webkit-scrollbar { width: 6px; }
+.chat-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+.chat-box::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 10px; }
+.chat-box::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
 
+/* Message Architecture */
+.message-wrapper {
+  display: flex; align-items: flex-end; gap: 15px; max-width: 85%;
+}
+.bot-wrapper { align-self: flex-start; }
+.user-wrapper { align-self: flex-end; flex-direction: row-reverse; }
+
+/* Avatar Boxes */
+.chat-avatar {
+  width: 42px; height: 42px; border-radius: 6px;
+  border: 1px solid var(--neon-cyan);
+  background: rgba(0, 242, 254, 0.1);
+  display: flex; justify-content: center; align-items: center;
+  flex-shrink: 0; overflow: hidden;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+}
+.chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-avatar i { color: var(--neon-cyan); font-size: 1.2rem; }
+
+.user-avatar {
+  border-color: var(--neon-purple); background: rgba(157, 78, 221, 0.1);
+  box-shadow: 0 0 12px rgba(157, 78, 221, 0.2);
+}
+.user-avatar i { color: var(--neon-purple); }
+
+/* Bubble Messages */
 .message {
-  max-width: 75%; padding: 14px 20px; border-radius: 14px;
-  line-height: 1.6; font-size: 0.98rem; animation: msgFade 0.3s ease forwards;
+  padding: 18px 24px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem;
+  position: relative; animation: msgFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  backdrop-filter: blur(5px);
 }
 
-@keyframes msgFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes msgFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+/* System Status Message */
 .system-msg {
-  align-self: center; background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border-glass); color: var(--text-muted);
-  font-size: 0.8rem; font-family: var(--font-cyber); padding: 6px 14px;
+  align-self: center; background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.2); color: var(--text-muted);
+  font-size: 0.75rem; font-family: var(--font-cyber); padding: 8px 18px;
+  letter-spacing: 1px; max-width: 100%; border-radius: 4px;
 }
 
-.user-msg {
-  align-self: flex-end; background: linear-gradient(135deg, rgba(157, 78, 221, 0.2) 0%, rgba(157, 78, 221, 0.4) 100%);
-  border: 1px solid rgba(157, 78, 221, 0.3); color: #ffffff;
-  border-bottom-right-radius: 2px;
+/* Sender Labels (SYS // FADIL vs USER // GUEST) */
+.msg-sender {
+  font-family: var(--font-cyber); font-size: 0.65rem; color: var(--neon-cyan);
+  margin-bottom: 10px; letter-spacing: 1px; opacity: 0.8; display: block;
 }
 
 .bot-msg {
-  align-self: flex-start; background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-glass); color: var(--text-main);
-  border-bottom-left-radius: 2px;
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.08), rgba(0, 242, 254, 0.01));
+  border: 1px solid rgba(0, 242, 254, 0.15); border-left: 4px solid var(--neon-cyan);
+  color: var(--text-main); border-bottom-left-radius: 0;
 }
 
-/* Typing Animation Dots */
-.typing-indicator { display: flex; gap: 5px; align-items: center; padding: 5px 0; }
-.typing-indicator span {
-  width: 7px; height: 7px; background: var(--text-muted); border-radius: 50%;
-  animation: blink 1.4s infinite both;
+.user-msg .msg-sender { color: var(--neon-purple); text-align: right; }
+.user-msg {
+  background: linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(157, 78, 221, 0.01));
+  border: 1px solid rgba(157, 78, 221, 0.15); border-right: 4px solid var(--neon-purple);
+  color: var(--text-main); border-bottom-right-radius: 0;
 }
-.typing-indicator span:nth-child(2) { animation-delay: .2s; }
-.typing-indicator span:nth-child(3) { animation-delay: .4s; }
 
-@keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
-
-/* Chat Input Bottom Area */
+/* Command Line Input Area */
 .chat-input-area {
-  display: flex; gap: 15px; padding: 20px 0; background: var(--bg-dark);
+  display: flex; gap: 15px; padding: 20px 35px;
+  background: rgba(0, 0, 0, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.08);
+  align-items: center; z-index: 1;
 }
+
+.cmd-prompt {
+  font-family: var(--font-cyber); color: var(--neon-cyan); font-size: 1rem; font-weight: bold;
+}
+
 #user-input {
-  flex: 1; padding: 16px 24px; background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border-glass); border-radius: 30px;
-  color: var(--text-main); font-size: 1rem; transition: var(--transition-smooth);
+  flex: 1; padding: 12px 0; background: transparent; border: none;
+  color: var(--text-main); font-size: 1rem; font-family: monospace; /* Font koding agar terasa seperti di terminal */
 }
-#user-input:focus { outline: none; border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0,242,254,0.15); background: rgba(255,255,255,0.04); }
+
+#user-input:focus { outline: none; }
+#user-input::placeholder { color: rgba(255, 255, 255, 0.2); }
 
 #send-btn {
-  width: 55px; height: 55px; border-radius: 50%; border: none;
-  background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
-  color: var(--bg-dark); font-size: 1.1rem; cursor: pointer;
-  transition: var(--transition-smooth); display: flex; justify-content: center; align-items: center;
+  padding: 12px 25px; border-radius: 4px; border: 1px solid var(--neon-cyan);
+  background: rgba(0, 242, 254, 0.1); color: var(--neon-cyan);
+  font-family: var(--font-cyber); font-size: 0.8rem; letter-spacing: 1px;
+  cursor: pointer; transition: var(--transition-smooth);
+  display: flex; align-items: center; gap: 10px; font-weight: bold;
 }
-#send-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(0,242,254,0.4); }
+
+#send-btn:hover {
+  background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+/* ==========================================================================
+   RESPONSIVE OPTIMIZATION (MOBILE VIEWPORT REPAIR)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Penyesuaian Navigasi Atas (Header) */
+  .chat-header {
+    padding: 0 15px;
+    height: 65px;
+  }
+
+  .back-btn span {
+    display: none; /* Sembunyikan teks "RETURN // PORTFOLIO" agar hemat ruang */
+  }
+
+  .back-btn {
+    font-size: 1.1rem; /* Perbesar sedikit ukuran ikon panah agar mudah ditekan */
+    padding: 10px 5px;
+  }
+
+  .bot-name {
+    font-size: 0.85rem; /* Perkecil sedikit ukuran font judul agar tidak sesak */
+    letter-spacing: 0.5px;
+  }
+
+  .bot-status {
+    font-size: 0.7rem;
+  }
+
+  /* 2. Reset Margin & Batasan Window Terminal */
+  .chat-wrapper { 
+    margin: 80px 10px 15px 10px; 
+    height: calc(100vh - 105px); 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  }
+
+  /* 3. Kurangi Padding Box Obrolan Agar Ruang Teks Lebih Luas */
+  .chat-box { 
+    padding: 15px; 
+    gap: 15px;
+  }
+
+  /* 4. Paksa Lebar Pesan Fleksibel & Matikan Efek Kolom Ganda */
+  .message-wrapper { 
+    max-width: 100%; 
+    width: 100%;
+    gap: 0;
+  }
+  
+  .message {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* 5. Sembunyikan Avatar Total */
+  .chat-avatar {
+    display: none !important;
+  }
+
+  /* 6. Perbaikan Sektor Form Input & Tombol Transmit */
+  .chat-input-area { 
+    padding: 12px 15px; 
+    gap: 10px;
+  }
+
+  .cmd-prompt {
+    font-size: 0.9rem;
+  }
+
+  #user-input {
+    font-size: 0.9rem;
+  }
+
+  /* Mengubah button menjadi lingkaran/persegi ikon murni */
+  #send-btn {
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    justify-content: center;
+    flex-shrink: 0; /* Mencegah tombol gepeng atau menyusut */
+    border-radius: 50%; /* Membuatnya bulat rapi ala tombol chat modern jika diinginkan, atau ubah ke 4px jika ingin tetap kaku */
+  }
+
+  /* Sembunyikan tulisan TRANSMIT secara total di mobile */
+  #send-btn span { 
+    display: none !important; 
+  }
+  
+  /* Pusatkan ikon satelit tepat di tengah-tengah tombol */
+  #send-btn i {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
