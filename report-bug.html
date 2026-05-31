@@ -125,7 +125,7 @@
       "Connecting to core node 0x7FFF8C...",
       "Fetching portfolio index data structures...",
       "Syncing dynamic AI twin telemetry matrix...",
-      "Flushing buffer console and reloading feed...\\n"
+      "Flushing buffer console and reloading feed...\n"
     ];
 
     const terminalBody = document.getElementById('terminalConsole');
@@ -133,23 +133,20 @@
     let charIndex = 0;
 
     function typeLogStream() {
-      // Jika semua baris log sudah selesai diketik, bersihkan layar dan ulang dari awal
       if (lineIndex >= logData.length) {
         setTimeout(() => {
           terminalBody.innerHTML = '<span class="terminal-cursor">_</span>';
           lineIndex = 0;
           charIndex = 0;
           typeLogStream();
-        }, 2500); // Jeda diam selama 2.5 detik saat log penuh sebelum di-reset bersih
+        }, 2500);
         return;
       }
 
-      // Inisialisasi baris paragraf baru jika sedang mengetik karakter pertama pada baris itu
       if (charIndex === 0) {
         const p = document.createElement('p');
         p.className = 'console-log-line';
         p.innerHTML = '<span class="prompt-prefix">> </span><span class="text-content"></span>';
-        // Menyisipkan baris log tepat sebelum kursor (_)
         terminalBody.insertBefore(p, terminalBody.lastElementChild);
       }
 
@@ -161,21 +158,59 @@
       if (charIndex < fullTextToType.length) {
         currentActiveLine.textContent += fullTextToType.charAt(charIndex);
         charIndex++;
-        // Efek ketikan natural berkecepatan acak (antara 30ms - 70ms per huruf)
         setTimeout(typeLogStream, 30 + Math.random() * 40);
       } else {
-        // Pindah ke baris log berikutnya setelah jeda membaca (400ms)
         lineIndex++;
         charIndex = 0;
         setTimeout(typeLogStream, 400);
       }
 
-      // Otomatis gulung scrollbar ke bawah agar kursor pengetikan selalu terlihat
       terminalBody.scrollTop = terminalBody.scrollHeight;
     }
 
-    // Jalankan mesin ketik setelah preloader selesai bekerja
     setTimeout(typeLogStream, 1200);
+
+    // 3. NETLIFY FORMS AJAX INTERCEPTION INJECTION
+    document.addEventListener("DOMContentLoaded", () => {
+      const bugForm = document.querySelector('form[name="anonymous-bug-reports"]');
+      const submitBtn = document.querySelector('.btn-submit');
+
+      if (bugForm) {
+        bugForm.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Mencegah reload halaman dan eror 404
+
+          const formData = new FormData(bugForm);
+          const originalBtnText = submitBtn.textContent;
+          
+          // Mengubah status tombol menjadi mode pengiriman siber
+          submitBtn.textContent = "TRANSMITTING_LOG...";
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = "0.6";
+
+          try {
+            const response = await fetch("/", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams(formData).toString(),
+            });
+
+            if (response.ok) {
+              alert("SYS // LOG_TRANSMITTED_SUCCESSFULLY\nAnomaly successfully recorded in Netlify database.");
+              bugForm.reset();
+            } else {
+              throw new Error("Uplink node rejected the packet.");
+            }
+          } catch (error) {
+            alert("SYS // TRANSMISSION_FAILED\nError: " + error.message);
+          } finally {
+            // Mengembalikan status tombol ke sedia kala
+            submitBtn.textContent = originalBtnText;
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1";
+          }
+        });
+      }
+    });
   </script>
 
 </body>
