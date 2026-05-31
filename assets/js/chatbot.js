@@ -57,7 +57,7 @@ const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 
-// MODIFIKASI: Menggunakan struktur pembungkus pesan kompleks bertema siber
+// Menggunakan struktur pembungkus pesan kompleks bertema siber
 function appendMessage(text, isUser = false) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('message-wrapper', isUser ? 'user-wrapper' : 'bot-wrapper');
@@ -87,7 +87,7 @@ function appendMessage(text, isUser = false) {
   return wrapper;
 }
 
-// MODIFIKASI: Menyelaraskan indikator mengetik dengan struktur avatar bot baru
+// Menyelaraskan indikator mengetik dengan struktur avatar bot baru
 function createTypingIndicator() {
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
@@ -167,17 +167,86 @@ async function fetchGroqAIResponse(userMessageText) {
 }
 
 // 4. Form Submission Listener
-chatForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const rawText = userInput.value.trim();
-  if (!rawText) return;
+if (chatForm) {
+  chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const rawText = userInput.value.trim();
+    if (!rawText) return;
 
-  appendMessage(rawText, true);
-  userInput.value = '';
+    appendMessage(rawText, true);
+    userInput.value = '';
 
-  createTypingIndicator();
-  fetchGroqAIResponse(rawText);
+    createTypingIndicator();
+    fetchGroqAIResponse(rawText);
+  });
+}
+
+// Inisialisasi awal data basis pengetahuan saat halaman diakses
+loadPersonalKnowledgeBase();
+
+
+// ==========================================================================
+// 5. INTEGRASI RESPONSIVE DROPDOWN & PORTFOLIO BUG ALERT SYSTEM
+// ==========================================================================
+
+// Fungsi Utama Buka/Tutup Hamburgermenu Dropdown Mobile
+function toggleMobileMenu() {
+  const dropdown = document.getElementById("mobileDropdown");
+  if (dropdown) {
+    dropdown.classList.toggle("show-menu");
+  }
+}
+
+// Inisialisasi Elemen Pemicu Alert Sistem Berdasarkan Kode HTML-mu
+const bugAlertOverlay = document.getElementById('bug-alert-overlay');
+const alertCancelBtn = document.getElementById('alert-cancel-btn');
+const alertConfirmBtn = document.getElementById('alert-confirm-btn');
+
+// Fungsi khusus memanggil alert dan mengunci aksi halaman tujuan
+function launchBugAlert(targetUrl) {
+  if (bugAlertOverlay) {
+    bugAlertOverlay.classList.add('active');
+    
+    // Ikat aksi tombol PROCEED_ menuju halaman target report
+    alertConfirmBtn.onclick = function() {
+      bugAlertOverlay.classList.remove('active');
+      window.location.href = targetUrl;
+    };
+  }
+}
+
+// Tombol ABORT untuk membatalkan pengalihan dan menyembunyikan alert kembali
+if (alertCancelBtn) {
+  alertCancelBtn.addEventListener('click', () => {
+    bugAlertOverlay.classList.remove('active');
+  });
+}
+
+// Event Listener Global: Menangkap klik tombol Bug (.red-report & .desktop-report-fab)
+document.addEventListener('click', function(e) {
+  const reportTarget = e.target.closest('.red-report, .desktop-report-fab');
+  
+  if (reportTarget) {
+    e.preventDefault(); // Tahan pengalihan halaman instan ke report-bug.html
+    
+    // Sembunyikan menu dropdown mobile terlebih dahulu jika sedang aktif terbuka
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) dropdown.classList.remove("show-menu");
+    
+    // Luncurkan modal peringatan kustom Anda [ERR_LOG_v1.0]
+    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
+    launchBugAlert(targetUrl);
+  }
 });
 
-// Inisialisasi awal saat halaman diakses
-loadPersonalKnowledgeBase();
+// Menutup dropdown mobile secara otomatis jika user mengklik sembarang tempat di luar menu area
+window.addEventListener('click', function(event) {
+  const dropdown = document.getElementById("mobileDropdown");
+  const toggleBtn = document.querySelector('.nav-toggle-btn');
+  
+  if (dropdown && dropdown.classList.contains('show-menu')) {
+    if (toggleBtn && !toggleBtn.contains(event.target)) {
+      dropdown.classList.remove('show-menu');
+    }
+  }
+});

@@ -1,0 +1,309 @@
+/* ==========================================================================
+   GLOBAL STRUCTURE & FIXES
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0a0a12;
+  color: #ffffff;
+  font-family: 'Courier New', Courier, monospace; 
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.05), transparent 40%),
+              radial-gradient(circle at 20% 80%, rgba(255, 0, 60, 0.03), transparent 40%);
+  z-index: -1;
+}
+
+.form-select option {
+  background-color: #0a0a12 !important;
+  color: #ffffff !important;
+}
+
+/* --- PRELOADER LOADING HUD --- */
+#cyber-preloader {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: #0a0a12;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, pointer-events 0.5s ease;
+}
+.loader-content { text-align: center; }
+.spinner-hud {
+  width: 50px; height: 50px;
+  border: 2px solid rgba(0, 242, 254, 0.1);
+  border-top: 2px solid #00f2fe;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  animation: spinHUD 0.8s linear infinite;
+}
+.loader-text { color: #00f2fe; font-size: 0.8rem; letter-spacing: 2px; font-weight: bold; }
+@keyframes spinHUD { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+#cyber-preloader.loaded { opacity: 0; pointer-events: none; }
+
+
+/* ==========================================================================
+   DESKTOP VISUAL LAYER (Susunan Kotak Bergandengan Horizontal)
+   ========================================================================== */
+@media screen and (min-width: 769px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-navbar {
+    display: none !important;
+  }
+
+  .main-layout-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 24px;
+    width: 100%;
+    max-width: 880px;
+    padding: 20px;
+  }
+
+  .report-container {
+    flex: 1.25;
+    background: rgba(10, 10, 18, 0.8);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    padding: 35px;
+    border-radius: 4px;
+    box-shadow: 0 0 35px rgba(0, 242, 254, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .return-sidebox {
+    flex: 0.95;
+    background: rgba(8, 8, 15, 0.7);
+    border: 1px solid rgba(0, 242, 254, 0.15);
+    padding: 30px 22px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .sidebox-header {
+    border-bottom: 1px dashed rgba(0, 242, 254, 0.15);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .sidebox-title { color: #00f2fe; font-size: 1.05rem; font-weight: bold; letter-spacing: 1px; }
+  .sidebox-subtitle { color: #8a8a98; font-size: 0.75rem; margin-top: 6px; }
+
+  /* REALISTIC TERMINAL INTERFACE COMPONENT */
+  .sidebox-diagnostics {
+    flex-grow: 1;
+    margin-bottom: 20px;
+    background: #05050b;
+    border: 1px solid rgba(0, 242, 254, 0.1);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+  }
+
+  .terminal-header {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .terminal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .terminal-dot.red { background: #ff5f56; }
+  .terminal-dot.yellow { background: #ffbd2e; }
+  .terminal-dot.green { background: #27c93f; }
+
+  .terminal-title {
+    color: #4b5563;
+    font-size: 0.65rem;
+    margin-left: 6px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+
+  .terminal-body {
+    padding: 15px;
+    font-size: 0.75rem;
+    color: #a7f3d0; /* Hijau mint matrix lembut agar nyaman dipandang */
+    line-height: 1.5;
+    flex-grow: 1;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 2px rgba(167, 243, 208, 0.3);
+  }
+
+  .console-log-line {
+    margin-bottom: 5px;
+    word-break: break-all;
+  }
+  
+  .prompt-prefix {
+    color: #00f2fe;
+    font-weight: bold;
+  }
+
+  /* Animasi Kursor Ketik Kedip-Kedip */
+  .terminal-cursor {
+    color: #00f2fe;
+    font-weight: bold;
+    animation: blinkCursor 0.8s infinite;
+  }
+  @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+  /* Vector Buttons Styling */
+  .sidebox-links { display: flex; flex-direction: column; gap: 12px; }
+  .vector-btn {
+    display: flex; align-items: center; gap: 12px; padding: 13px; font-size: 0.8rem;
+    font-weight: bold; text-decoration: none; font-family: 'Courier New', Courier, monospace;
+    border-radius: 2px; transition: 0.2s ease;
+  }
+  .btn-portfolio { border: 1px solid rgba(138, 138, 152, 0.25); color: #8a8a98; }
+  .btn-portfolio:hover { border-color: #ffffff; color: #ffffff; background: rgba(255, 255, 255, 0.02); }
+  .btn-twin { border: 1px solid rgba(147, 51, 234, 0.35); color: #a855f7; }
+  .btn-twin:hover { border-color: #a855f7; color: #ffffff; background: rgba(147, 51, 234, 0.08); box-shadow: 0 0 12px rgba(147, 51, 234, 0.25); }
+
+  /* Form Elements Base Style */
+  .report-header { border-bottom: 1px dashed rgba(0, 242, 254, 0.2); padding-bottom: 12px; margin-bottom: 25px; }
+  .report-title { color: #00f2fe; font-size: 1.15rem; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+  .report-subtitle { color: #8a8a98; font-size: 0.75rem; margin-top: 4px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; color: #ffaa00; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px; }
+  
+  .form-select, .form-textarea {
+    width: 100%; background: rgba(0, 242, 254, 0.02); border: 1px solid rgba(0, 242, 254, 0.15);
+    border-radius: 4px; padding: 12px; color: #ffffff; font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; outline: none;
+  }
+  .form-textarea { resize: none; }
+  .form-select:focus, .form-textarea:focus { border-color: #00f2fe; }
+
+  .btn-group { margin-top: 20px; }
+  .btn-submit {
+    width: 100%; padding: 14px; background: transparent; border: 1px solid #ff003c; color: #ff003c;
+    font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.3s;
+  }
+  .btn-submit:hover { background: #ff003c; color: #0a0a12; box-shadow: 0 0 15px rgba(255, 0, 60, 0.4); }
+}
+
+
+/* ==========================================================================
+   MOBILE VISUAL LAYER
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px 20px 20px;
+    min-height: 100vh;
+  }
+
+  .return-sidebox {
+    display: none !important;
+  }
+
+  .mobile-navbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 55px;
+    background: rgba(10, 10, 18, 0.95);
+    border-bottom: 1px solid rgba(0, 242, 254, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 9999;
+  }
+  
+  .nav-brand { color: #00f2fe; font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; }
+  .nav-menu-wrapper { position: relative; display: inline-block; }
+
+  .nav-toggle-btn {
+    background: transparent; border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe;
+    width: 36px; height: 36px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; font-size: 0.9rem; outline: none;
+  }
+
+  .nav-dropdown-content {
+    display: none; position: absolute; top: 45px; right: 0; background: #0d0d1a;
+    border: 1px solid rgba(0, 242, 254, 0.25); min-width: 160px; border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); overflow: hidden;
+  }
+
+  .nav-dropdown-content.show-menu { display: block; animation: fadeInMenu 0.2s ease-out; }
+
+  .nav-dropdown-item {
+    color: #8a8a98; padding: 12px 16px; text-decoration: none; display: flex;
+    align-items: center; gap: 10px; font-size: 0.8rem; font-weight: bold;
+    font-family: 'Courier New', Courier, monospace; border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+  .nav-dropdown-item:last-child { border-bottom: none; }
+  .nav-dropdown-item:active { background: rgba(0, 242, 254, 0.05); color: #ffffff; }
+  .nav-dropdown-item.purple-twin { color: #a855f7; }
+
+  .main-layout-wrapper { width: 100%; display: flex; justify-content: center; }
+  
+  .report-container {
+    background: rgba(10, 10, 18, 0.85); border: 1px solid rgba(0, 242, 254, 0.18);
+    width: 100%; max-width: 400px; padding: 22px 18px; border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0, 242, 254, 0.04);
+  }
+
+  .report-header { border-bottom: 1px dashed rgba(0, 242, 254, 0.15); padding-bottom: 10px; margin-bottom: 20px; }
+  .report-title { color: #00f2fe; font-size: 1rem; font-weight: bold; display: flex; align-items: center; gap: 6px; }
+  .report-subtitle { color: #8a8a98; font-size: 0.65rem; margin-top: 4px; }
+  .form-group { margin-bottom: 15px; }
+  .form-label { display: block; color: #ffaa00; font-size: 0.75rem; font-weight: bold; margin-bottom: 6px; }
+
+  .form-select, .form-textarea {
+    width: 100%; background: rgba(0, 242, 254, 0.02); border: 1px solid rgba(0, 242, 254, 0.15);
+    border-radius: 4px; padding: 12px; color: #ffffff; font-size: 0.8rem; outline: none;
+    font-family: 'Courier New', Courier, monospace; -webkit-appearance: none;
+  }
+  .form-textarea { resize: none; }
+  .form-select:focus, .form-textarea:focus { border-color: #00f2fe; }
+
+  .btn-submit {
+    width: 100%; padding: 14px; background: transparent; border: 1px solid #ff003c; color: #ff003c;
+    font-weight: bold; font-size: 0.85rem; cursor: pointer; font-family: 'Courier New', Courier, monospace !important; 
+    letter-spacing: 0.5px; border-radius: 2px;
+  }
+  .btn-submit:active { background: #ff003c; color: #0a0a12; }
+
+  @keyframes fadeInMenu {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
