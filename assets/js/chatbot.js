@@ -55,7 +55,8 @@ async function loadPersonalKnowledgeBase() {
 // 2. Manipulasi Elemen DOM & Manajemen Antarmuka Terminal HUD
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
-const userInput = document.getElementById('user-input');
+const userInput = document.getElementById('user-input'); // Deklarasi Global yang Benar
+const sendBtn = document.getElementById('send-btn');
 
 // Menggunakan struktur pembungkus pesan kompleks bertema siber
 function appendMessage(text, isUser = false) {
@@ -175,6 +176,9 @@ if (chatForm) {
 
     appendMessage(rawText, true);
     userInput.value = '';
+    
+    // Langsung sembunyikan tombol kembali setelah pesan terkirim
+    checkInputEcho(); 
 
     createTypingIndicator();
     fetchGroqAIResponse(rawText);
@@ -250,3 +254,40 @@ window.addEventListener('click', function(event) {
     }
   }
 });
+
+// ==========================================================================
+// 6. INITIALIZATION TERMINAL LOADER CONTROLLER
+// ==========================================================================
+window.addEventListener('load', () => {
+  const cyberLoader = document.getElementById('cyber-loader');
+  
+  if (cyberLoader) {
+    // Memberikan jeda waktu 500ms setelah load selesai agar animasi bar mencapai 100% dengan mulus
+    setTimeout(() => {
+      cyberLoader.classList.add('fade-out');
+    }, 500);
+  }
+});
+
+// ==========================================================================
+// 7. KONTROL VISIBILITAS TOMBOL TRANSMIT (ANTI-SPAM SPASI)
+// ==========================================================================
+function checkInputEcho() {
+  // .trim() akan menghapus semua spasi di awal & akhir.
+  // Jika setelah di-trim hasilnya kosong (""), tombol akan disembunyikan.
+  if (userInput && sendBtn) {
+    if (userInput.value.trim() === "") {
+      sendBtn.classList.add('transmit-hidden');
+    } else {
+      sendBtn.classList.remove('transmit-hidden');
+    }
+  }
+}
+
+// Pantau setiap ketukan keyboard atau aktivitas paste di dalam input
+if (userInput) {
+  userInput.addEventListener('input', checkInputEcho);
+}
+
+// Jalankan sistem pengecekan di awal agar tombol langsung tersembunyi saat load
+checkInputEcho();
