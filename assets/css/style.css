@@ -198,8 +198,37 @@ body::after {
   /* Saat Aktif */
   .nav-menu.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-  .nav-link { width: 100%; padding: 15px 25px; font-size: 0.85rem; text-align: left; border-left: 3px solid transparent; }
-  .nav-link:hover, .nav-link.active { background: rgba(0, 242, 254, 0.05); border-left-color: #00f2fe; }
+  .nav-link { 
+    width: 100%; 
+    /* Berikan padding kiri yang konsisten untuk semua menu */
+    padding: 15px 25px 15px 45px; 
+    font-size: 0.85rem; 
+    text-align: left; 
+    border-left: 3px solid transparent;
+    position: relative; /* Menjadi acuan posisi ikon */
+    display: flex;
+    align-items: center;
+  }
+
+  /* Atur posisi ikon terminal agar melayang (absolute) di ruang padding kiri */
+  .nav-link i {
+    position: absolute;
+    left: 20px; /* Jarak konstan dari tepi kiri menu */
+    font-size: 0.75rem;
+    color: #00f2fe;
+    opacity: 0; /* Sembunyikan jika tidak aktif */
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  /* Ketika link aktif atau di-hover, cukup munculkan ikon tanpa menggeser teks */
+  .nav-link:hover, .nav-link.active { 
+    background: rgba(0, 242, 254, 0.05); 
+    border-left-color: #00f2fe; 
+  }
+
+  .nav-link.active i, .nav-link:hover i {
+    opacity: 1; /* Ikon terminal menyala dengan mulus */
+  }
 
   /* Animasi Transformasi Burger -> (X) */
   .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
