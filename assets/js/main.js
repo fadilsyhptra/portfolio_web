@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+  
+  /* ==========================================================================
+     1. PRELOADER ENGINE
+     ========================================================================== */
   const loader = document.getElementById('loader');
   if (loader) {
     window.addEventListener('load', () => {
@@ -7,27 +11,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navMenu = document.querySelector('nav ul');
-  
-  if (menuToggle && navMenu) {
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      menuToggle.querySelector('i').classList.toggle('fa-bars');
-      menuToggle.querySelector('i').classList.toggle('fa-times');
+  /* ==========================================================================
+     2. TACTICAL HAMBURGER & MOBILE MENU
+     ========================================================================== */
+  const toggleBtn = document.querySelector('.menu-toggle');
+  const mobileMenu = document.querySelector('.nav-menu');
+  const allLinks = document.querySelectorAll('.nav-link');
+
+  if (toggleBtn && mobileMenu) {
+    // Aksi klik tombol burger
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
     });
-    
-    document.querySelectorAll('nav a').forEach(link => {
+
+    // Otomatis tutup menu jika link diklik
+    allLinks.forEach(link => {
       link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        menuToggle.querySelector('i').classList.add('fa-bars');
-        menuToggle.querySelector('i').classList.remove('fa-times');
+        toggleBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
       });
+    });
+
+    // Otomatis tutup menu jika area luar diklik
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
+        toggleBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      }
     });
   }
 
+  /* ==========================================================================
+     3. ACTIVE LINK TRACKER ON SCROLL
+     ========================================================================== */
   const sections = document.querySelectorAll('section');
-  const navLinks = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
     let currentSectionId = '';
@@ -41,41 +60,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    navLinks.forEach(link => {
+    allLinks.forEach(link => {
       link.classList.remove('active');
       if (link.getAttribute('href') === `#${currentSectionId}`) {
         link.classList.add('active');
       }
     });
   });
-});
 
-// RESET SCRIPT NAVIGASI
-const toggleBtn = document.querySelector('.menu-toggle');
-const mobileMenu = document.querySelector('.nav-menu');
-const allLinks = document.querySelectorAll('.nav-link');
+  /* ==========================================================================
+     4. SCROLL-DRIVEN ANIMATION ENGINE (REVEAL ON SCROLL)
+     ========================================================================== */
+  const revealElements = document.querySelectorAll(".reveal-on-scroll");
 
-if (toggleBtn && mobileMenu) {
-  // Aksi Klik Tombol Burger
-  toggleBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Mencegah bentrokan event
-    toggleBtn.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-  });
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.15 // Memicu animasi saat 15% elemen terlihat
+  };
 
-  // Otomatis tutup jika link menu diklik
-  allLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      toggleBtn.classList.remove('active');
-      mobileMenu.classList.remove('active');
+  const scrollObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target); // Animasi berjalan sekali saja
+      }
     });
+  }, observerOptions);
+
+  revealElements.forEach(element => {
+    scrollObserver.observe(element);
   });
 
-  // Otomatis tutup jika pengguna mengklik area luar menu
-  document.addEventListener('click', (e) => {
-    if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
-      toggleBtn.classList.remove('active');
-      mobileMenu.classList.remove('active');
-    }
-  });
-}
+});

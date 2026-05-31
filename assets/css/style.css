@@ -239,6 +239,7 @@ body::after {
 section {
   padding: 100px 20px;
   max-width: 1200px; margin: 0 auto;
+  scroll-margin-top: 85px;
 }
 
 .section-title {
@@ -1542,4 +1543,24 @@ footer {
   .featured-img-wrapper { min-height: 200px; }
   .featured-content { padding: 30px 20px; }
   .featured-title { font-size: 1.5rem; }
+}
+
+/* ==========================================================================
+   SCROLL ANIMATION SYSTEM (FADE & SLIDE UP)
+   ========================================================================== */
+
+/* Kondisi Awal: Elemen tidak terlihat dan agak turun ke bawah */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(50px); /* Ditambah agar efek "melompat naik" lebih kelihatan */
+  
+  /* Naikkan durasi menjadi 1.2s agar transisinya lambat dan anggun */
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
