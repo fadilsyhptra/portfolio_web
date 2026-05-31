@@ -510,7 +510,33 @@
   <footer>
     <p>&copy; 2026 Muhammad Fadil Syahputra. All rights reserved.</p>
   </footer>
+  <button id="bug-launcher-btn" class="bug-tactical-btn" aria-label="Report System Anomaly">
+    <div class="btn-hud-frame">
+      <i class="fas fa-bug"></i>
+      <span class="btn-hud-text">REPORT BUG</span>
+    </div>
+  </button>
 
+  <div id="bug-alert-overlay" class="custom-alert-overlay">
+    <div class="custom-alert-box">
+      
+      <div class="alert-cyber-header">
+        <span class="alert-title"><i class="fas fa-exclamation-triangle"></i> SYSTEM_WARNING</span>
+        <span class="alert-code">[ERR_LOG_v1.0]</span>
+      </div>
+      
+      <div class="alert-body">
+        <p class="terminal-text">> Did you find a bug or something broken?</p>
+        <p class="sub-text">You will be redirected to a special encrypted page to submit the report anonymously.</p>
+      </div>
+      
+      <div class="alert-actions">
+        <button id="alert-cancel-btn" class="alert-btn btn-abort">ABORT</button>
+        <button id="alert-confirm-btn" class="alert-btn btn-proceed">PROCEED_</button>
+      </div>
+
+    </div>
+  </div>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

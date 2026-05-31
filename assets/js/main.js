@@ -92,4 +92,35 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollObserver.observe(element);
   });
 
+  // ENGINE CUSTOM ALERT CONFIRMATION SYSTEM
+  const bugLauncher = document.getElementById('bug-launcher-btn');
+  const alertOverlay = document.getElementById('bug-alert-overlay');
+  const abortBtn = document.getElementById('alert-cancel-btn');
+  const proceedBtn = document.getElementById('alert-confirm-btn');
+
+  if (bugLauncher && alertOverlay && abortBtn && proceedBtn) {
+    // Munculkan alert saat tombol taktis diklik (PC & Mobile)
+    bugLauncher.addEventListener('click', () => {
+      alertOverlay.classList.add('is-active');
+    });
+
+    // Tutup alert
+    abortBtn.addEventListener('click', () => {
+      alertOverlay.classList.remove('is-active');
+    });
+
+    // Pindah halaman
+    proceedBtn.addEventListener('click', () => {
+      alertOverlay.classList.remove('is-active');
+      window.location.href = 'report-bug.html'; 
+    });
+
+    // Tutup via klik luar
+    alertOverlay.addEventListener('click', (e) => {
+      if (e.target === alertOverlay) {
+        alertOverlay.classList.remove('is-active');
+      }
+    });
+  }
+
 });
