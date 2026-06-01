@@ -1,6 +1,4 @@
-/* ==========================================================================
-   GLOBAL STRUCTURE & FIXES
-   ========================================================================== */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -30,7 +28,7 @@ body::before {
   color: #ffffff !important;
 }
 
-/* --- PRELOADER LOADING HUD --- */
+ 
 #cyber-preloader {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -54,10 +52,6 @@ body::before {
 @keyframes spinHUD { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 #cyber-preloader.loaded { opacity: 0; pointer-events: none; }
 
-
-/* ==========================================================================
-   DESKTOP VISUAL LAYER (Susunan Kotak Bergandengan Horizontal)
-   ========================================================================== */
 @media screen and (min-width: 769px) {
   body {
     display: flex;
@@ -111,7 +105,7 @@ body::before {
   .sidebox-title { color: #00f2fe; font-size: 1.05rem; font-weight: bold; letter-spacing: 1px; }
   .sidebox-subtitle { color: #8a8a98; font-size: 0.75rem; margin-top: 6px; }
 
-  /* REALISTIC TERMINAL INTERFACE COMPONENT */
+   
   .sidebox-diagnostics {
     flex-grow: 1;
     margin-bottom: 20px;
@@ -153,7 +147,7 @@ body::before {
   .terminal-body {
     padding: 15px;
     font-size: 0.75rem;
-    color: #a7f3d0; /* Hijau mint matrix lembut agar nyaman dipandang */
+    color: #a7f3d0;  
     line-height: 1.5;
     flex-grow: 1;
     overflow-y: auto;
@@ -171,7 +165,7 @@ body::before {
     font-weight: bold;
   }
 
-  /* Animasi Kursor Ketik Kedip-Kedip */
+   
   .terminal-cursor {
     color: #00f2fe;
     font-weight: bold;
@@ -179,7 +173,7 @@ body::before {
   }
   @keyframes blinkCursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-  /* Vector Buttons Styling */
+   
   .sidebox-links { display: flex; flex-direction: column; gap: 12px; }
   .vector-btn {
     display: flex; align-items: center; gap: 12px; padding: 13px; font-size: 0.8rem;
@@ -191,7 +185,7 @@ body::before {
   .btn-twin { border: 1px solid rgba(147, 51, 234, 0.35); color: #a855f7; }
   .btn-twin:hover { border-color: #a855f7; color: #ffffff; background: rgba(147, 51, 234, 0.08); box-shadow: 0 0 12px rgba(147, 51, 234, 0.25); }
 
-  /* Form Elements Base Style */
+   
   .report-header { border-bottom: 1px dashed rgba(0, 242, 254, 0.2); padding-bottom: 12px; margin-bottom: 25px; }
   .report-title { color: #00f2fe; font-size: 1.15rem; font-weight: bold; display: flex; align-items: center; gap: 8px; }
   .report-subtitle { color: #8a8a98; font-size: 0.75rem; margin-top: 4px; }
@@ -211,7 +205,7 @@ body::before {
     font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.3s;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   
-    /* State awal: Sembunyi secara siber */
+     
     opacity: 0;
     pointer-events: none;
     transform: translateY(15px);
@@ -219,10 +213,6 @@ body::before {
   .btn-submit:hover { background: #ff003c; color: #0a0a12; box-shadow: 0 0 15px rgba(255, 0, 60, 0.4); }
 }
 
-
-/* ==========================================================================
-   MOBILE VISUAL LAYER
-   ========================================================================== */
 @media screen and (max-width: 768px) {
   body {
     display: flex;
@@ -307,7 +297,7 @@ body::before {
     letter-spacing: 0.5px; border-radius: 2px;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   
-    /* State awal: Sembunyi secara siber */
+     
     opacity: 0;
     pointer-events: none;
     transform: translateY(15px);
@@ -320,16 +310,13 @@ body::before {
   }
 }
 
-/* State aktif: Muncul ketika ada input teks valid */
+ 
 .btn-submit.visible {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
 }
 
-/* ==========================================================================
-   CYBER CUSTOM ALERT COMPONENT STYLING (RESPONSIVE)
-   ========================================================================== */
 .cyber-alert-overlay {
   position: fixed;
   top: 0;
@@ -356,7 +343,7 @@ body::before {
 
 .cyber-alert-box {
   width: 100%;
-  max-width: 460px; /* Ukuran kotak proporsional di desktop */
+  max-width: 460px;  
   background: #0a0a12;
   border-radius: 4px;
   padding: 25px;
@@ -370,7 +357,7 @@ body::before {
   transform: scale(1);
 }
 
-/* Penyesuaian header modal alert */
+ 
 .cyber-alert-header {
   display: flex;
   align-items: center;
@@ -398,7 +385,7 @@ body::before {
   color: #ffffff;
 }
 
-/* Isi pesan dari anomali status log */
+ 
 .cyber-alert-body {
   margin-bottom: 25px;
 }
@@ -410,14 +397,14 @@ body::before {
   word-break: break-word;
 }
 
-/* Tombol aksi konfirmasi */
+ 
 .cyber-alert-footer {
   display: flex;
   justify-content: flex-end;
 }
 
 .cyber-alert-btn {
-  width: 100%; /* Penuh di mobile agar jempol gampang jangkau */
+  width: 100%;  
   padding: 12px;
   background: transparent;
   font-family: 'Courier New', Courier, monospace;
@@ -428,7 +415,7 @@ body::before {
   transition: all 0.2s ease;
 }
 
-/* STATE 1: JIKA TRANSMISI FORM BERHASIL (CYAN THEME) */
+ 
 .cyber-alert-box.alert-success {
   border: 1px solid #00f2fe;
   box-shadow: 0 0 25px rgba(0, 242, 254, 0.15), inset 0 0 10px rgba(0, 242, 254, 0.05);
@@ -448,7 +435,7 @@ body::before {
   box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
 }
 
-/* STATE 2: JIKA TRANSMISI FORM GAGAL (RED CRITICAL THEME) */
+ 
 .cyber-alert-box.alert-error {
   border: 1px solid #ff003c;
   box-shadow: 0 0 25px rgba(255, 0, 60, 0.15), inset 0 0 10px rgba(255, 0, 60, 0.05);
@@ -468,11 +455,11 @@ body::before {
   box-shadow: 0 0 12px rgba(255, 0, 60, 0.4);
 }
 
-/* RESPONSIVE BREAKPOINT KHUSUS DESKTOP (Agar Tombol Merapat ke Kanan) */
+ 
 @media screen and (min-width: 769px) {
   .cyber-alert-btn {
     width: auto;
-    min-width: 140px; /* Ukuran tombol proporsional di desktop */
+    min-width: 140px;  
     padding: 10px 24px;
   }
 }

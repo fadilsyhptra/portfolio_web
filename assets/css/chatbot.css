@@ -1,8 +1,4 @@
-/* ==========================================================================
-   CYBERPUNK CHATBOT INTERFACE (Tactical Terminal)
-   ========================================================================== */
 
-/* Header Area */
 .chat-header {
   position: fixed; top: 0; left: 0; width: 100%; height: 75px;
   background: rgba(10, 10, 18, 0.85); backdrop-filter: blur(20px);
@@ -12,7 +8,7 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* GANTI .back-btn LAMA DENGAN INI */
+ 
 .back-btn-desktop {
   color: var(--text-muted); text-decoration: none; 
   font-family: var(--font-cyber); font-size: 0.85rem; letter-spacing: 1px;
@@ -39,7 +35,7 @@
 
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-/* Main Chat Container (Glass Terminal Window) */
+ 
 .chat-wrapper {
   max-width: 950px;
   margin: 110px auto 40px auto;
@@ -53,7 +49,7 @@
   overflow: hidden;
 }
 
-/* Scanline / Grid Effect Inside Terminal */
+ 
 .chat-wrapper::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   background: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
@@ -68,20 +64,20 @@
   z-index: 1; scroll-behavior: smooth;
 }
 
-/* Custom Scrollbar */
+ 
 .chat-box::-webkit-scrollbar { width: 6px; }
 .chat-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
 .chat-box::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 10px; }
 .chat-box::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
 
-/* Message Architecture */
+ 
 .message-wrapper {
   display: flex; align-items: flex-end; gap: 15px; max-width: 85%;
 }
 .bot-wrapper { align-self: flex-start; }
 .user-wrapper { align-self: flex-end; flex-direction: row-reverse; }
 
-/* Avatar Boxes */
+ 
 .chat-avatar {
   width: 42px; height: 42px; border-radius: 6px;
   border: 1px solid var(--neon-cyan);
@@ -99,7 +95,7 @@
 }
 .user-avatar i { color: var(--neon-purple); }
 
-/* Bubble Messages */
+ 
 .message {
   padding: 18px 24px; border-radius: 8px; line-height: 1.6; font-size: 0.95rem;
   position: relative; animation: msgFade 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -108,7 +104,7 @@
 
 @keyframes msgFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-/* System Status Message */
+ 
 .system-msg {
   align-self: center; background: rgba(0, 0, 0, 0.4);
   border: 1px dashed rgba(255, 255, 255, 0.2); color: var(--text-muted);
@@ -116,7 +112,7 @@
   letter-spacing: 1px; max-width: 100%; border-radius: 4px;
 }
 
-/* Sender Labels (SYS // FADIL vs USER // GUEST) */
+ 
 .msg-sender {
   font-family: var(--font-cyber); font-size: 0.65rem; color: var(--neon-cyan);
   margin-bottom: 10px; letter-spacing: 1px; opacity: 0.8; display: block;
@@ -135,7 +131,7 @@
   color: var(--text-main); border-bottom-right-radius: 0;
 }
 
-/* Command Line Input Area */
+ 
 .chat-input-area {
   display: flex; gap: 15px; padding: 20px 35px;
   background: rgba(0, 0, 0, 0.4); border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -148,7 +144,7 @@
 
 #user-input {
   flex: 1; padding: 12px 0; background: transparent; border: none;
-  color: var(--text-main); font-size: 1rem; font-family: monospace; /* Font koding agar terasa seperti di terminal */
+  color: var(--text-main); font-size: 1rem; font-family: monospace;  
 }
 
 #user-input:focus { outline: none; }
@@ -165,31 +161,29 @@
 #send-btn:hover {
   background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
 }
-/* Tambahkan ini tepat sebelum baris @media (max-width: 768px) */
+ 
 .mobile-only-trigger {
   display: none !important;
 }
-/* ==========================================================================
-   RESPONSIVE OPTIMIZATION (MOBILE VIEWPORT REPAIR)
-   ========================================================================== */
+
 @media (max-width: 768px) {
-  /* 1. Penyesuaian Navigasi Atas (Header) */
+   
   .chat-header {
     padding: 0 15px;
     height: 65px;
   }
 
   .back-btn span {
-    display: none; /* Sembunyikan teks "RETURN // PORTFOLIO" agar hemat ruang */
+    display: none;  
   }
 
   .back-btn {
-    font-size: 1.1rem; /* Perbesar sedikit ukuran ikon panah agar mudah ditekan */
+    font-size: 1.1rem;  
     padding: 10px 5px;
   }
 
   .bot-name {
-    font-size: 0.85rem; /* Perkecil sedikit ukuran font judul agar tidak sesak */
+    font-size: 0.85rem;  
     letter-spacing: 0.5px;
   }
 
@@ -197,20 +191,20 @@
     font-size: 0.7rem;
   }
 
-  /* 2. Reset Margin & Batasan Window Terminal */
+   
   .chat-wrapper { 
     margin: 80px 10px 15px 10px; 
     height: calc(100vh - 105px); 
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   }
 
-  /* 3. Kurangi Padding Box Obrolan Agar Ruang Teks Lebih Luas */
+   
   .chat-box { 
     padding: 15px; 
     gap: 15px;
   }
 
-  /* 4. Paksa Lebar Pesan Fleksibel & Matikan Efek Kolom Ganda */
+   
   .message-wrapper { 
     max-width: 100%; 
     width: 100%;
@@ -222,12 +216,12 @@
     font-size: 0.9rem;
   }
 
-  /* 5. Sembunyikan Avatar Total */
+   
   .chat-avatar {
     display: none !important;
   }
 
-  /* 6. Perbaikan Sektor Form Input & Tombol Transmit */
+   
   .chat-input-area { 
     padding: 12px 15px; 
     gap: 10px;
@@ -241,29 +235,26 @@
     font-size: 0.9rem;
   }
 
-  /* Mengubah button menjadi lingkaran/persegi ikon murni */
+   
   #send-btn {
     padding: 0;
     width: 45px;
     height: 45px;
     justify-content: center;
-    flex-shrink: 0; /* Mencegah tombol gepeng atau menyusut */
-    border-radius: 50%; /* Membuatnya bulat rapi ala tombol chat modern jika diinginkan, atau ubah ke 4px jika ingin tetap kaku */
+    flex-shrink: 0;  
+    border-radius: 50%;  
   }
 
-  /* Sembunyikan tulisan TRANSMIT secara total di mobile */
   #send-btn span { 
     display: none !important; 
   }
   
-  /* Pusatkan ikon satelit tepat di tengah-tengah tombol */
   #send-btn i {
     margin: 0;
     font-size: 1.1rem;
   }
 }
 
-/* FLOATING ACTION BUTTON - DESKTOP ONLY */
 @media screen and (min-width: 769px) {
   .desktop-report-fab {
     position: fixed;
@@ -296,20 +287,15 @@
   }
 }
 
-/* Sembunyikan tombol melayang ini di perangkat mobile */
 @media screen and (max-width: 768px) {
-  /* ==========================================================================
-     TAMBAHAN UNTUK NAVBAR GABUNGAN MOBILE
-     ========================================================================== */
   .back-btn-desktop {
-    display: none !important; /* Sembunyikan tombol kembali bawaan desktop */
+    display: none !important; 
   }
 
   .mobile-only-trigger {
-    display: block !important; /* Munculkan hamburger menu di mobile */
+    display: block !important; 
   }
 
-  /* Modifikasi chat-header lama agar bertindak sebagai fixed navbar di mobile */
   .chat-header {
     position: fixed; top: 0; left: 0; width: 100%; height: 55px; padding: 0 20px;
     display: flex; align-items: center; justify-content: space-between;
@@ -317,32 +303,22 @@
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 9999;
   }
 
-  /* Tombol Hamburger */
   .nav-toggle-btn {
     background: transparent; border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe;
     width: 36px; height: 36px; border-radius: 4px; display: flex; align-items: center;
     justify-content: center; cursor: pointer; font-size: 0.9rem; outline: none;
   }
 
-  /* ==========================================================================
-     PERBAIKAN POSISI DROPDOWN RATAKAN KIRI DENGAN TOMBOL
-     ========================================================================== */
-  
-  /* 1. Pastikan kontainer pembungkus tombol menjadi acuan koordinat (Anchor) */
   .nav-menu-wrapper {
     position: relative;
     display: inline-block;
   }
-
-  /* 2. Atur posisi panel dropdown content */
   .nav-dropdown-content {
     display: none;
     position: absolute;
     
-    /* Jarak vertikal dari tombol hamburger ke bawah */
     top: calc(100% + 8px); 
     
-    /* MEMBUAT STRUKTUR PAS RATA KIRI: Menempel tegak lurus dengan sisi kiri tombol */
     left: 0; 
     
     background: #0d0d1a;
@@ -376,9 +352,6 @@
   }
 }
 
-/* ==========================================================================
-   ALERT LAYER TRANSITION CONTROLLER
-   ========================================================================== */
 .custom-alert-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(10, 10, 18, 0.85);
@@ -386,19 +359,16 @@
   display: flex; align-items: center; justify-content: center;
   z-index: 100000;
   
-  /* Menyembunyikan alert di awal */
   opacity: 0; pointer-events: none;
   transition: opacity 0.25s ease;
 }
 
-/* Kelas pemicu yang diaktifkan oleh JavaScript */
 .custom-alert-overlay.active {
   opacity: 1;
   pointer-events: auto;
 }
 
 .custom-alert-box {
-  /* Memastikan transisi animasi pembesaran kotak seimbang */
   transform: scale(0.9);
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.2);
 }
@@ -407,9 +377,6 @@
   transform: scale(1);
 }
 
-/* ==========================================================================
-   TACTICAL TERMINAL LOADER OVERLAY
-   ========================================================================== */
 .terminal-loader-overlay {
   position: fixed;
   top: 0;
@@ -420,13 +387,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000000; /* Mengunci posisi di atas elemen apa pun termasuk header */
+  z-index: 1000000; 
   opacity: 1;
   visibility: visible;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-/* Kelas pemicu hilangnya loader dari Javascript */
 .terminal-loader-overlay.fade-out {
   opacity: 0;
   visibility: hidden;
@@ -477,7 +443,6 @@
   animation: pulseText 0.8s infinite alternate;
 }
 
-/* KEYFRAMES SIMULASI ANIMASI LOADING */
 @keyframes loadProgress {
   0% { width: 0%; }
   25% { width: 35%; }
@@ -490,7 +455,6 @@
   to { opacity: 1; }
 }
 
-/* Class untuk menyembunyikan tombol transmit */
 .transmit-hidden {
   display: none !important;
 }

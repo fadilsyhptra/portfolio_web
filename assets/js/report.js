@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. CYBER PRELOADER CLOSER
-// ==========================================================================
 window.addEventListener('load', () => {
   const preloader = document.getElementById('cyber-preloader');
   if (preloader) {
@@ -8,9 +5,6 @@ window.addEventListener('load', () => {
   }
 });
 
-// ==========================================================================
-// 2. MOBILE DROPDOWN MENU CONTROLLER
-// ==========================================================================
 function toggleMobileMenu() {
   const dropdown = document.getElementById('mobileDropdown');
   if (dropdown) {
@@ -27,9 +21,6 @@ window.addEventListener('click', (e) => {
   }
 });
 
-// ==========================================================================
-// 3. REALISTIC TERMINAL STREAM ANIMATION
-// ==========================================================================
 const logData = [
   "Connecting to core node 0x7FFF8C...",
   "Fetching portfolio index data structures...",
@@ -78,14 +69,10 @@ function typeLogStream() {
   if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
 }
 
-// Inisialisasi terminal jika elemennya eksis di halaman
 if (terminalBody) {
   setTimeout(typeLogStream, 1200);
 }
 
-// ==========================================================================
-// 4. CUSTOM CYBER ALERT SYSTEM FUNCTIONS
-// ==========================================================================
 function triggerCyberAlert(title, message, isSuccess = true) {
   const modal = document.getElementById('cyberAlertModal');
   const box = document.getElementById('cyberAlertBox');
@@ -98,7 +85,6 @@ function triggerCyberAlert(title, message, isSuccess = true) {
   titleEl.textContent = `> ${title}`;
   messageEl.textContent = message;
 
-  // Reset class status
   box.classList.remove('alert-success', 'alert-error');
   btnEl.classList.remove('btn-alert-success', 'btn-alert-error');
 
@@ -118,17 +104,12 @@ function closeCyberAlert() {
   if (modal) modal.classList.remove('active');
 }
 
-// Menutup modal jika user asal klik di area background luar kotak alert
 window.addEventListener('click', (e) => {
   const modal = document.getElementById('cyberAlertModal');
   if (e.target === modal) {
     closeCyberAlert();
   }
 });
-
-// ==========================================================================
-// 5. NETLIFY FORMS AJAX INTERCEPTION WITH LIVE INPUT DETECTION
-// ==========================================================================
 document.addEventListener("DOMContentLoaded", () => {
   const bugForm = document.querySelector('form[name="anonymous-bug-reports"]');
   const submitBtn = document.querySelector('.btn-submit');
@@ -136,9 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (bugForm && submitBtn && textarea) {
     
-    // Fungsi validasi mendeteksi input real-time
     const handleInputVerification = () => {
-      // .trim() memastikan spasi kosong massal diabaikan
       if (textarea.value.trim().length > 0) {
         submitBtn.classList.add('visible');
       } else {
@@ -146,15 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    // Pasang listener taktis saat user mengetik
     textarea.addEventListener('input', handleInputVerification);
 
-    // Antisipasi jika user melakukan paste teks menggunakan mouse
     textarea.addEventListener('paste', () => {
       setTimeout(handleInputVerification, 10);
     });
 
-    // Proses pengiriman Form
     bugForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -179,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
             true
           );
           
-          // Reset form dan sembunyikan kembali tombolnya
           bugForm.reset();
           submitBtn.classList.remove('visible');
         } else {

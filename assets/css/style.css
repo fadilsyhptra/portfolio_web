@@ -94,9 +94,6 @@ body::after {
   transform: translateY(-5px);
 }
 
-/* ==========================================================================
-   HUD TACTICAL NAVBAR - COMPLETE RESET
-   ========================================================================== */
 .tactical-navbar {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 75px;
@@ -113,7 +110,7 @@ body::after {
   display: flex; justify-content: space-between; align-items: center;
 }
 
-/* Kiri: Zone Brand & Burger */
+ 
 .nav-left-zone {
   display: flex; align-items: center; min-width: 200px;
 }
@@ -125,17 +122,17 @@ body::after {
 }
 .brand-accent { color: #00f2fe; text-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
 
-/* Tombol Burger (Mati secara default di Desktop) */
+ 
 .menu-toggle {
   display: none; flex-direction: column; justify-content: space-between;
   width: 25px; height: 18px; background: transparent; border: none; cursor: pointer; padding: 0;
 }
 .menu-toggle .bar {
-  width: 100%; height: 2px; background-color: #00f2fe; /* Warna Solid Cyan */
+  width: 100%; height: 2px; background-color: #00f2fe;  
   box-shadow: 0 0 8px rgba(0, 242, 254, 0.8); transition: 0.3s ease-in-out;
 }
 
-/* Tengah: Menu Link */
+ 
 .nav-menu { display: flex; align-items: center; gap: 25px; }
 .nav-link {
   font-family: var(--font-cyber); font-size: 0.8rem; font-weight: 500;
@@ -146,7 +143,7 @@ body::after {
 .nav-link:hover, .nav-link.active { color: #00f2fe; text-shadow: 0 0 8px rgba(0, 242, 254, 0.6); }
 .nav-link.active i { opacity: 1; color: #00f2fe; }
 
-/* Kanan: AI Button */
+ 
 .ai-core-btn {
   font-family: var(--font-cyber); font-size: 0.8rem; font-weight: 700; color: var(--neon-purple);
   text-decoration: none; padding: 10px 18px; border: 1px solid var(--neon-purple);
@@ -157,27 +154,24 @@ body::after {
 .nav-actions .pulse-dot { width: 6px; height: 6px; background-color: #00ff66; border-radius: 50%; box-shadow: 0 0 8px #00ff66; animation: pulseRegistry 1.5s infinite; }
 @keyframes pulseRegistry { 0%, 100% { transform: scale(0.9); opacity: 1; } 50% { transform: scale(1.2); opacity: 0.5; } }
 
-/* ==========================================================================
-   BREAKPOINT RESPONSIF (MOBILE MODE)
-   ========================================================================== */
 @media (max-width: 992px) {
   .nav-left-zone {
     min-width: auto !important; 
     width: auto;
   }
 
-  /* Hilangkan brand teks nama Fadil Syahputra */
+   
   .nav-brand { 
     display: none !important; 
   }
 
-  /* Paksa tombol burger mentok ke ujung paling kiri container */
+   
   .menu-toggle { 
     display: flex !important;
     margin-right: auto;
   }
   
-  /* Memastikan container navbar membagi ruang secara merata antara burger (kiri) dan AI Twin (kanan) */
+   
   .nav-container { 
     padding: 0 20px;
     display: flex;
@@ -185,52 +179,52 @@ body::after {
     align-items: center;
   }
 
-  /* Sistem Dropdown Menu Mobile */
+   
   .nav-menu {
     position: fixed; top: 75px; left: 0; width: 100%; background: rgba(10, 10, 18, 0.98);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 242, 254, 0.2); flex-direction: column;
     align-items: flex-start; gap: 0; padding: 10px 0;
-    /* Efek Animasi Slide */
+     
     opacity: 0; transform: translateY(-15px); pointer-events: none; transition: all 0.3s ease-in-out;
   }
   
-  /* Saat Aktif */
+   
   .nav-menu.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
   .nav-link { 
     width: 100%; 
-    /* Berikan padding kiri yang konsisten untuk semua menu */
+     
     padding: 15px 25px 15px 45px; 
     font-size: 0.85rem; 
     text-align: left; 
     border-left: 3px solid transparent;
-    position: relative; /* Menjadi acuan posisi ikon */
+    position: relative;  
     display: flex;
     align-items: center;
   }
 
-  /* Atur posisi ikon terminal agar melayang (absolute) di ruang padding kiri */
+   
   .nav-link i {
     position: absolute;
-    left: 20px; /* Jarak konstan dari tepi kiri menu */
+    left: 20px;  
     font-size: 0.75rem;
     color: #00f2fe;
-    opacity: 0; /* Sembunyikan jika tidak aktif */
+    opacity: 0;  
     transition: opacity 0.2s ease-in-out;
   }
 
-  /* Ketika link aktif atau di-hover, cukup munculkan ikon tanpa menggeser teks */
+   
   .nav-link:hover, .nav-link.active { 
     background: rgba(0, 242, 254, 0.05); 
     border-left-color: #00f2fe; 
   }
 
   .nav-link.active i, .nav-link:hover i {
-    opacity: 1; /* Ikon terminal menyala dengan mulus */
+    opacity: 1;  
   }
 
-  /* Animasi Transformasi Burger -> (X) */
+   
   .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
   .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
   .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background-color: var(--neon-purple); box-shadow: 0 0 8px var(--neon-purple); }
@@ -318,11 +312,11 @@ footer {
 .footer-sys-links {
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.8rem;
-  color: var(--text-muted); /* Samakan dengan warna teks copyright kamu */
+  color: var(--text-muted);  
 }
 
 .sys-label {
-  color: #06b6d4; /* Warna cyan khas sistem kamu */
+  color: #06b6d4;  
   margin-right: 5px;
 }
 
@@ -338,7 +332,7 @@ footer {
 }
 
 .btn-inline-terminal:hover {
-  color: #ff006e; /* Berubah jadi pink lembut/ungu hanya saat di-hover */
+  color: #ff006e;  
   text-shadow: 0 0 8px rgba(255, 0, 110, 0.6);
 }
 
@@ -364,7 +358,7 @@ footer {
   transform: translateY(-2px);
 }
 
-/* Modifikasi Alert Box khusus Saweria agar bernuansa Pink-Magenta */
+ 
 .coffee-box-accent {
   border-left: 3px solid #ff006e !important;
 }
@@ -398,9 +392,6 @@ footer {
 
 }
 
-/* ==========================================================================
-   CYBERPUNK EDUCATION SECTION (Tech Dossier Layout - FIXED)
-   ========================================================================== */
 .education-box {
   max-width: 850px;
   margin: 0 auto;
@@ -414,13 +405,13 @@ footer {
   position: relative;
 }
 
-/* Garis konektor vertikal tipis ala sirkuit komputer (Hanya tampil di Desktop) */
+ 
 .tech-timeline::before {
   content: '';
   position: absolute;
   top: 15px;
   bottom: 15px;
-  left: 45px; /* DIUBAH dari 35px ke 45px */
+  left: 45px;  
   width: 2px;
   background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), transparent);
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
@@ -448,7 +439,7 @@ footer {
   color: var(--text-muted);
   letter-spacing: 1px;
   margin-bottom: 8px;
-  background: var(--bg-dark); /* FIX: Memberikan tameng agar garis sirkuit terputus */
+  background: var(--bg-dark);  
   padding: 2px 6px;
   border-radius: 4px;
   position: relative;
@@ -458,19 +449,19 @@ footer {
 .edu-status-badge {
   font-family: var(--font-cyber);
   font-size: 0.6rem;
-  padding: 5px 2px; /* Menyesuaikan padding atas-bawah dan kanan-kiri */
+  padding: 5px 2px;  
   border-radius: 4px;
   font-weight: bold;
-  letter-spacing: 0.5px; /* Sedikit dirapatkan agar pas di dalam box */
+  letter-spacing: 0.5px;  
   text-align: center;
   width: 100%;
   border: 1px solid transparent;
-  white-space: nowrap; /* Memastikan teks tidak turun ke bawah/patah kata */
+  white-space: nowrap;  
   box-sizing: border-box;
 }
 
 .edu-status-badge.active-status {
-  background: var(--bg-dark); /* FIX: Latar belakang solid pekat agar garis tidak tembus */
+  background: var(--bg-dark);  
   color: var(--neon-cyan);
   border: 1px solid var(--neon-cyan) !important;
   box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
@@ -479,7 +470,7 @@ footer {
 }
 
 .edu-status-badge.completed-status {
-  background: var(--bg-dark); /* FIX: Latar belakang solid pekat agar garis tidak tembus */
+  background: var(--bg-dark);  
   color: var(--neon-purple);
   border: 1px solid var(--neon-purple) !important;
   box-shadow: 0 0 12px rgba(157, 78, 221, 0.1);
@@ -487,16 +478,16 @@ footer {
   z-index: 5;
 }
 
-/* Kartu Data Informasi */
+ 
 .edu-card {
   flex-grow: 1;
   padding: 25px;
-  border-left: 4px solid var(--neon-cyan) !important; /* Aksen neon vertikal kiri */
+  border-left: 4px solid var(--neon-cyan) !important;  
   position: relative;
 }
 
 .edu-node:nth-child(even) .edu-card {
-  border-left-color: var(--neon-purple) !important; /* Selang-seling warna */
+  border-left-color: var(--neon-purple) !important;  
 }
 
 .edu-header {
@@ -509,7 +500,7 @@ footer {
 }
 
 .edu-logo-wrapper {
-  width: 54px; /* FIX: Dimensi disesuaikan agar proporsi gambar pas */
+  width: 54px;  
   height: 54px;
   flex-shrink: 0;
   border-radius: 8px;
@@ -519,14 +510,14 @@ footer {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  padding: 4px; /* Jarak aman gambar dari border bingkai */
+  padding: 4px;  
 }
 
-/* FIX: Pengaturan baru untuk mengontrol tag <img> gambar institusi */
+ 
 .edu-institution-logo {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Mengunci rasio logo agar tidak penyok/distorsi */
+  object-fit: contain;  
   display: block;
 }
 
@@ -576,7 +567,7 @@ footer {
   margin-bottom: 16px;
 }
 
-/* Kotak Tag Kompetensi Akademik */
+ 
 .edu-skills-tags {
   display: flex;
   flex-wrap: wrap;
@@ -603,16 +594,13 @@ footer {
   color: var(--neon-purple);
 }
 
-/* ==========================================================================
-   RESPONSIVE EDUCATION BREAKPOINTS (Anti-Sempit / Mobile-First Fluid)
-   ========================================================================== */
 @media (max-width: 768px) {
   .tech-timeline::before {
-    display: none; /* Matikan garis vertikal panjang agar space HP lebih lega */
+    display: none;  
   }
 
   .edu-node {
-    flex-direction: column; /* Panel status naik ke atas kartu saat di HP */
+    flex-direction: column;  
     gap: 10px;
   }
 
@@ -638,7 +626,7 @@ footer {
   }
 
   .edu-title-group h3 {
-    font-size: 1.05rem; /* Font otomatis mengecil pas di layar handphone */
+    font-size: 1.05rem;  
   }
 }
 
@@ -650,7 +638,7 @@ footer {
   }
 
   .edu-logo-wrapper {
-    display: none; /* Sembunyikan kotak logo di HP super kecil demi ruang teks */
+    display: none;  
   }
 }
 
@@ -782,9 +770,6 @@ footer {
   }
 }
 
-/* ==========================================================================
-   CYBERPUNK SKILLS MATRIX SECTION (Tactical HUD Design)
-   ========================================================================== */
 .skills-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -802,7 +787,7 @@ footer {
   overflow: hidden;
 }
 
-/* Header Modul / Subsystem */
+ 
 .module-header {
   display: flex;
   align-items: center;
@@ -835,7 +820,7 @@ footer {
   border-radius: 4px;
 }
 
-/* Mekanisme Cyber Data Bars (Hard & Software Skills) */
+ 
 .module-body {
   display: flex;
   flex-direction: column;
@@ -869,7 +854,7 @@ footer {
 .text-cyan { color: var(--neon-cyan); }
 .text-purple { color: var(--neon-purple); }
 
-/* Struktur Custom Progress Bar */
+ 
 .data-bar-wrapper {
   width: 100%;
   height: 6px;
@@ -886,7 +871,7 @@ footer {
   transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Perbedaan Gradasi Warna Tiap Faksi */
+ 
 .core-cyan .data-bar-progress {
   background: linear-gradient(90deg, rgba(0, 242, 254, 0.2), var(--neon-cyan));
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
@@ -897,7 +882,7 @@ footer {
   box-shadow: 0 0 10px rgba(157, 78, 221, 0.5);
 }
 
-/* Mekanisme Kluster Klip Taktis (Soft Skills) */
+ 
 .soft-skills-desc {
   font-size: 0.9rem;
   color: var(--text-muted);
@@ -930,7 +915,7 @@ footer {
   transition: var(--transition-smooth);
 }
 
-/* Efek Hover Interaktif Pada Seluruh Komponen */
+ 
 .skills-module:hover {
   transform: translateY(-4px);
 }
@@ -951,12 +936,9 @@ footer {
   text-shadow: 0 0 5px var(--neon-cyan);
 }
 
-/* ==========================================================================
-   RESPONSIVE SKILLS BREAKPOINTS
-   ========================================================================== */
 @media (max-width: 768px) {
   .skills-grid-container {
-    grid-template-columns: 1fr; /* Menjadi tumpukan 1 kolom rapi di HP */
+    grid-template-columns: 1fr;  
     gap: 20px;
   }
   
@@ -965,11 +947,6 @@ footer {
   }
 }
 
-/* ==========================================================================
-   HERO SECTION (Formasi Terkunci & Tanpa Duplikasi)
-   ========================================================================== */
-
-/* 1. Base Desktop Layout */
 #hero {
   height: 100vh;
   display: flex;
@@ -1002,7 +979,7 @@ footer {
   white-space: nowrap !important; 
 }
 
-/* Aturan Global Span Judul (Desktop & Mobile) */
+ 
 .hero-title span {
   display: block !important; 
   width: 100%;
@@ -1018,7 +995,7 @@ footer {
   display: inline-block; 
 }
 
-/* Glow Effect Line 2 */
+ 
 .hero-title span:nth-child(2) {
   filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.3));
   transition: filter 0.3s ease;
@@ -1036,7 +1013,7 @@ footer {
   max-width: 680px;
 }
 
-/* Cyberpunk Tech-Brackets Status Badge */
+ 
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -1068,7 +1045,7 @@ footer {
   50% { transform: scale(1.5); opacity: 0.5; }
 }
 
-/* 2. CTA Buttons */
+ 
 .hero-cta {
   display: flex;
   gap: 20px;
@@ -1090,7 +1067,7 @@ footer {
   box-shadow: 0 0 15px rgba(157, 78, 221, 0.3);
 }
 
-/* 3. AI Centerpiece Visual */
+ 
 .hero-visual {
   flex: 0.7; 
   display: flex;
@@ -1150,7 +1127,7 @@ footer {
 @keyframes spinLeft { 100% { transform: rotate(-360deg); } }
 @keyframes floatUp { 0% { transform: translateY(0); } 100% { transform: translateY(-15px); } }
 
-/* 4. Responsive Breakpoints (Tablet & Mobile) */
+ 
 @media (max-width: 992px) {
   #hero {
     flex-direction: column; 
@@ -1194,7 +1171,7 @@ footer {
   }
 
   .hero-visual {
-    display: none !important; /* Menyembunyikan bulatan AI di mobile & tab */
+    display: none !important;  
   }
 }
 
@@ -1239,9 +1216,6 @@ footer {
   }
 }
 
-/* ==========================================================================
-   CYBERPUNK ABOUT ME SECTION (Responsive Fluid Layout)
-   ========================================================================== */
 #about {
   padding: 80px 20px;
 }
@@ -1255,7 +1229,7 @@ footer {
   align-items: center;
 }
 
-/* Kolom Kiri - Terminal Kartu Identitas */
+ 
 .about-profile {
   flex: 1;
   min-width: 280px;
@@ -1325,7 +1299,7 @@ footer {
   text-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
 }
 
-/* Kolom Kanan - Teks Biografi */
+ 
 .about-biography {
   flex: 1.4;
   display: flex;
@@ -1334,7 +1308,7 @@ footer {
 }
 
 .about-biography p {
-  /* KUNCI RESPONSIVE: Ukuran font menggunakan fluid clamp (Min: 0.9rem di HP, Max: 1.05rem di PC) */
+   
   font-size: clamp(0.9rem, 1.1vw, 1.05rem);
   line-height: 1.7;
   color: var(--text-muted);
@@ -1347,7 +1321,7 @@ footer {
   border-bottom: 1px dashed var(--neon-purple);
 }
 
-/* --- AMANAH BARU: CYBERPUNK SOCIAL BUTTONS --- */
+ 
 .about-socials {
   display: flex;
   flex-wrap: wrap;
@@ -1374,18 +1348,18 @@ footer {
   transition: var(--transition-smooth);
 }
 
-/* --- PENYESUAIAN UKURAN DAN EFEK LOGO --- */
+ 
 .social-icon {
-  font-size: 1.1rem; /* Membuat logo sedikit lebih besar dari teksnya */
+  font-size: 1.1rem;  
   color: var(--text-muted);
   transition: var(--transition-smooth);
 }
 
-/* Memastikan teks dan logo sejajar secara vertikal */
+ 
 .social-link-btn {
   display: inline-flex;
   align-items: center;
-  gap: 12px; /* Jarak antara logo dan teks tulisan */
+  gap: 12px;  
   font-family: var(--font-cyber);
   font-size: 0.75rem;
   font-weight: 600;
@@ -1399,7 +1373,7 @@ footer {
   transition: var(--transition-smooth);
 }
 
-/* Efek Glow Neon pada Logo saat Kursor Menempel (Hover) */
+ 
 .btn-instagram:hover .social-icon,
 .btn-linkedin:hover .social-icon {
   color: var(--neon-cyan);
@@ -1411,7 +1385,7 @@ footer {
   filter: drop-shadow(0 0 5px var(--neon-purple));
 }
 
-/* Hover Effect Selaras Tema (Instagram & LinkedIn menggunakan Cyan, Email menggunakan Purple) */
+ 
 .btn-instagram:hover, 
 .btn-linkedin:hover {
   border-color: var(--neon-cyan);
@@ -1438,26 +1412,23 @@ footer {
   text-shadow: 0 0 5px var(--neon-purple);
 }
 
-/* Kunci Responsif untuk HP Sempit */
+ 
 @media (max-width: 480px) {
   .about-socials {
     gap: 10px;
-    justify-content: center; /* Tombol rata tengah di HP agar simetris */
+    justify-content: center;  
   }
   
   .social-link-btn {
-    width: 100%; /* Tombol melebar penuh dan bertumpuk rapi ke bawah saat layar sangat kecil */
+    width: 100%;  
     justify-content: center;
     padding: 12px;
   }
 }
 
-/* ==========================================================================
-   RESPONSIVE ABOUT ME (Breakpoints)
-   ========================================================================== */
 @media (max-width: 768px) {
   .about-container {
-    flex-direction: column; /* Berubah menjadi tumpukan vertikal di tablet/HP */
+    flex-direction: column;  
     padding: 30px 20px;
     gap: 30px;
   }
@@ -1467,14 +1438,11 @@ footer {
   }
 
   .about-biography p {
-    text-align: left; /* Mengubah rata kiri agar lebih nyaman dibaca di layar HP */
+    text-align: left;  
   }
 }
 
-/* ==========================================================================
-   ENHANCED PROJECTS SECTION
-   ========================================================================== */
-/* Featured Project */
+ 
 .featured-project {
   display: flex;
   gap: 30px;
@@ -1568,7 +1536,7 @@ footer {
 }
 .btn-cyber-small:hover { box-shadow: 0 0 15px rgba(157, 78, 221, 0.5); transform: translateY(-2px); }
 
-/* Regular Project Cards */
+ 
 .projects-grid {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 }
@@ -1608,7 +1576,7 @@ footer {
   flex-grow: 1;
 }
 
-/* Responsive Projects */
+ 
 @media (max-width: 768px) {
   .featured-project { flex-direction: column; }
   .featured-img-wrapper { min-height: 200px; }
@@ -1616,16 +1584,12 @@ footer {
   .featured-title { font-size: 1.5rem; }
 }
 
-/* ==========================================================================
-   SCROLL ANIMATION SYSTEM (FADE & SLIDE UP)
-   ========================================================================== */
-
-/* Kondisi Awal: Elemen tidak terlihat dan agak turun ke bawah */
+ 
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(50px); /* Ditambah agar efek "melompat naik" lebih kelihatan */
+  transform: translateY(50px);  
   
-  /* Naikkan durasi menjadi 1.2s agar transisinya lambat dan anggun */
+   
   transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
               transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: opacity, transform;
@@ -1643,7 +1607,7 @@ footer {
   background: rgba(10, 10, 18, 0.4);
   border: 1px solid rgba(0, 242, 254, 0.2);
   color: rgba(0, 242, 254, 0.4);
-  /* Sifat padding disesuaikan: 8px atas-bawah, 14px kanan-kiri */
+   
   padding: 8px 14px; 
   font-family: monospace;
   cursor: pointer;
@@ -1660,12 +1624,12 @@ footer {
 }
 
 .btn-hud-text {
-  font-size: 0.72rem; /* Sedikit diperkecil agar teks panjangnya tetap rapi */
+  font-size: 0.72rem;  
   font-weight: bold;
-  letter-spacing: 1px; /* Jarak antar huruf sedikit dirapatkan agar proporsional */
+  letter-spacing: 1px;  
 }
 
-/* KODE CSS SELEBIHNYA (Hover effect & Media Query Mobile) TETAP SAMA SEPERTI KEMARIN */
+ 
 @media (hover: hover) {
   .bug-tactical-btn:hover {
     background: rgba(255, 0, 60, 0.08);
@@ -1681,12 +1645,12 @@ footer {
   .bug-tactical-btn {
     bottom: 15px;
     right: 15px;
-    padding: 8px; /* Berubah jadi kotak kecil di HP */
+    padding: 8px;  
     background: rgba(10, 10, 18, 0.7);
     border-color: rgba(0, 242, 254, 0.15);
   }
   
-  /* Teks otomatis hilang di HP agar jempol user tidak terganggu */
+   
   .btn-hud-text {
     display: none;
   }
@@ -1702,7 +1666,7 @@ footer {
     background: rgba(255, 0, 60, 0.1);
   }
 }
-/* 2. Backdrop Alert Overlay (Gelap + Blur) */
+ 
 .custom-alert-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -1718,13 +1682,13 @@ footer {
   transition: opacity 0.3s ease;
 }
 
-/* Status Aktif Alert */
+ 
 .custom-alert-overlay.is-active {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* 3. Kotak Alert HUD */
+ 
 .custom-alert-box {
   background: #0a0a12;
   border: 1px solid #ff003c;
@@ -1742,7 +1706,7 @@ footer {
   transform: scale(1);
 }
 
-/* Header Alert */
+ 
 .alert-cyber-header {
   display: flex;
   justify-content: space-between;
@@ -1754,12 +1718,12 @@ footer {
 .alert-title { color: #ff003c; font-weight: bold; letter-spacing: 1px; }
 .alert-code { color: #ffaa00; font-size: 0.8rem; }
 
-/* Isi Alert */
+ 
 .alert-body { margin-bottom: 25px; }
 .terminal-text { color: #ffffff; font-size: 0.95rem; margin-bottom: 10px; line-height: 1.4; }
 .sub-text { color: #8a8a98; font-size: 0.8rem; line-height: 1.5; }
 
-/* Tombol Pilihan */
+ 
 .alert-actions {
   display: flex;
   gap: 15px;
