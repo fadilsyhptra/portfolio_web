@@ -1,17 +1,9 @@
-/**
- * CORE AGENT DIGITAL TWIN - INTEGRASI GROQ API MURNI VANILLA JS (TACTICAL HUD v1.0)
- */
-
 const GROQ_CONFIG = {
-  // PENTING: Ganti string di bawah ini dengan API Key resmi dari Groq Dashboard Anda (gsk_...)
-  API_KEY: "MASUKKAN_API_KEY_GROQ_ANDA_DI_SINI",
-  ENDPOINT: "https://api.groq.com/openai/v1/chat/completions",
+  ENDPOINT: "/.netlify/functions/groq-chat",
   MODEL: "llama-3.3-70b-versatile"
 };
 
 let personalKnowledgePrompt = "";
-
-// 1. Ekstraksi Data Konteks Kognitif dari File JSON Lokal
 async function loadPersonalKnowledgeBase() {
   try {
     const response = await fetch('./assets/data/personal_data.json');
@@ -19,28 +11,31 @@ async function loadPersonalKnowledgeBase() {
     
     const data = await response.json();
     
-    // Transformasi data JSON menjadi String Konteks terstruktur untuk dimasukkan ke Sistem Prompt AI
     personalKnowledgePrompt = `
-      Anda adalah Representasi Kembaran Digital dari individu berikut:
-      Nama: ${data.name}
-      Profesi: ${data.role}
+      Anda adalah Representasi Kembaran Digital (AI Twin) dari individu berikut:
+      Nama Lengkap: ${data.name} (Panggilan: ${data.nickname})
+      Profesi/Peran: ${data.role}
       Spesialisasi Kunci: ${data.specialization}
       Lokasi: ${data.location}
       Deskripsi Profil: ${data.about}
+      Status Hubungan: ${data.relationship_status}
+      Core Belief / Prinsip: "${data.core_belief}"
       
-      Kompetensi Teknis:
-      - Languages: ${data.skills.Technical.join(', ')}
-      - AI & ML Infrastructure: ${data.skills.AI_ML.join(', ')}
-      - Development Tools: ${data.skills.Tools.join(', ')}
+      Sifat & Kepribadian:
+      ${data.personality.map(s => `- ${s}`).join('\n')}
+
+      Kompetensi Teknis & Alat (Skills Matrix):
+      - Hard Skills: ${data.skills.Hard_Skills.join(', ')}
+      - Software & Tools: ${data.skills.Software_Tools.join(', ')}
+      - Soft Skills: ${data.skills.Soft_Skills.join(', ')}
       
       Portofolio Proyek Utama:
       ${data.projects.map(p => `- Proyek [${p.title}]: ${p.description} (Tech Stack: ${p.tech.join(', ')})`).join('\n')}
       
-      Rekam Jejak Kerja & Prestasi:
-      - Pengalaman: ${data.experience.map(e => `${e.year}: ${e.position} di ${e.company}. Tugas: ${e.task}`).join('\n')}
-      - Penghargaan: ${data.achievements.join(', ')}
+      Rekam Jejak Pengalaman & Organisasi:
+      ${data.experience.map(e => `- [${e.year}] Sebagai ${e.position} di ${e.company}. Deskripsi: ${e.task}`).join('\n')}
       
-      ATURAN PERILAKU & GAYA BICARA AGEN:
+      ATURAN PERILAKU, PEMBATASAN TOPIK, & GAYA BICARA AGEN (WAJIB DIPATUHI MUTLAK):
       Tone Suara: ${data.ai_persona.tone}
       Instruksi Wajib:
       ${data.ai_persona.rules.map(r => `- ${r}`).join('\n')}
@@ -52,18 +47,15 @@ async function loadPersonalKnowledgeBase() {
   }
 }
 
-// 2. Manipulasi Elemen DOM & Manajemen Antarmuka Terminal HUD
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
-const userInput = document.getElementById('user-input'); // Deklarasi Global yang Benar
+const userInput = document.getElementById('user-input'); 
 const sendBtn = document.getElementById('send-btn');
 
-// Menggunakan struktur pembungkus pesan kompleks bertema siber
 function appendMessage(text, isUser = false) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('message-wrapper', isUser ? 'user-wrapper' : 'bot-wrapper');
 
-  // Cetakan template HTML berdasarkan identitas pengirim
   wrapper.innerHTML = isUser ? `
     <div class="chat-avatar user-avatar">
       <i class="fas fa-user-astronaut fallback-icon"></i>
@@ -88,7 +80,6 @@ function appendMessage(text, isUser = false) {
   return wrapper;
 }
 
-// Menyelaraskan indikator mengetik dengan struktur avatar bot baru
 function createTypingIndicator() {
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
@@ -114,21 +105,13 @@ function removeTypingIndicator() {
   if (indicator) indicator.remove();
 }
 
-// Helper untuk mencegah serangan XSS dari input mentah pengguna
 function escapeHTML(str) {
   return str.replace(/[&<>'"]/g, 
     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
   );
 }
 
-// 3. Transaksi Data Post Request ke Server Edge Groq Cloud
 async function fetchGroqAIResponse(userMessageText) {
-  if (GROQ_CONFIG.API_KEY === "MASUKKAN_API_KEY_GROQ_ANDA_DI_SINI" || !GROQ_CONFIG.API_KEY) {
-    removeTypingIndicator();
-    appendMessage("Sistem Error: Kunci Enkripsi Groq API Key belum dikonfigurasi di dalam berkas 'assets/js/chatbot.js'. Sila baca panduan README untuk mengaktifkan fitur.");
-    return;
-  }
-
   try {
     const payload = {
       model: GROQ_CONFIG.MODEL,
@@ -143,19 +126,17 @@ async function fetchGroqAIResponse(userMessageText) {
     const response = await fetch(GROQ_CONFIG.ENDPOINT, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${GROQ_CONFIG.API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(payload)
     });
 
+    const jsonResult = await response.json();
+
     if (!response.ok) {
-      const errData = await response.json();
-      throw new Error(errData.error?.message || "Koneksi gateway API gagal.");
+      throw new Error(jsonResult.error || "Koneksi gateway API gagal.");
     }
 
-    const jsonResult = await response.json();
-    // Mengganti baris pemisah karakter newline (\n) menjadi tag break baris HTML agar rapi di terminal
     const aiCleanReply = jsonResult.choices[0].message.content.replace(/\n/g, "<br>");
     
     removeTypingIndicator();
@@ -167,7 +148,6 @@ async function fetchGroqAIResponse(userMessageText) {
   }
 }
 
-// 4. Form Submission Listener
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -177,7 +157,6 @@ if (chatForm) {
     appendMessage(rawText, true);
     userInput.value = '';
     
-    // Langsung sembunyikan tombol kembali setelah pesan terkirim
     checkInputEcho(); 
 
     createTypingIndicator();
@@ -185,15 +164,8 @@ if (chatForm) {
   });
 }
 
-// Inisialisasi awal data basis pengetahuan saat halaman diakses
 loadPersonalKnowledgeBase();
 
-
-// ==========================================================================
-// 5. INTEGRASI RESPONSIVE DROPDOWN & PORTFOLIO BUG ALERT SYSTEM
-// ==========================================================================
-
-// Fungsi Utama Buka/Tutup Hamburgermenu Dropdown Mobile
 function toggleMobileMenu() {
   const dropdown = document.getElementById("mobileDropdown");
   if (dropdown) {
@@ -201,17 +173,14 @@ function toggleMobileMenu() {
   }
 }
 
-// Inisialisasi Elemen Pemicu Alert Sistem Berdasarkan Kode HTML-mu
 const bugAlertOverlay = document.getElementById('bug-alert-overlay');
 const alertCancelBtn = document.getElementById('alert-cancel-btn');
 const alertConfirmBtn = document.getElementById('alert-confirm-btn');
 
-// Fungsi khusus memanggil alert dan mengunci aksi halaman tujuan
 function launchBugAlert(targetUrl) {
   if (bugAlertOverlay) {
     bugAlertOverlay.classList.add('active');
     
-    // Ikat aksi tombol PROCEED_ menuju halaman target report
     alertConfirmBtn.onclick = function() {
       bugAlertOverlay.classList.remove('active');
       window.location.href = targetUrl;
@@ -219,31 +188,26 @@ function launchBugAlert(targetUrl) {
   }
 }
 
-// Tombol ABORT untuk membatalkan pengalihan dan menyembunyikan alert kembali
 if (alertCancelBtn) {
   alertCancelBtn.addEventListener('click', () => {
     bugAlertOverlay.classList.remove('active');
   });
 }
 
-// Event Listener Global: Menangkap klik tombol Bug (.red-report & .desktop-report-fab)
 document.addEventListener('click', function(e) {
   const reportTarget = e.target.closest('.red-report, .desktop-report-fab');
   
   if (reportTarget) {
-    e.preventDefault(); // Tahan pengalihan halaman instan ke report-bug.html
+    e.preventDefault(); 
     
-    // Sembunyikan menu dropdown mobile terlebih dahulu jika sedang aktif terbuka
     const dropdown = document.getElementById("mobileDropdown");
     if (dropdown) dropdown.classList.remove("show-menu");
     
-    // Luncurkan modal peringatan kustom Anda [ERR_LOG_v1.0]
     const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
     launchBugAlert(targetUrl);
   }
 });
 
-// Menutup dropdown mobile secara otomatis jika user mengklik sembarang tempat di luar menu area
 window.addEventListener('click', function(event) {
   const dropdown = document.getElementById("mobileDropdown");
   const toggleBtn = document.querySelector('.nav-toggle-btn');
@@ -255,26 +219,17 @@ window.addEventListener('click', function(event) {
   }
 });
 
-// ==========================================================================
-// 6. INITIALIZATION TERMINAL LOADER CONTROLLER
-// ==========================================================================
 window.addEventListener('load', () => {
   const cyberLoader = document.getElementById('cyber-loader');
   
   if (cyberLoader) {
-    // Memberikan jeda waktu 500ms setelah load selesai agar animasi bar mencapai 100% dengan mulus
     setTimeout(() => {
       cyberLoader.classList.add('fade-out');
     }, 500);
   }
 });
 
-// ==========================================================================
-// 7. KONTROL VISIBILITAS TOMBOL TRANSMIT (ANTI-SPAM SPASI)
-// ==========================================================================
 function checkInputEcho() {
-  // .trim() akan menghapus semua spasi di awal & akhir.
-  // Jika setelah di-trim hasilnya kosong (""), tombol akan disembunyikan.
   if (userInput && sendBtn) {
     if (userInput.value.trim() === "") {
       sendBtn.classList.add('transmit-hidden');
@@ -284,10 +239,8 @@ function checkInputEcho() {
   }
 }
 
-// Pantau setiap ketukan keyboard atau aktivitas paste di dalam input
 if (userInput) {
   userInput.addEventListener('input', checkInputEcho);
 }
 
-// Jalankan sistem pengecekan di awal agar tombol langsung tersembunyi saat load
 checkInputEcho();

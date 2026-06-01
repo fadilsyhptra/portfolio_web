@@ -1,8 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  
-  /* ==========================================================================
-     1. PRELOADER ENGINE
-     ========================================================================== */
   const loader = document.getElementById('loader');
   if (loader) {
     window.addEventListener('load', () => {
@@ -10,23 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => loader.style.display = 'none', 500);
     });
   }
-
-  /* ==========================================================================
-     2. TACTICAL HAMBURGER & MOBILE MENU
-     ========================================================================== */
   const toggleBtn = document.querySelector('.menu-toggle');
   const mobileMenu = document.querySelector('.nav-menu');
   const allLinks = document.querySelectorAll('.nav-link');
 
   if (toggleBtn && mobileMenu) {
-    // Aksi klik tombol burger
     toggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleBtn.classList.toggle('active');
       mobileMenu.classList.toggle('active');
     });
 
-    // Otomatis tutup menu jika link diklik
     allLinks.forEach(link => {
       link.addEventListener('click', () => {
         toggleBtn.classList.remove('active');
@@ -34,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Otomatis tutup menu jika area luar diklik
     document.addEventListener('click', (e) => {
       if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
         toggleBtn.classList.remove('active');
@@ -43,9 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ==========================================================================
-     3. ACTIVE LINK TRACKER ON SCROLL
-     ========================================================================== */
   const sections = document.querySelectorAll('section');
 
   window.addEventListener('scroll', () => {
@@ -68,9 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ==========================================================================
-     4. SCROLL-DRIVEN ANIMATION ENGINE (REVEAL ON SCROLL)
-     ========================================================================== */
   const revealElements = document.querySelectorAll(".reveal-on-scroll");
 
   const observerOptions = {
@@ -92,9 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollObserver.observe(element);
   });
 
-  /* ==========================================================================
-     5. ENGINE CUSTOM ALERT CONFIRMATION SYSTEM (ANOMALY BUG REPORT)
-     ========================================================================== */
   const bugLauncher = document.getElementById('bug-launcher-btn');
   const alertOverlay = document.getElementById('bug-alert-overlay');
   const abortBtn = document.getElementById('alert-cancel-btn');
@@ -121,9 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ==========================================================================
-     6. SAWERIA GATEWAY INITIALIZATION PROTOCOL (INTEGRATED VERSION)
-     ========================================================================== */
   const coffeeBtn = document.getElementById('coffee-launcher-btn');
   const coffeeOverlay = document.getElementById('coffee-alert-overlay');
   const coffeeCancel = document.getElementById('coffee-cancel-btn');
@@ -131,13 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (coffeeBtn && coffeeOverlay && coffeeCancel && coffeeConfirm) {
     
-    // Buka Modal Gateway menggunakan standarisasi .is-active
     coffeeBtn.addEventListener('click', () => {
       coffeeOverlay.style.display = 'flex';
       coffeeOverlay.classList.add('is-active'); 
     });
 
-    // Tutup Modal (Abort Protocol)
     const closeCoffeeModal = () => {
       coffeeOverlay.style.display = 'none';
       coffeeOverlay.classList.remove('is-active');
@@ -145,13 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     coffeeCancel.addEventListener('click', closeCoffeeModal);
 
-    // Eksekusi Redirect ke Saweria jika Setuju
     coffeeConfirm.addEventListener('click', () => {
       closeCoffeeModal();
       window.open('https://saweria.co/Fadilsyhptra', '_blank');
     });
 
-    // Tutup otomatis jika klik di area background luar modal
     coffeeOverlay.addEventListener('click', (e) => {
       if (e.target === coffeeOverlay) {
         closeCoffeeModal();
