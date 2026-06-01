@@ -1,6 +1,6 @@
 const GROQ_CONFIG = {
   ENDPOINT: "/.netlify/functions/groq-chat",
-  MODEL: "openai/gpt-oss-120b"
+  MODEL: "qwen/qwen3-32b"
 };
 
 let personalKnowledgePrompt = "";
