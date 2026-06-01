@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           triggerCyberAlert(
             "SYS // LOG_TRANSMITTED_SUCCESSFULLY", 
-            "Anomaly packet has been securely injected and recorded into the Netlify matrix database.", 
+            "Anomaly packet has been securely injected and recorded into the database.", 
             true
           );
           
