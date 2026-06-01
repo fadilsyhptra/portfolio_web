@@ -308,6 +308,77 @@ section {
 footer {
   text-align: center; padding: 40px; color: var(--text-muted);
   border-top: 1px solid var(--border-glass); font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+}
+
+.footer-sys-links {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted); /* Samakan dengan warna teks copyright kamu */
+}
+
+.sys-label {
+  color: #06b6d4; /* Warna cyan khas sistem kamu */
+  margin-right: 5px;
+}
+
+.btn-inline-terminal {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.btn-inline-terminal:hover {
+  color: #ff006e; /* Berubah jadi pink lembut/ungu hanya saat di-hover */
+  text-shadow: 0 0 8px rgba(255, 0, 110, 0.6);
+}
+
+.btn-coffee-cyber {
+  background: rgba(255, 0, 110, 0.03);
+  border: 1px solid rgba(255, 0, 110, 0.4);
+  color: #ff006e;
+  padding: 10px 22px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(255, 0, 110, 0.05);
+}
+
+.btn-coffee-cyber:hover {
+  background: #ff006e;
+  color: #ffffff;
+  border-color: #ff006e;
+  box-shadow: 0 0 20px rgba(255, 0, 110, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Modifikasi Alert Box khusus Saweria agar bernuansa Pink-Magenta */
+.coffee-box-accent {
+  border-left: 3px solid #ff006e !important;
+}
+
+.btn-proceed-coffee {
+  background: transparent;
+  border: 1px solid #ff006e;
+  color: #ff006e;
+}
+
+.btn-proceed-coffee:hover {
+  background: #ff006e;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 0, 110, 0.5);
 }
 
 .menu-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }

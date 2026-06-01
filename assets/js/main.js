@@ -76,14 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const observerOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.15 // Memicu animasi saat 15% elemen terlihat
+    threshold: 0.15 
   };
 
   const scrollObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target); // Animasi berjalan sekali saja
+        observer.unobserve(entry.target); 
       }
     });
   }, observerOptions);
@@ -92,33 +92,69 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollObserver.observe(element);
   });
 
-  // ENGINE CUSTOM ALERT CONFIRMATION SYSTEM
+  /* ==========================================================================
+     5. ENGINE CUSTOM ALERT CONFIRMATION SYSTEM (ANOMALY BUG REPORT)
+     ========================================================================== */
   const bugLauncher = document.getElementById('bug-launcher-btn');
   const alertOverlay = document.getElementById('bug-alert-overlay');
   const abortBtn = document.getElementById('alert-cancel-btn');
   const proceedBtn = document.getElementById('alert-confirm-btn');
 
   if (bugLauncher && alertOverlay && abortBtn && proceedBtn) {
-    // Munculkan alert saat tombol taktis diklik (PC & Mobile)
     bugLauncher.addEventListener('click', () => {
       alertOverlay.classList.add('is-active');
     });
 
-    // Tutup alert
     abortBtn.addEventListener('click', () => {
       alertOverlay.classList.remove('is-active');
     });
 
-    // Pindah halaman
     proceedBtn.addEventListener('click', () => {
       alertOverlay.classList.remove('is-active');
       window.location.href = 'report-bug.html'; 
     });
 
-    // Tutup via klik luar
     alertOverlay.addEventListener('click', (e) => {
       if (e.target === alertOverlay) {
         alertOverlay.classList.remove('is-active');
+      }
+    });
+  }
+
+  /* ==========================================================================
+     6. SAWERIA GATEWAY INITIALIZATION PROTOCOL (INTEGRATED VERSION)
+     ========================================================================== */
+  const coffeeBtn = document.getElementById('coffee-launcher-btn');
+  const coffeeOverlay = document.getElementById('coffee-alert-overlay');
+  const coffeeCancel = document.getElementById('coffee-cancel-btn');
+  const coffeeConfirm = document.getElementById('coffee-confirm-btn');
+
+  if (coffeeBtn && coffeeOverlay && coffeeCancel && coffeeConfirm) {
+    
+    // Buka Modal Gateway menggunakan standarisasi .is-active
+    coffeeBtn.addEventListener('click', () => {
+      coffeeOverlay.style.display = 'flex';
+      coffeeOverlay.classList.add('is-active'); 
+    });
+
+    // Tutup Modal (Abort Protocol)
+    const closeCoffeeModal = () => {
+      coffeeOverlay.style.display = 'none';
+      coffeeOverlay.classList.remove('is-active');
+    };
+
+    coffeeCancel.addEventListener('click', closeCoffeeModal);
+
+    // Eksekusi Redirect ke Saweria jika Setuju
+    coffeeConfirm.addEventListener('click', () => {
+      closeCoffeeModal();
+      window.open('https://saweria.co/Fadilsyhptra', '_blank');
+    });
+
+    // Tutup otomatis jika klik di area background luar modal
+    coffeeOverlay.addEventListener('click', (e) => {
+      if (e.target === coffeeOverlay) {
+        closeCoffeeModal();
       }
     });
   }
