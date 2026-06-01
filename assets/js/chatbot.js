@@ -1,6 +1,6 @@
 const GROQ_CONFIG = {
   ENDPOINT: "/api/groq-chat",
-  MODEL: "openai/gpt-oss-120b"
+  MODEL: "llama-3.1-8b-instant"
 };
 
 let personalKnowledgePrompt = "";
