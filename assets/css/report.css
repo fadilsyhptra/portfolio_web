@@ -209,6 +209,12 @@ body::before {
   .btn-submit {
     width: 100%; padding: 14px; background: transparent; border: 1px solid #ff003c; color: #ff003c;
     font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.3s;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+    /* State awal: Sembunyi secara siber */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(15px);
   }
   .btn-submit:hover { background: #ff003c; color: #0a0a12; box-shadow: 0 0 15px rgba(255, 0, 60, 0.4); }
 }
@@ -299,11 +305,174 @@ body::before {
     width: 100%; padding: 14px; background: transparent; border: 1px solid #ff003c; color: #ff003c;
     font-weight: bold; font-size: 0.85rem; cursor: pointer; font-family: 'Courier New', Courier, monospace !important; 
     letter-spacing: 0.5px; border-radius: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+    /* State awal: Sembunyi secara siber */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(15px);
   }
   .btn-submit:active { background: #ff003c; color: #0a0a12; }
 
   @keyframes fadeInMenu {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* State aktif: Muncul ketika ada input teks valid */
+.btn-submit.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   CYBER CUSTOM ALERT COMPONENT STYLING (RESPONSIVE)
+   ========================================================================== */
+.cyber-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 5, 10, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.cyber-alert-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cyber-alert-box {
+  width: 100%;
+  max-width: 460px; /* Ukuran kotak proporsional di desktop */
+  background: #0a0a12;
+  border-radius: 4px;
+  padding: 25px;
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cyber-alert-overlay.active .cyber-alert-box {
+  transform: scale(1);
+}
+
+/* Penyesuaian header modal alert */
+.cyber-alert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.cyber-alert-title {
+  font-size: 0.95rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.cyber-alert-close {
+  background: transparent;
+  border: none;
+  color: #8a8a98;
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.cyber-alert-close:hover {
+  color: #ffffff;
+}
+
+/* Isi pesan dari anomali status log */
+.cyber-alert-body {
+  margin-bottom: 25px;
+}
+
+.cyber-alert-body p {
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* Tombol aksi konfirmasi */
+.cyber-alert-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cyber-alert-btn {
+  width: 100%; /* Penuh di mobile agar jempol gampang jangkau */
+  padding: 12px;
+  background: transparent;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+/* STATE 1: JIKA TRANSMISI FORM BERHASIL (CYAN THEME) */
+.cyber-alert-box.alert-success {
+  border: 1px solid #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.15), inset 0 0 10px rgba(0, 242, 254, 0.05);
+}
+.cyber-alert-box.alert-success .cyber-alert-title {
+  color: #00f2fe;
+  text-shadow: 0 0 4px rgba(0, 242, 254, 0.4);
+}
+.cyber-alert-btn.btn-alert-success {
+  border: 1px solid #00f2fe;
+  color: #00f2fe;
+}
+.cyber-alert-btn.btn-alert-success:hover, 
+.cyber-alert-btn.btn-alert-success:active {
+  background: #00f2fe;
+  color: #0a0a12;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+}
+
+/* STATE 2: JIKA TRANSMISI FORM GAGAL (RED CRITICAL THEME) */
+.cyber-alert-box.alert-error {
+  border: 1px solid #ff003c;
+  box-shadow: 0 0 25px rgba(255, 0, 60, 0.15), inset 0 0 10px rgba(255, 0, 60, 0.05);
+}
+.cyber-alert-box.alert-error .cyber-alert-title {
+  color: #ff003c;
+  text-shadow: 0 0 4px rgba(255, 0, 60, 0.4);
+}
+.cyber-alert-btn.btn-alert-error {
+  border: 1px solid #ff003c;
+  color: #ff003c;
+}
+.cyber-alert-btn.btn-alert-error:hover, 
+.cyber-alert-btn.btn-alert-error:active {
+  background: #ff003c;
+  color: #0a0a12;
+  box-shadow: 0 0 12px rgba(255, 0, 60, 0.4);
+}
+
+/* RESPONSIVE BREAKPOINT KHUSUS DESKTOP (Agar Tombol Merapat ke Kanan) */
+@media screen and (min-width: 769px) {
+  .cyber-alert-btn {
+    width: auto;
+    min-width: 140px; /* Ukuran tombol proporsional di desktop */
+    padding: 10px 24px;
   }
 }
