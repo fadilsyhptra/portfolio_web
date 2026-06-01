@@ -1,6 +1,6 @@
 const GROQ_CONFIG = {
   ENDPOINT: "/api/groq-chat",
-  MODEL: "llama-3.1-8b-instant"
+  MODEL: "meta-llama/llama-4-scout-17b-16e-instruct"
 };
 
 let personalKnowledgePrompt = "";
