@@ -8,7 +8,7 @@ let chatHistory = [];
 
 async function loadPersonalKnowledgeBase() {
   try {
-    const response = await fetch('./assets/data/personal_data.json');
+    const response = await fetch('/assets/data/personal_data.json');
     if (!response.ok) throw new Error('Gagal mengakses data repositori lokal.');
     
     const data = await response.json();
