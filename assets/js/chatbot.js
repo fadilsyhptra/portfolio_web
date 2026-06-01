@@ -1,5 +1,5 @@
 const GROQ_CONFIG = {
-  ENDPOINT: "/.netlify/functions/groq-chat",
+  ENDPOINT: "/.vercel/functions/groq-chat",
   MODEL: "openai/gpt-oss-120b"
 };
 
