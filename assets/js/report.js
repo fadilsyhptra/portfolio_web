@@ -110,6 +110,7 @@ window.addEventListener('click', (e) => {
     closeCyberAlert();
   }
 });
+
 document.addEventListener("DOMContentLoaded", () => {
   const bugForm = document.querySelector('form[name="anonymous-bug-reports"]');
   const submitBtn = document.querySelector('.btn-submit');
@@ -126,15 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     textarea.addEventListener('input', handleInputVerification);
-
-    textarea.addEventListener('paste', () => {
-      setTimeout(handleInputVerification, 10);
-    });
+    textarea.addEventListener('paste', () => { setTimeout(handleInputVerification, 10); });
 
     bugForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const formData = new FormData(bugForm);
+      formData.append("access_key", "eba50088-52db-40eb-b0d4-67fcb2cba479");
+
       const originalBtnText = submitBtn.textContent;
       
       submitBtn.textContent = "TRANSMITTING_LOG...";
@@ -142,11 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.style.opacity = "0.6";
 
       try {
-        const response = await fetch("/", {
+        const response = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(formData).toString(),
+          body: formData
         });
+
+        const data = await response.json();
 
         if (response.ok) {
           triggerCyberAlert(
@@ -158,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
           bugForm.reset();
           submitBtn.classList.remove('visible');
         } else {
-          throw new Error("Uplink node actively rejected the data packet.");
+          throw new Error(data.message || "Uplink node actively rejected the data packet.");
         }
       } catch (error) {
         triggerCyberAlert(
