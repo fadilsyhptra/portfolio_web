@@ -151,7 +151,21 @@ async function fetchGroqAIResponse(userMessageText) {
       throw new Error(jsonResult.error || "Koneksi gateway API gagal.");
     }
 
-    const aiRawReply = jsonResult.choices[0].message.content;
+    let aiRawReply = jsonResult.choices[0].message.content;
+
+    // 1. CEGATAN UTAMA: Hapus paksa tag <think>...</think> jika AI menggunakan mode reasoning
+    aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
+
+    // 2. CEGATAN CADANGAN: Jika AI menulis monolog bahasa Inggris tanpa tag karena bingung aturan prompt
+    if (aiRawReply.toLowerCase().includes("the user said") || aiRawReply.toLowerCase().includes("guidelines")) {
+      const splitReply = aiRawReply.split(/\n\s*\n/);
+      if (splitReply.length > 1) {
+        // Buang paragraf pertama (monolog) dan ambil sisanya (jawaban asli Fadil)
+        aiRawReply = splitReply.slice(1).join("\n\n");
+      }
+    }
+
+    aiRawReply = aiRawReply.trim();
     chatHistory.push({ role: "assistant", content: aiRawReply });
 
     const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
