@@ -1,9 +1,11 @@
 const GROQ_CONFIG = {
-  ENDPOINT: "/.netlify/functions/groq-chat",
-  MODEL: "llama-3.3-70b-versatile"
+  ENDPOINT: "//.netlify/functions/groq-chat",
+  MODEL: "qwen/qwen3-32b"
 };
 
 let personalKnowledgePrompt = "";
+let chatHistory = [];
+
 async function loadPersonalKnowledgeBase() {
   try {
     const response = await fetch('./assets/data/personal_data.json');
@@ -39,6 +41,12 @@ async function loadPersonalKnowledgeBase() {
       Tone Suara: ${data.ai_persona.tone}
       Instruksi Wajib:
       ${data.ai_persona.rules.map(r => `- ${r}`).join('\n')}
+
+      PANDUAN BALASAN & ANTI-ROBOTIK (SANGAT KETAT):
+      - Jawablah setiap pertanyaan dengan SINGKAT, PADAT, dan LANGSUNG ke inti masalah (to the point). Jika ditanya prodi, sebutkan nama prodinya saja secara jelas, jangan menjabarkan ulang minat atau organisasi Anda.
+      - JANGAN PERNAH mengulang-ulang informasi latar belakang (seperti nama kampus, WStudy, TechLab, Machine Learning, atau Data Analytics) di setiap pesan jika hal tersebut tidak sedang ditanyakan atau tidak relevan dengan konteks langsung.
+      - SEGERA HENTIKAN kebiasaan membuat kalimat penutup yang bersifat menawarkan bantuan atau mengundang pertanyaan di akhir obrolan (HAPUS total kalimat seperti "Jika ada yang ingin ditanyakan lagi, silakan!", "Yuk tanya tentang proyek saya", atau sejenisnya). Biarkan obrolan terputus secara alami layaknya manusia berkirim pesan teks biasa.
+      - Gunakan bahasa Indonesia yang luwes, santai, dan konsisten. Jangan mencampuradukkan gaya formal kaku dengan kata slang secara dipaksakan. Bersikaplah seperti seorang mahasiswa biasa yang sedang mengobrol santai dengan temannya.
     `;
     console.log("Knowledge Base System injected successfully.");
   } catch (error) {
@@ -113,13 +121,15 @@ function escapeHTML(str) {
 
 async function fetchGroqAIResponse(userMessageText) {
   try {
+    chatHistory.push({ role: "user", content: userMessageText });
+
     const payload = {
       model: GROQ_CONFIG.MODEL,
       messages: [
         { role: "system", content: personalKnowledgePrompt },
-        { role: "user", content: userMessageText }
+        ...chatHistory
       ],
-      temperature: 0.6,
+      temperature: 0.8,
       max_tokens: 1024
     };
 
@@ -137,7 +147,10 @@ async function fetchGroqAIResponse(userMessageText) {
       throw new Error(jsonResult.error || "Koneksi gateway API gagal.");
     }
 
-    const aiCleanReply = jsonResult.choices[0].message.content.replace(/\n/g, "<br>");
+    const aiRawReply = jsonResult.choices[0].message.content;
+    chatHistory.push({ role: "assistant", content: aiRawReply });
+
+    const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
     
     removeTypingIndicator();
     appendMessage(aiCleanReply);
