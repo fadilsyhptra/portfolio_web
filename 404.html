@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - CORE_SYSTEM_MALFUNCTION</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0a0c10;
+            color: #00ff66; 
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 650px;
+            border: 1px solid #00ff66;
+            padding: 50px 30px;
+            background: rgba(0, 255, 102, 0.02);
+            box-shadow: 0 0 35px rgba(0, 255, 102, 0.1);
+            border-radius: 4px;
+            position: relative;
+        }
+        .container::before {
+            content: "SYSTEM ERROR";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #0a0c10;
+            padding: 0 10px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+        .error-code {
+            font-size: 6rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.5);
+            animation: glitch 1.5s infinite;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #8b949e;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        .path-text {
+            color: #ff5555; 
+            background: rgba(255, 85, 85, 0.1);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .btn-redirect {
+            display: inline-block;
+            padding: 12px 30px;
+            color: #0a0c10;
+            background-color: #00ff66;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+        }
+        .btn-redirect:hover {
+            background-color: #00cc52;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.6);
+            transform: translateY(-2px);
+        }
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-3deg); }
+            21% { transform: skew(5deg); }
+            25% { transform: skew(0deg); }
+            60% { transform: skew(0deg); }
+            61% { transform: skew(-5deg); }
+            63% { transform: skew(2deg); }
+            65% { transform: skew(0deg); }
+            100% { transform: skew(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1>Halaman Hilang dari Jaringan</h1>
+        <p>
+            Sistem mendeteksi pencarian ke direktori <span class="path-text" id="bad-path">/unknown</span> gagal didekripsi. Kemungkinan URL diubah, atau halaman dipindahkan secara permanen.
+        </p>
+        <a href="/" class="btn-redirect">> Inisialisasi Ulang Navigasi</a>
+    </div>
+
+    <script>
+        document.getElementById('bad-path').textContent = window.location.pathname;
+    </script>
+</body>
+</html>
