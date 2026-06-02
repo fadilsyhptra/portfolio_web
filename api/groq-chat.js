@@ -151,7 +151,7 @@ export default async function handler(req, res) {
     const { chatHistory } = req.body;
 
     const groqRequestBody = {
-      model: "groq/compound-mini", 
+      model: "meta-llama/llama-4-scout-17b-16e-instruct", 
       messages: [
         { role: "system", content: personalKnowledgePrompt },
         ...chatHistory
