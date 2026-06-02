@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     res.setHeader('Content-Type', 'text/html');
@@ -109,13 +106,11 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Sistem Error: API Key tidak ditemukan." });
     }
 
-    const jsonPath = path.join(process.cwd(), 'api', '_personal_data.json');
-    if (!fs.existsSync(jsonPath)) {
-      return res.status(500).json({ error: "Sistem Error: Database lokal rahasia tidak ditemukan." });
+    const personalDataEnv = process.env.PERSONAL_DATA;
+    if (!personalDataEnv) {
+      return res.status(500).json({ error: "Sistem Error: Brankas data rahasia tidak ditemukan di Vercel." });
     }
-    
-    const fileData = fs.readFileSync(jsonPath, 'utf8');
-    const data = JSON.parse(fileData);
+    const data = JSON.parse(personalDataEnv);
 
     const personalKnowledgePrompt = `
       Anda adalah Representasi Kembaran Digital (AI Twin) dari individu berikut:
