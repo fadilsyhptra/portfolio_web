@@ -12,6 +12,7 @@ export default async function handler(req, res) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>ACCESS DENIED - Fadil AI Security Subsystem</title>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+          <link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">
           <style>
               * { box-sizing: border-box; margin: 0; padding: 0; }
               body {
@@ -90,7 +91,7 @@ export default async function handler(req, res) {
               <div class="icon"><i class="fas fa-terminal"></i></div>
               <h1>Akses Tidak Diizinkan!</h1>
               <p>Maaf, Anda tidak memiliki hak otorisasi untuk mengakses direktori database Fadil AI.<br></p>
-              <a href="/" class="btn-back">> Kembali ke Pangkalan</a>
+              <a href="/" class="btn-back">> Kembali ke Portfolio</a>
           </div>
       </body>
       </html>
