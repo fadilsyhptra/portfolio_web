@@ -89,7 +89,7 @@ export default async function handler(req, res) {
               <div class="terminal-header">🛡️ FADIL_AI_CORE_SECURITY // UNAUTHORIZED_ATTEMPT</div>
               <div class="icon"><i class="fas fa-terminal"></i></div>
               <h1>Akses Tidak Diizinkan!</h1>
-              <p>Maaf, Anda tidak memiliki hak otorisasi untuk mengakses direktori database Fadil AI.<br><br>Seluruh aktivitas digital dan IP address Anda telah direkam oleh sistem perimeter pertahanan.</p>
+              <p>Maaf, Anda tidak memiliki hak otorisasi untuk mengakses direktori database Fadil AI.<br></p>
               <a href="/" class="btn-back">> Kembali ke Pangkalan</a>
           </div>
       </body>
