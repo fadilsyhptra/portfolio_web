@@ -125,9 +125,9 @@ if (chatForm) {
     appendMessage(rawText, true);
     userInput.value = '';
     
+    createTypingIndicator();
     checkInputEcho(); 
 
-    createTypingIndicator();
     fetchGroqAIResponse(rawText);
   });
 }
