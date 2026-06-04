@@ -458,3 +458,7 @@
 .transmit-hidden {
   display: none !important;
 }
+
+#send-btn.transmit-hidden {
+    display: none !important;
+}
