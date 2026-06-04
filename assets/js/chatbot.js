@@ -44,6 +44,7 @@ function createTypingIndicator() {
   
   if (userInput) {
     userInput.disabled = true;
+    userInput.style.pointerEvents = "none";
     userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
   }
 
@@ -76,6 +77,7 @@ function removeTypingIndicator() {
 
   if (userInput) {
     userInput.disabled = false;
+    userInput.style.pointerEvents = "auto";
     userInput.placeholder = "Masukkan query perintah...";
     userInput.focus();
   }
