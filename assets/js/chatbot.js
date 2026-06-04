@@ -41,10 +41,20 @@ function appendMessage(text, isUser = false) {
 }
 
 function createTypingIndicator() {
+  isPro = true;
+  
+  if (userInput) {
+    userInput.disabled = true;
+    userInput.style.pointerEvents = "none";
+    userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
+    userInput.blur();
+  }
+
+  checkInputEcho();
+
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
   indicatorWrapper.id = 'temp-typing';
-  isPro = true;
 
   indicatorWrapper.innerHTML = `
     <div class="chat-avatar">
@@ -64,6 +74,17 @@ function createTypingIndicator() {
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
   if (indicator) indicator.remove();
+
+  isPro = false;
+
+  if (userInput) {
+    userInput.disabled = false;
+    userInput.style.pointerEvents = "auto";
+    userInput.placeholder = "Masukkan query perintah...";
+    userInput.focus();
+  }
+
+  checkInputEcho();
 }
 
 function escapeHTML(str) {
@@ -119,6 +140,9 @@ async function fetchGroqAIResponse(userMessageText) {
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    
+    if (isPro) return;
+
     const rawText = userInput.value.trim();
     if (!rawText) return;
 
@@ -126,8 +150,6 @@ if (chatForm) {
     userInput.value = '';
     
     createTypingIndicator();
-    checkInputEcho(); 
-
     fetchGroqAIResponse(rawText);
   });
 }
@@ -197,7 +219,7 @@ window.addEventListener('load', () => {
 
 function checkInputEcho() {
   if (userInput && sendBtn) {
-    if(isPro == false){
+    if (isPro === false) {
       if (userInput.value.trim() === "") {
         sendBtn.classList.add('transmit-hidden');
       } else {
