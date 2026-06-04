@@ -4,11 +4,11 @@ const GROQ_CONFIG = {
 };
 
 let chatHistory = [];
-let isPro = false;
+let isTyping = false;
 
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
-const userInput = document.getElementById('user-input'); 
+const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
 function appendMessage(text, isUser = false) {
@@ -40,23 +40,16 @@ function appendMessage(text, isUser = false) {
 }
 
 function createTypingIndicator() {
+  isTyping = true;
+
+  if (sendBtn) {
+    sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+  }
+
   if (userInput) {
     userInput.disabled = true;
-    userInput.style.pointerEvents = "none";
-    userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
-    userInput.blur();
   }
-
-  if (chatForm) {
-    chatForm.style.pointerEvents = "none";
-  }
-  
-  if (sendBtn) {
-    sendBtn.disabled = true;
-    sendBtn.style.pointerEvents = "none";
-  }
-
-  checkInputEcho();
 
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
@@ -72,47 +65,50 @@ function createTypingIndicator() {
       <div class="typing-indicator"><span></span><span></span><span></span></div>
     </div>
   `;
-  
+
   chatOutput.appendChild(indicatorWrapper);
   chatOutput.scrollTop = chatOutput.scrollHeight;
 }
 
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
-  if (indicator) indicator.remove();
 
-  isPro = false;
+  if (indicator) {
+    indicator.remove();
+  }
+
+  isTyping = false;
+
+  if (sendBtn) {
+    sendBtn.disabled = false;
+  }
 
   if (userInput) {
     userInput.disabled = false;
-    userInput.style.pointerEvents = "auto";
-    userInput.placeholder = "Masukkan query perintah...";
-    userInput.focus();
-  }
-
-  if (chatForm) {
-    chatForm.style.pointerEvents = "auto";
-  }
-  
-  if (sendBtn) {
-    sendBtn.disabled = false;
-    sendBtn.style.pointerEvents = "auto";
   }
 
   checkInputEcho();
 }
 
 function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
-    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  return str.replace(/[&<>'"]/g,
+    tag => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[tag] || tag)
   );
 }
 
 async function fetchGroqAIResponse(userMessageText) {
-  if (!userMessageText) return;
-  
   try {
-    chatHistory.push({ role: "user", content: userMessageText });
+    chatHistory.push({
+      role: "user",
+      content: userMessageText
+    });
+
     const payload = {
       chatHistory: chatHistory
     };
@@ -132,52 +128,67 @@ async function fetchGroqAIResponse(userMessageText) {
     }
 
     let aiRawReply = jsonResult.choices[0].message.content;
+
     aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
-    if (aiRawReply.toLowerCase().includes("the user said") || aiRawReply.toLowerCase().includes("guidelines")) {
+
+    if (
+      aiRawReply.toLowerCase().includes("the user said") ||
+      aiRawReply.toLowerCase().includes("guidelines")
+    ) {
       const splitReply = aiRawReply.split(/\n\s*\n/);
+
       if (splitReply.length > 1) {
         aiRawReply = splitReply.slice(1).join("\n\n");
       }
     }
 
     aiRawReply = aiRawReply.trim();
-    chatHistory.push({ role: "assistant", content: aiRawReply });
+
+    chatHistory.push({
+      role: "assistant",
+      content: aiRawReply
+    });
 
     const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
-    
+
     removeTypingIndicator();
     appendMessage(aiCleanReply);
   } catch (err) {
     console.error("Chat Subsystem Error:", err);
+
     removeTypingIndicator();
-    appendMessage(`Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`);
+
+    appendMessage(
+      `Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`
+    );
   }
 }
 
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    e.stopPropagation(); 
-    
-    if (isPro === true) {
-      return false;
-    }
+
+    if (isTyping) return;
 
     const rawText = userInput.value.trim();
-    if (!rawText) return false;
 
-    isPro = true; 
+    if (!rawText) return;
 
     appendMessage(rawText, true);
+
     userInput.value = '';
-    
+
+    checkInputEcho();
+
     createTypingIndicator();
+
     fetchGroqAIResponse(rawText);
   });
 }
 
 function toggleMobileMenu() {
   const dropdown = document.getElementById("mobileDropdown");
+
   if (dropdown) {
     dropdown.classList.toggle("show-menu");
   }
@@ -190,7 +201,7 @@ const alertConfirmBtn = document.getElementById('alert-confirm-btn');
 function launchBugAlert(targetUrl) {
   if (bugAlertOverlay) {
     bugAlertOverlay.classList.add('active');
-    
+
     alertConfirmBtn.onclick = function() {
       bugAlertOverlay.classList.remove('active');
       window.location.href = targetUrl;
@@ -206,14 +217,19 @@ if (alertCancelBtn) {
 
 document.addEventListener('click', function(e) {
   const reportTarget = e.target.closest('.red-report, .desktop-report-fab');
-  
+
   if (reportTarget) {
-    e.preventDefault(); 
-    
+    e.preventDefault();
+
     const dropdown = document.getElementById("mobileDropdown");
-    if (dropdown) dropdown.classList.remove("show-menu");
-    
-    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
+
+    if (dropdown) {
+      dropdown.classList.remove("show-menu");
+    }
+
+    const targetUrl =
+      reportTarget.getAttribute('href') || 'report-bug.html';
+
     launchBugAlert(targetUrl);
   }
 });
@@ -221,9 +237,15 @@ document.addEventListener('click', function(e) {
 window.addEventListener('click', function(event) {
   const dropdown = document.getElementById("mobileDropdown");
   const toggleBtn = document.querySelector('.nav-toggle-btn');
-  
-  if (dropdown && dropdown.classList.contains('show-menu')) {
-    if (toggleBtn && !toggleBtn.contains(event.target)) {
+
+  if (
+    dropdown &&
+    dropdown.classList.contains('show-menu')
+  ) {
+    if (
+      toggleBtn &&
+      !toggleBtn.contains(event.target)
+    ) {
       dropdown.classList.remove('show-menu');
     }
   }
@@ -231,7 +253,7 @@ window.addEventListener('click', function(event) {
 
 window.addEventListener('load', () => {
   const cyberLoader = document.getElementById('cyber-loader');
-  
+
   if (cyberLoader) {
     setTimeout(() => {
       cyberLoader.classList.add('fade-out');
@@ -240,16 +262,17 @@ window.addEventListener('load', () => {
 });
 
 function checkInputEcho() {
-  if (userInput && sendBtn) {
-    if (isPro === false) {
-      if (userInput.value.trim() === "") {
-        sendBtn.classList.add('transmit-hidden');
-      } else {
-        sendBtn.classList.remove('transmit-hidden');
-      }
-    } else {
-      sendBtn.classList.add('transmit-hidden');
-    }
+  if (!userInput || !sendBtn) return;
+
+  if (isTyping) {
+    sendBtn.classList.add('transmit-hidden');
+    return;
+  }
+
+  if (userInput.value.trim() === "") {
+    sendBtn.classList.add('transmit-hidden');
+  } else {
+    sendBtn.classList.remove('transmit-hidden');
   }
 }
 
