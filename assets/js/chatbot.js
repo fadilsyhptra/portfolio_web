@@ -41,6 +41,7 @@ function appendMessage(text, isUser = false) {
 
 function createTypingIndicator() {
   isTyping = true;
+  sendBtn.classList.add('transmit-hidden');
 
   if (sendBtn) {
     sendBtn.classList.add('transmit-hidden');
@@ -264,12 +265,14 @@ window.addEventListener('load', () => {
 function checkInputEcho() {
   if (!userInput || !sendBtn) return;
 
-  if (isTyping) {
+  const typingIndicator = document.getElementById('temp-typing');
+
+  if (isTyping || typingIndicator) {
     sendBtn.classList.add('transmit-hidden');
     return;
   }
 
-  if (userInput.value.trim() === "") {
+  if (userInput.value.trim() === '') {
     sendBtn.classList.add('transmit-hidden');
   } else {
     sendBtn.classList.remove('transmit-hidden');
