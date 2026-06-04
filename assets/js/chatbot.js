@@ -42,12 +42,18 @@ function appendMessage(text, isUser = false) {
 function createTypingIndicator() {
   if (userInput) {
     userInput.disabled = true;
+    userInput.style.pointerEvents = "none";
     userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
     userInput.blur();
   }
 
   if (chatForm) {
     chatForm.style.pointerEvents = "none";
+  }
+  
+  if (sendBtn) {
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = "none";
   }
 
   checkInputEcho();
@@ -87,6 +93,11 @@ function removeTypingIndicator() {
   if (chatForm) {
     chatForm.style.pointerEvents = "auto";
   }
+  
+  if (sendBtn) {
+    sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = "auto";
+  }
 
   checkInputEcho();
 }
@@ -98,6 +109,8 @@ function escapeHTML(str) {
 }
 
 async function fetchGroqAIResponse(userMessageText) {
+  if (!userMessageText) return;
+  
   try {
     chatHistory.push({ role: "user", content: userMessageText });
     const payload = {
@@ -144,13 +157,16 @@ async function fetchGroqAIResponse(userMessageText) {
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    e.stopPropagation(); 
     
-    if (isPro) return;
+    if (isPro === true) {
+      return false;
+    }
 
     const rawText = userInput.value.trim();
-    if (!rawText) return;
+    if (!rawText) return false;
 
-    isPro = true;
+    isPro = true; 
 
     appendMessage(rawText, true);
     userInput.value = '';
