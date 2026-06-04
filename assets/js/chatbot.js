@@ -34,7 +34,6 @@ function appendMessage(text, isUser = false) {
     </div>
   `;
 
-  isPro = false;
   chatOutput.appendChild(wrapper);
   chatOutput.scrollTop = chatOutput.scrollHeight;
   return wrapper;
@@ -45,9 +44,12 @@ function createTypingIndicator() {
   
   if (userInput) {
     userInput.disabled = true;
-    userInput.style.pointerEvents = "none";
     userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
     userInput.blur();
+  }
+
+  if (chatForm) {
+    chatForm.style.pointerEvents = "none";
   }
 
   checkInputEcho();
@@ -82,6 +84,10 @@ function removeTypingIndicator() {
     userInput.style.pointerEvents = "auto";
     userInput.placeholder = "Masukkan query perintah...";
     userInput.focus();
+  }
+
+  if (chatForm) {
+    chatForm.style.pointerEvents = "auto";
   }
 
   checkInputEcho();
