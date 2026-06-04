@@ -4,7 +4,7 @@ const GROQ_CONFIG = {
 };
 
 let chatHistory = [];
-let isPro = false;
+let isAiTyping = false; 
 
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
@@ -14,7 +14,6 @@ const sendBtn = document.getElementById('send-btn');
 function appendMessage(text, isUser = false) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('message-wrapper', isUser ? 'user-wrapper' : 'bot-wrapper');
-  isPro = false;
 
   wrapper.innerHTML = isUser ? `
     <div class="chat-avatar user-avatar">
@@ -41,10 +40,18 @@ function appendMessage(text, isUser = false) {
 }
 
 function createTypingIndicator() {
+  isAiTyping = true;
+  
+  if (userInput) {
+    userInput.disabled = true;
+    userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
+  }
+
+  checkInputEcho();
+
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
   indicatorWrapper.id = 'temp-typing';
-  isPro = true;
 
   indicatorWrapper.innerHTML = `
     <div class="chat-avatar">
@@ -64,6 +71,16 @@ function createTypingIndicator() {
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
   if (indicator) indicator.remove();
+
+  isAiTyping = false;
+
+  if (userInput) {
+    userInput.disabled = false;
+    userInput.placeholder = "Masukkan query perintah...";
+    userInput.focus();
+  }
+
+  checkInputEcho();
 }
 
 function escapeHTML(str) {
@@ -119,6 +136,9 @@ async function fetchGroqAIResponse(userMessageText) {
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    
+    if (isAiTyping) return;
+
     const rawText = userInput.value.trim();
     if (!rawText) return;
 
@@ -196,8 +216,8 @@ window.addEventListener('load', () => {
 });
 
 function checkInputEcho() {
-  if (userInput && sendBtn && !isPro) {
-    if (userInput.value.trim() === "") {
+  if (userInput && sendBtn) {
+    if (userInput.value.trim() === "" || isAiTyping) {
       sendBtn.classList.add('transmit-hidden');
     } else {
       sendBtn.classList.remove('transmit-hidden');
