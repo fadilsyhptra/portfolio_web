@@ -40,8 +40,6 @@ function appendMessage(text, isUser = false) {
 }
 
 function createTypingIndicator() {
-  isPro = true;
-  
   if (userInput) {
     userInput.disabled = true;
     userInput.placeholder = "SYS // Mohon tunggu, AI sedang memproses...";
@@ -151,6 +149,8 @@ if (chatForm) {
 
     const rawText = userInput.value.trim();
     if (!rawText) return;
+
+    isPro = true;
 
     appendMessage(rawText, true);
     userInput.value = '';
