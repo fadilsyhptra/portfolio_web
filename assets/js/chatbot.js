@@ -41,7 +41,12 @@ function appendMessage(text, isUser = false) {
 
 function createTypingIndicator() {
   isTyping = true;
-  sendBtn.classList.add('transmit-hidden');
+
+  // LOCKDOWN FORM SECARA TOTAL
+  if (chatForm) {
+    chatForm.style.pointerEvents = 'none';
+    chatForm.style.opacity = '0.7'; // Memberi efek visual bahwa form sedang beku
+  }
 
   if (sendBtn) {
     sendBtn.classList.add('transmit-hidden');
@@ -50,6 +55,8 @@ function createTypingIndicator() {
 
   if (userInput) {
     userInput.disabled = true;
+    userInput.readOnly = true;
+    userInput.blur(); // Tendang kursor keluar dari input
   }
 
   const indicatorWrapper = document.createElement('div');
@@ -73,19 +80,22 @@ function createTypingIndicator() {
 
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
-
   if (indicator) {
     indicator.remove();
   }
 
   isTyping = false;
 
-  if (sendBtn) {
-    sendBtn.disabled = false;
+  // BUKA LOCKDOWN FORM
+  if (chatForm) {
+    chatForm.style.pointerEvents = 'auto';
+    chatForm.style.opacity = '1';
   }
 
   if (userInput) {
     userInput.disabled = false;
+    userInput.readOnly = false;
+    userInput.focus(); 
   }
 
   checkInputEcho();
@@ -129,7 +139,6 @@ async function fetchGroqAIResponse(userMessageText) {
     }
 
     let aiRawReply = jsonResult.choices[0].message.content;
-
     aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
 
     if (
@@ -137,7 +146,6 @@ async function fetchGroqAIResponse(userMessageText) {
       aiRawReply.toLowerCase().includes("guidelines")
     ) {
       const splitReply = aiRawReply.split(/\n\s*\n/);
-
       if (splitReply.length > 1) {
         aiRawReply = splitReply.slice(1).join("\n\n");
       }
@@ -152,37 +160,46 @@ async function fetchGroqAIResponse(userMessageText) {
 
     const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
 
+    // JALANKAN INI BERURUTAN: Hapus indikator dulu, baru render pesannya
     removeTypingIndicator();
     appendMessage(aiCleanReply);
+
   } catch (err) {
     console.error("Chat Subsystem Error:", err);
-
     removeTypingIndicator();
-
     appendMessage(
       `Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`
     );
   }
 }
 
+// PERBAIKAN: Event Listener Form Submit yang Kebal Spam
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    // Block instan jika sedang memproses
     if (isTyping) return;
 
     const rawText = userInput.value.trim();
-
     if (!rawText) return;
 
-    appendMessage(rawText, true);
+    // Mengunci semua elemen UI SECARA INSTAN sebelum update DOM
+    isTyping = true;
+    if (sendBtn) {
+      sendBtn.disabled = true;
+      sendBtn.style.pointerEvents = 'none';
+    }
+    if (userInput) {
+      userInput.disabled = true;
+      userInput.readOnly = true;
+    }
 
+    appendMessage(rawText, true);
     userInput.value = '';
 
     checkInputEcho();
-
     createTypingIndicator();
-
     fetchGroqAIResponse(rawText);
   });
 }
@@ -228,9 +245,7 @@ document.addEventListener('click', function(e) {
       dropdown.classList.remove("show-menu");
     }
 
-    const targetUrl =
-      reportTarget.getAttribute('href') || 'report-bug.html';
-
+    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
     launchBugAlert(targetUrl);
   }
 });
@@ -267,15 +282,22 @@ function checkInputEcho() {
 
   const typingIndicator = document.getElementById('temp-typing');
 
+  // Jika AI sedang memproses atau isTyping aktif, TOMBOL WAJIB MATI
   if (isTyping || typingIndicator) {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
     return;
   }
 
   if (userInput.value.trim() === '') {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
   } else {
     sendBtn.classList.remove('transmit-hidden');
+    sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = 'auto';
   }
 }
 
