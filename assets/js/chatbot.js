@@ -173,19 +173,21 @@ if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (isTyping) return;
+    if (isTyping) {
+      e.stopImmediatePropagation();
+      return false;
+    }
 
     const rawText = userInput.value.trim();
     if (!rawText) return;
 
-    isTyping = true;
+    isTyping = true; 
+    userInput.blur(); 
+    
+    userInput.disabled = true;
     if (sendBtn) {
       sendBtn.disabled = true;
       sendBtn.style.pointerEvents = 'none';
-    }
-    if (userInput) {
-      userInput.disabled = true;
-      userInput.readOnly = true;
     }
 
     appendMessage(rawText, true);
@@ -195,6 +197,20 @@ if (chatForm) {
     createTypingIndicator();
     fetchGroqAIResponse(rawText);
   });
+}
+
+if (userInput) {
+  userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (isTyping) {
+        e.preventDefault(); 
+        e.stopPropagation(); 
+        return false;
+      }
+    }
+  });
+  
+  userInput.addEventListener('input', checkInputEcho);
 }
 
 function toggleMobileMenu() {
