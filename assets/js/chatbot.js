@@ -41,19 +41,16 @@ function appendMessage(text, isUser = false) {
 
 function createTypingIndicator() {
   isTyping = true;
+  sendBtn.classList.add('transmit-hidden');
 
-  if (chatForm) {
-    chatForm.style.pointerEvents = 'none';
-    chatForm.style.opacity = '0.7';
+  if (sendBtn) {
+    sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
   }
 
   if (userInput) {
     userInput.disabled = true;
-    userInput.readOnly = true;
-    userInput.blur();
   }
-
-  checkInputEcho();
 
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
@@ -76,21 +73,19 @@ function createTypingIndicator() {
 
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
+
   if (indicator) {
     indicator.remove();
   }
 
   isTyping = false;
 
-  if (chatForm) {
-    chatForm.style.pointerEvents = 'auto';
-    chatForm.style.opacity = '1';
+  if (sendBtn) {
+    sendBtn.disabled = false;
   }
 
   if (userInput) {
     userInput.disabled = false;
-    userInput.readOnly = false;
-    userInput.focus(); 
   }
 
   checkInputEcho();
@@ -134,6 +129,7 @@ async function fetchGroqAIResponse(userMessageText) {
     }
 
     let aiRawReply = jsonResult.choices[0].message.content;
+
     aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
 
     if (
@@ -141,6 +137,7 @@ async function fetchGroqAIResponse(userMessageText) {
       aiRawReply.toLowerCase().includes("guidelines")
     ) {
       const splitReply = aiRawReply.split(/\n\s*\n/);
+
       if (splitReply.length > 1) {
         aiRawReply = splitReply.slice(1).join("\n\n");
       }
@@ -157,10 +154,11 @@ async function fetchGroqAIResponse(userMessageText) {
 
     removeTypingIndicator();
     appendMessage(aiCleanReply);
-
   } catch (err) {
     console.error("Chat Subsystem Error:", err);
+
     removeTypingIndicator();
+
     appendMessage(
       `Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`
     );
@@ -171,36 +169,27 @@ if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (isTyping) {
-      e.stopImmediatePropagation();
-      return false;
-    }
+    if (isTyping) return;
 
     const rawText = userInput.value.trim();
+
     if (!rawText) return;
 
     appendMessage(rawText, true);
+
     userInput.value = '';
 
-    createTypingIndicator();
-    fetchGroqAIResponse(rawText);
-  });
-}
+    checkInputEcho();
 
-if (userInput) {
-  userInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      if (isTyping) {
-        e.preventDefault(); 
-        e.stopPropagation(); 
-        return false;
-      }
-    }
+    createTypingIndicator();
+
+    fetchGroqAIResponse(rawText);
   });
 }
 
 function toggleMobileMenu() {
   const dropdown = document.getElementById("mobileDropdown");
+
   if (dropdown) {
     dropdown.classList.toggle("show-menu");
   }
@@ -234,11 +223,14 @@ document.addEventListener('click', function(e) {
     e.preventDefault();
 
     const dropdown = document.getElementById("mobileDropdown");
+
     if (dropdown) {
       dropdown.classList.remove("show-menu");
     }
 
-    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
+    const targetUrl =
+      reportTarget.getAttribute('href') || 'report-bug.html';
+
     launchBugAlert(targetUrl);
   }
 });
@@ -247,8 +239,14 @@ window.addEventListener('click', function(event) {
   const dropdown = document.getElementById("mobileDropdown");
   const toggleBtn = document.querySelector('.nav-toggle-btn');
 
-  if (dropdown && dropdown.classList.contains('show-menu')) {
-    if (toggleBtn && !toggleBtn.contains(event.target)) {
+  if (
+    dropdown &&
+    dropdown.classList.contains('show-menu')
+  ) {
+    if (
+      toggleBtn &&
+      !toggleBtn.contains(event.target)
+    ) {
       dropdown.classList.remove('show-menu');
     }
   }
@@ -256,6 +254,7 @@ window.addEventListener('click', function(event) {
 
 window.addEventListener('load', () => {
   const cyberLoader = document.getElementById('cyber-loader');
+
   if (cyberLoader) {
     setTimeout(() => {
       cyberLoader.classList.add('fade-out');
@@ -267,23 +266,21 @@ function checkInputEcho() {
   if (!userInput || !sendBtn) return;
 
   const typingIndicator = document.getElementById('temp-typing');
-  const hasText = userInput.value.trim() !== '';
 
-  if (!isTyping && !typingIndicator && hasText) {
-    sendBtn.classList.remove('transmit-hidden');
-    sendBtn.disabled = false;
-    sendBtn.style.pointerEvents = 'auto';
-  } else {
+  if (isTyping || typingIndicator) {
     sendBtn.classList.add('transmit-hidden');
-    sendBtn.disabled = true;
-    sendBtn.style.pointerEvents = 'none';
+    return;
+  }
+
+  if (userInput.value.trim() === '') {
+    sendBtn.classList.add('transmit-hidden');
+  } else {
+    sendBtn.classList.remove('transmit-hidden');
   }
 }
 
 if (userInput) {
   userInput.addEventListener('input', checkInputEcho);
-  userInput.addEventListener('keyup', checkInputEcho);
-  userInput.addEventListener('change', checkInputEcho);
 }
 
 checkInputEcho();

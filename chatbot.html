@@ -33,14 +33,20 @@
     </div>
   </div>
 
+   
   <main class="chat-wrapper">
+     
     <div class="chat-box" id="chat-output">
+      
+       
       <div class="message system-msg">
         <i class="fas fa-microchip"></i> [SYS.INIT] Knowledge base profil sukses dimuat secara aman. Menunggu input...
       </div>
 
+       
       <div class="message-wrapper bot-wrapper">
         <div class="chat-avatar">
+           
           <img src="assets/avatar.jpg" alt="AI Twin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
           <i class="fas fa-robot fallback-icon" style="display: none;"></i>
         </div>
@@ -49,38 +55,40 @@
           Halo! Saya representasi digital dari Fadil. Ada yang ingin kamu ketahui tentang latar belakang, kompetensi pemrograman, atau proyek AI yang sedang saya kembangkan?
         </div>
       </div>
+
     </div>
 
     <form class="chat-input-area" id="chat-form">
       <span class="cmd-prompt">C:\></span>
       <input type="text" id="user-input" placeholder="Masukkan query perintah..." autocomplete="off" required>
-      <button type="submit" id="send-btn" class="transmit-hidden" aria-label="Kirim Pesan">
+      <button type="submit" id="send-btn" aria-label="Kirim Pesan">
         <span>TRANSMIT</span> <i class="fas fa-satellite-dish"></i>
       </button>
     </form>
   </main>
-
   <a href="report-bug.html" class="desktop-report-fab" title="Report System Anomaly">
     <i class="fas fa-bug"></i>
   </a>
-
   <div id="bug-alert-overlay" class="custom-alert-overlay">
     <div class="custom-alert-box">
+      
       <div class="alert-cyber-header">
         <span class="alert-title"><i class="fas fa-exclamation-triangle"></i> SYSTEM_WARNING</span>
         <span class="alert-code">[ERR_LOG_v1.0]</span>
       </div>
+      
       <div class="alert-body">
         <p class="terminal-text">> Did you find a bug or something broken?</p>
         <p class="sub-text">You will be redirected to a special encrypted page to submit the report anonymously.</p>
       </div>
+      
       <div class="alert-actions">
         <button id="alert-cancel-btn" class="alert-btn btn-abort">ABORT</button>
         <button id="alert-confirm-btn" class="alert-btn btn-proceed">PROCEED_</button>
       </div>
+
     </div>
   </div>
-
   <div id="cyber-loader" class="terminal-loader-overlay">
     <div class="loader-content">
       <div class="loader-matrix">
@@ -93,7 +101,6 @@
       <p class="loader-sub">> SYNCHRONIZING DIGITAL TWIN DATA BASE...</p>
     </div>
   </div>
-
   <script src="assets/js/chatbot.js"></script>
   <script defer src="/_vercel/insights/script.js"></script>
 </body>
