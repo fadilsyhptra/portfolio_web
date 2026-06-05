@@ -42,15 +42,20 @@ function appendMessage(text, isUser = false) {
 function createTypingIndicator() {
   isTyping = true;
 
+  if (chatForm) {
+    chatForm.style.pointerEvents = 'none';
+    chatForm.style.opacity = '0.7';
+  }
+
   if (sendBtn) {
     sendBtn.classList.add('transmit-hidden');
     sendBtn.disabled = true;
-    sendBtn.style.pointerEvents = 'none'; 
   }
 
   if (userInput) {
     userInput.disabled = true;
     userInput.readOnly = true;
+    userInput.blur();
   }
 
   const indicatorWrapper = document.createElement('div');
@@ -74,16 +79,15 @@ function createTypingIndicator() {
 
 function removeTypingIndicator() {
   const indicator = document.getElementById('temp-typing');
-
   if (indicator) {
     indicator.remove();
   }
 
   isTyping = false;
 
-  if (sendBtn) {
-    sendBtn.disabled = false;
-    sendBtn.style.pointerEvents = 'auto';
+  if (chatForm) {
+    chatForm.style.pointerEvents = 'auto';
+    chatForm.style.opacity = '1';
   }
 
   if (userInput) {
@@ -133,7 +137,6 @@ async function fetchGroqAIResponse(userMessageText) {
     }
 
     let aiRawReply = jsonResult.choices[0].message.content;
-
     aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
 
     if (
@@ -141,7 +144,6 @@ async function fetchGroqAIResponse(userMessageText) {
       aiRawReply.toLowerCase().includes("guidelines")
     ) {
       const splitReply = aiRawReply.split(/\n\s*\n/);
-
       if (splitReply.length > 1) {
         aiRawReply = splitReply.slice(1).join("\n\n");
       }
@@ -158,11 +160,10 @@ async function fetchGroqAIResponse(userMessageText) {
 
     removeTypingIndicator();
     appendMessage(aiCleanReply);
+
   } catch (err) {
     console.error("Chat Subsystem Error:", err);
-
     removeTypingIndicator();
-
     appendMessage(
       `Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`
     );
