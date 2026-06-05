@@ -41,15 +41,16 @@ function appendMessage(text, isUser = false) {
 
 function createTypingIndicator() {
   isTyping = true;
-  sendBtn.classList.add('transmit-hidden');
 
   if (sendBtn) {
     sendBtn.classList.add('transmit-hidden');
     sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none'; 
   }
 
   if (userInput) {
     userInput.disabled = true;
+    userInput.readOnly = true;
   }
 
   const indicatorWrapper = document.createElement('div');
@@ -82,10 +83,13 @@ function removeTypingIndicator() {
 
   if (sendBtn) {
     sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = 'auto';
   }
 
   if (userInput) {
     userInput.disabled = false;
+    userInput.readOnly = false;
+    userInput.focus(); 
   }
 
   checkInputEcho();
@@ -172,17 +176,23 @@ if (chatForm) {
     if (isTyping) return;
 
     const rawText = userInput.value.trim();
-
     if (!rawText) return;
 
-    appendMessage(rawText, true);
+    isTyping = true;
+    if (sendBtn) {
+      sendBtn.disabled = true;
+      sendBtn.style.pointerEvents = 'none';
+    }
+    if (userInput) {
+      userInput.disabled = true;
+      userInput.readOnly = true;
+    }
 
+    appendMessage(rawText, true);
     userInput.value = '';
 
     checkInputEcho();
-
     createTypingIndicator();
-
     fetchGroqAIResponse(rawText);
   });
 }
@@ -228,9 +238,7 @@ document.addEventListener('click', function(e) {
       dropdown.classList.remove("show-menu");
     }
 
-    const targetUrl =
-      reportTarget.getAttribute('href') || 'report-bug.html';
-
+    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
     launchBugAlert(targetUrl);
   }
 });
@@ -269,13 +277,19 @@ function checkInputEcho() {
 
   if (isTyping || typingIndicator) {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
     return;
   }
 
   if (userInput.value.trim() === '') {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
   } else {
     sendBtn.classList.remove('transmit-hidden');
+    sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = 'auto';
   }
 }
 
