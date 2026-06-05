@@ -41,15 +41,16 @@ function appendMessage(text, isUser = false) {
 
 function createTypingIndicator() {
   isTyping = true;
-  sendBtn.classList.add('transmit-hidden');
 
   if (sendBtn) {
     sendBtn.classList.add('transmit-hidden');
     sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none'; // Ekstra perlindungan klik
   }
 
   if (userInput) {
     userInput.disabled = true;
+    userInput.readOnly = true; // Mencegah bypass input dari mobile keyboard
   }
 
   const indicatorWrapper = document.createElement('div');
@@ -82,10 +83,13 @@ function removeTypingIndicator() {
 
   if (sendBtn) {
     sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = 'auto';
   }
 
   if (userInput) {
     userInput.disabled = false;
+    userInput.readOnly = false;
+    userInput.focus(); // Auto-focus kembali ke input untuk UX yang baik
   }
 
   checkInputEcho();
@@ -165,24 +169,33 @@ async function fetchGroqAIResponse(userMessageText) {
   }
 }
 
+// PERBAIKAN: Event Listener Form Submit yang Kebal Spam
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    // Block instan jika sedang memproses
     if (isTyping) return;
 
     const rawText = userInput.value.trim();
-
     if (!rawText) return;
 
-    appendMessage(rawText, true);
+    // Mengunci semua elemen UI SECARA INSTAN sebelum update DOM
+    isTyping = true;
+    if (sendBtn) {
+      sendBtn.disabled = true;
+      sendBtn.style.pointerEvents = 'none';
+    }
+    if (userInput) {
+      userInput.disabled = true;
+      userInput.readOnly = true;
+    }
 
+    appendMessage(rawText, true);
     userInput.value = '';
 
     checkInputEcho();
-
     createTypingIndicator();
-
     fetchGroqAIResponse(rawText);
   });
 }
@@ -228,9 +241,7 @@ document.addEventListener('click', function(e) {
       dropdown.classList.remove("show-menu");
     }
 
-    const targetUrl =
-      reportTarget.getAttribute('href') || 'report-bug.html';
-
+    const targetUrl = reportTarget.getAttribute('href') || 'report-bug.html';
     launchBugAlert(targetUrl);
   }
 });
@@ -262,20 +273,30 @@ window.addEventListener('load', () => {
   }
 });
 
+// PERBAIKAN: Sinkronisasi atribut 'disabled' pada Check Input Echo
 function checkInputEcho() {
   if (!userInput || !sendBtn) return;
 
   const typingIndicator = document.getElementById('temp-typing');
 
+  // Jika sedang memproses, paksa nonaktifkan tombol
   if (isTyping || typingIndicator) {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
     return;
   }
 
+  // Jika input kosong, nonaktifkan tombol
   if (userInput.value.trim() === '') {
     sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
   } else {
+    // Jika ada teks, aktifkan kembali
     sendBtn.classList.remove('transmit-hidden');
+    sendBtn.disabled = false;
+    sendBtn.style.pointerEvents = 'auto';
   }
 }
 
