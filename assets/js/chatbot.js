@@ -42,22 +42,19 @@ function appendMessage(text, isUser = false) {
 function createTypingIndicator() {
   isTyping = true;
 
-  // LOCKDOWN FORM SECARA TOTAL
   if (chatForm) {
     chatForm.style.pointerEvents = 'none';
-    chatForm.style.opacity = '0.7'; // Memberi efek visual bahwa form sedang beku
-  }
-
-  if (sendBtn) {
-    sendBtn.classList.add('transmit-hidden');
-    sendBtn.disabled = true;
+    chatForm.style.opacity = '0.7';
   }
 
   if (userInput) {
     userInput.disabled = true;
     userInput.readOnly = true;
-    userInput.blur(); // Tendang kursor keluar dari input
+    userInput.blur();
   }
+
+  // Panggil pengecekan untuk menyembunyikan tombol secara instan
+  checkInputEcho();
 
   const indicatorWrapper = document.createElement('div');
   indicatorWrapper.classList.add('message-wrapper', 'bot-wrapper');
@@ -86,7 +83,6 @@ function removeTypingIndicator() {
 
   isTyping = false;
 
-  // BUKA LOCKDOWN FORM
   if (chatForm) {
     chatForm.style.pointerEvents = 'auto';
     chatForm.style.opacity = '1';
@@ -98,6 +94,7 @@ function removeTypingIndicator() {
     userInput.focus(); 
   }
 
+  // Perbarui status tombol setelah pemrosesan selesai
   checkInputEcho();
 }
 
@@ -160,7 +157,6 @@ async function fetchGroqAIResponse(userMessageText) {
 
     const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
 
-    // JALANKAN INI BERURUTAN: Hapus indikator dulu, baru render pesannya
     removeTypingIndicator();
     appendMessage(aiCleanReply);
 
@@ -173,40 +169,41 @@ async function fetchGroqAIResponse(userMessageText) {
   }
 }
 
-// PERBAIKAN: Event Listener Form Submit yang Kebal Spam
 if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Block instan jika sedang memproses
-    if (isTyping) return;
+    if (isTyping) {
+      e.stopImmediatePropagation();
+      return false;
+    }
 
     const rawText = userInput.value.trim();
     if (!rawText) return;
 
-    // Mengunci semua elemen UI SECARA INSTAN sebelum update DOM
-    isTyping = true;
-    if (sendBtn) {
-      sendBtn.disabled = true;
-      sendBtn.style.pointerEvents = 'none';
-    }
-    if (userInput) {
-      userInput.disabled = true;
-      userInput.readOnly = true;
-    }
-
     appendMessage(rawText, true);
     userInput.value = '';
 
-    checkInputEcho();
+    // Buat indikator mengetik (isTyping diubah menjadi true di dalam sini)
     createTypingIndicator();
     fetchGroqAIResponse(rawText);
   });
 }
 
+if (userInput) {
+  userInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (isTyping) {
+        e.preventDefault(); 
+        e.stopPropagation(); 
+        return false;
+      }
+    }
+  });
+}
+
 function toggleMobileMenu() {
   const dropdown = document.getElementById("mobileDropdown");
-
   if (dropdown) {
     dropdown.classList.toggle("show-menu");
   }
@@ -240,7 +237,6 @@ document.addEventListener('click', function(e) {
     e.preventDefault();
 
     const dropdown = document.getElementById("mobileDropdown");
-
     if (dropdown) {
       dropdown.classList.remove("show-menu");
     }
@@ -254,14 +250,8 @@ window.addEventListener('click', function(event) {
   const dropdown = document.getElementById("mobileDropdown");
   const toggleBtn = document.querySelector('.nav-toggle-btn');
 
-  if (
-    dropdown &&
-    dropdown.classList.contains('show-menu')
-  ) {
-    if (
-      toggleBtn &&
-      !toggleBtn.contains(event.target)
-    ) {
+  if (dropdown && dropdown.classList.contains('show-menu')) {
+    if (toggleBtn && !toggleBtn.contains(event.target)) {
       dropdown.classList.remove('show-menu');
     }
   }
@@ -269,7 +259,6 @@ window.addEventListener('click', function(event) {
 
 window.addEventListener('load', () => {
   const cyberLoader = document.getElementById('cyber-loader');
-
   if (cyberLoader) {
     setTimeout(() => {
       cyberLoader.classList.add('fade-out');
@@ -277,32 +266,31 @@ window.addEventListener('load', () => {
   }
 });
 
+// CORE INTERACTION: Mengatur visibilitas tombol secara dinamis dan reaktif
 function checkInputEcho() {
   if (!userInput || !sendBtn) return;
 
   const typingIndicator = document.getElementById('temp-typing');
+  const hasText = userInput.value.trim() !== '';
 
-  // Jika AI sedang memproses atau isTyping aktif, TOMBOL WAJIB MATI
-  if (isTyping || typingIndicator) {
-    sendBtn.classList.add('transmit-hidden');
-    sendBtn.disabled = true;
-    sendBtn.style.pointerEvents = 'none';
-    return;
-  }
-
-  if (userInput.value.trim() === '') {
-    sendBtn.classList.add('transmit-hidden');
-    sendBtn.disabled = true;
-    sendBtn.style.pointerEvents = 'none';
-  } else {
+  // Tombol HANYA muncul jika (AI tidak mengetik) DAN (ada teks di dalam box)
+  if (!isTyping && !typingIndicator && hasText) {
     sendBtn.classList.remove('transmit-hidden');
     sendBtn.disabled = false;
     sendBtn.style.pointerEvents = 'auto';
+  } else {
+    sendBtn.classList.add('transmit-hidden');
+    sendBtn.disabled = true;
+    sendBtn.style.pointerEvents = 'none';
   }
 }
 
+// Pasang event listener ke input box
 if (userInput) {
   userInput.addEventListener('input', checkInputEcho);
+  userInput.addEventListener('keyup', checkInputEcho);
+  userInput.addEventListener('change', checkInputEcho);
 }
 
+// Jalankan saat inisialisasi pertama kali
 checkInputEcho();
