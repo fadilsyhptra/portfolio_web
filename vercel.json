@@ -15,21 +15,6 @@
     {
       "source": "/",
       "destination": "/checkpoint.html"
-    },
-    {
-      "source": "/((?!checkpoint|.*\\..*).*)",
-      "has": [
-        {
-          "type": "cookie",
-          "key": "full_screen_verified",
-          "value": "true"
-        }
-      ],
-      "destination": "/index.html"
-    },
-    {
-      "source": "/((?!checkpoint|.*\\..*).*)",
-      "destination": "/checkpoint.html"
     }
   ]
 }
