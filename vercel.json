@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/",
+      "source": "/((?!checkpoint|.*\\..*).*)",
       "has": [
         {
           "type": "cookie",
@@ -13,7 +13,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/",
+      "source": "/((?!checkpoint|.*\\..*).*)",
       "destination": "/checkpoint.html"
     }
   ]
