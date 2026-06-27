@@ -11,6 +11,13 @@ const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
+async function generateDynamicToken(timestamp, salt) {
+  const msgUint8 = new TextEncoder().encode(timestamp + salt);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function appendMessage(text, isUser = false) {
   const wrapper = document.createElement('div');
   wrapper.classList.add('message-wrapper', isUser ? 'user-wrapper' : 'bot-wrapper');
@@ -119,10 +126,16 @@ async function fetchGroqAIResponse(userMessageText) {
       chatHistory: chatHistory
     };
 
+    const timestamp = Date.now().toString();
+    const localSalt = "fadil_ganteng_sekali_123";
+    const dynamicToken = await generateDynamicToken(timestamp, localSalt);
+
     const response = await fetch(GROQ_CONFIG.ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-Fadil-App-Token": dynamicToken,
+        "X-Fadil-Timestamp": timestamp
       },
       body: JSON.stringify(payload)
     });

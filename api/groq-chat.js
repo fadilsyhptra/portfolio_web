@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     res.setHeader('Content-Type', 'text/html');
@@ -97,6 +99,29 @@ export default async function handler(req, res) {
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
+  const clientToken = req.headers["x-fadil-app-token"];
+  const clientTimestamp = req.headers["x-fadil-timestamp"];
+
+  if (!clientToken || !clientTimestamp) {
+    return res.status(403).json({ error: "Access Denied. Missing security headers." });
+  }
+
+  const currentTime = Date.now();
+  if (Math.abs(currentTime - parseInt(clientTimestamp)) > 15000) {
+    return res.status(403).json({ error: "Access Denied. Security token expired." });
+  }
+
+  const secretSalt = process.env.CHAT_SECRET_SALT || "default_salt_fadil";
+  
+  const expectedToken = crypto
+    .createHash('sha256')
+    .update(clientTimestamp + secretSalt)
+    .digest('hex');
+
+  if (clientToken !== expectedToken) {
+    return res.status(403).json({ error: "Access Denied. Invalid signature." });
   }
 
   try {
