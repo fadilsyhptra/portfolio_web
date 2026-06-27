@@ -1,20 +1,3 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "cookie",
-          "key": "full_screen_verified",
-          "value": "true"
-        }
-      ],
-      "destination": "/index.html"
-    },
-    {
-      "source": "/",
-      "destination": "/checkpoint.html"
-    }
-  ]
+  "cleanUrls": true
 }
