@@ -5,42 +5,11 @@ const GROQ_CONFIG = {
 
 let chatHistory = [];
 let isTyping = false;
-let isVerifying = false;
-let turnstileWidgetId;
 
 const chatOutput = document.getElementById('chat-output');
 const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
-
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-  return null;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const invisibleContainer = document.createElement('div');
-  invisibleContainer.id = 'invisible-turnstile';
-  invisibleContainer.style.display = 'none';
-  document.body.appendChild(invisibleContainer);
-
-  if (typeof turnstile !== "undefined") {
-    turnstileWidgetId = turnstile.render("#invisible-turnstile", {
-      sitekey: "0x4AAAAAADrdujXyIWRG9ASP",
-      size: "invisible",
-      callback: function (token) {
-        processVerificationAndChat(token);
-      },
-      "error-callback": function () {
-        isVerifying = false;
-        removeTypingIndicator();
-        appendMessage("Security subsystem handshake failed. Please refresh page.");
-      }
-    });
-  }
-});
 
 function appendMessage(text, isUser = false) {
   const wrapper = document.createElement('div');
@@ -139,42 +108,6 @@ function escapeHTML(str) {
   );
 }
 
-function processVerificationAndChat(token) {
-  const rawText = sessionStorage.getItem('pending_message');
-  if (!rawText || isVerifying) {
-    return;
-  }
-
-  isVerifying = true;
-
-  fetch("/api/verify-turnstile", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token: token }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      isVerifying = false;
-      if (data.success) {
-        fetchGroqAIResponse(rawText);
-      } else {
-        removeTypingIndicator();
-        appendMessage("Security clearance rejected. Attempt logged.");
-        if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
-          turnstile.reset("#invisible-turnstile");
-        }
-      }
-    })
-    .catch(() => {
-      isVerifying = false;
-      removeTypingIndicator();
-      appendMessage("Network failure during verification handshake.");
-      if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
-        turnstile.reset("#invisible-turnstile");
-      }
-    });
-}
-
 async function fetchGroqAIResponse(userMessageText) {
   try {
     chatHistory.push({
@@ -193,14 +126,6 @@ async function fetchGroqAIResponse(userMessageText) {
       },
       body: JSON.stringify(payload)
     });
-
-    if (response.status === 403) {
-      if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
-        turnstile.reset("#invisible-turnstile");
-        turnstile.execute("#invisible-turnstile");
-        return;
-      }
-    }
 
     const jsonResult = await response.json();
 
@@ -230,7 +155,6 @@ async function fetchGroqAIResponse(userMessageText) {
 
     const aiCleanReply = aiRawReply.replace(/\n/g, "<br>");
 
-    sessionStorage.removeItem('pending_message');
     removeTypingIndicator();
     appendMessage(aiCleanReply);
 
@@ -247,7 +171,7 @@ if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (isTyping || isVerifying) {
+    if (isTyping) {
       e.stopImmediatePropagation();
       return false;
     }
@@ -259,26 +183,14 @@ if (chatForm) {
     userInput.value = '';
 
     createTypingIndicator();
-    sessionStorage.setItem('pending_message', rawText);
-
-    const hasSessionCookie = getCookie('secure_chat_session');
-
-    if (hasSessionCookie === 'authorized') {
-      fetchGroqAIResponse(rawText);
-    } else {
-      if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
-        turnstile.execute("#invisible-turnstile");
-      } else {
-        fetchGroqAIResponse(rawText);
-      }
-    }
+    fetchGroqAIResponse(rawText);
   });
 }
 
 if (userInput) {
   userInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      if (isTyping || isVerifying) {
+      if (isTyping) {
         e.preventDefault(); 
         e.stopPropagation(); 
         return false;

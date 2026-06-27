@@ -1,10 +1,5 @@
 export default async function handler(req, res) {
-  const cookieHeader = req.headers.cookie || '';
-  const hasValidCookie = cookieHeader.split(';').some((item) => {
-    return item.trim().startsWith('secure_chat_session=authorized');
-  });
-
-  if (req.method === 'GET' || !hasValidCookie) {
+  if (req.method === 'GET') {
     res.setHeader('Content-Type', 'text/html');
     return res.status(403).send(`
       <!DOCTYPE html>
