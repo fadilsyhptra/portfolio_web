@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     return item.trim().startsWith('secure_chat_session=authorized');
   });
 
-  if (req.method === 'GET' && !hasValidCookie) {
+  if (req.method === 'GET' || !hasValidCookie) {
     res.setHeader('Content-Type', 'text/html');
     return res.status(403).send(`
       <!DOCTYPE html>
@@ -98,10 +98,6 @@ export default async function handler(req, res) {
       </body>
       </html>
     `);
-  }
-
-  if (!hasValidCookie) {
-    return res.status(403).json({ error: "Security session expired or unauthorized. Turnstile required." });
   }
 
   if (req.method !== "POST") {
