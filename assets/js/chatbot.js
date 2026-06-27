@@ -143,10 +143,16 @@ async function fetchGroqAIResponse(userMessageText) {
     const jsonResult = await response.json();
 
     if (!response.ok) {
+      console.error("Eror dari Server Backend:", jsonResult);
       throw new Error(jsonResult.error || "Koneksi gateway API gagal.");
     }
 
-    let aiRawReply = jsonResult.choices[0].message.content;
+    if (!jsonResult.choices || !jsonResult.choices[0] || !jsonResult.choices[0].message) {
+      console.error("Format Object Groq Tidak Sesuai:", jsonResult);
+      throw new Error("Format data Groq tidak valid.");
+    }
+
+    let aiRawReply = jsonResult.choices[0].message.content || "";
     aiRawReply = aiRawReply.replace(/<think>[\s\S]*?<\/think>/g, "");
 
     if (
@@ -172,7 +178,7 @@ async function fetchGroqAIResponse(userMessageText) {
     appendMessage(aiCleanReply);
 
   } catch (err) {
-    console.error("Chat Subsystem Error:", err);
+    console.error("Detail Eror Chatbot:", err);
     removeTypingIndicator();
     appendMessage(
       `Oops! Fadil-AI has reached the daily usage limit for today. Please come back and try again later. 😊`
