@@ -13,6 +13,13 @@ const chatForm = document.getElementById('chat-form');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const invisibleContainer = document.createElement('div');
   invisibleContainer.id = 'invisible-turnstile';
@@ -189,6 +196,7 @@ async function fetchGroqAIResponse(userMessageText) {
 
     if (response.status === 403) {
       if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
+        turnstile.reset("#invisible-turnstile");
         turnstile.execute("#invisible-turnstile");
         return;
       }
@@ -253,10 +261,16 @@ if (chatForm) {
     createTypingIndicator();
     sessionStorage.setItem('pending_message', rawText);
 
-    if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
-      turnstile.execute("#invisible-turnstile");
-    } else {
+    const hasSessionCookie = getCookie('secure_chat_session');
+
+    if (hasSessionCookie === 'authorized') {
       fetchGroqAIResponse(rawText);
+    } else {
+      if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
+        turnstile.execute("#invisible-turnstile");
+      } else {
+        fetchGroqAIResponse(rawText);
+      }
     }
   });
 }
