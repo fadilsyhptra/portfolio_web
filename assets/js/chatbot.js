@@ -5,6 +5,7 @@ const GROQ_CONFIG = {
 
 let chatHistory = [];
 let isTyping = false;
+let isVerifying = false;
 let turnstileWidgetId;
 
 const chatOutput = document.getElementById('chat-output');
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         processVerificationAndChat(token);
       },
       "error-callback": function () {
+        isVerifying = false;
         removeTypingIndicator();
         appendMessage("Security subsystem handshake failed. Please refresh page.");
       }
@@ -132,10 +134,11 @@ function escapeHTML(str) {
 
 function processVerificationAndChat(token) {
   const rawText = sessionStorage.getItem('pending_message');
-  if (!rawText) {
-    removeTypingIndicator();
+  if (!rawText || isVerifying) {
     return;
   }
+
+  isVerifying = true;
 
   fetch("/api/verify-turnstile", {
     method: "POST",
@@ -144,6 +147,7 @@ function processVerificationAndChat(token) {
   })
     .then((res) => res.json())
     .then((data) => {
+      isVerifying = false;
       if (data.success) {
         fetchGroqAIResponse(rawText);
       } else {
@@ -155,6 +159,7 @@ function processVerificationAndChat(token) {
       }
     })
     .catch(() => {
+      isVerifying = false;
       removeTypingIndicator();
       appendMessage("Network failure during verification handshake.");
       if (typeof turnstile !== "undefined" && turnstileWidgetId !== undefined) {
@@ -234,7 +239,7 @@ if (chatForm) {
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    if (isTyping) {
+    if (isTyping || isVerifying) {
       e.stopImmediatePropagation();
       return false;
     }
@@ -259,7 +264,7 @@ if (chatForm) {
 if (userInput) {
   userInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      if (isTyping) {
+      if (isTyping || isVerifying) {
         e.preventDefault(); 
         e.stopPropagation(); 
         return false;
