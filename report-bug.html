@@ -64,13 +64,9 @@
         <br>
         <center>
            <div class="h-captcha" 
-              data-captcha="true" 
-              data-lang="de" 
-              data-theme="dark"
-              data-onload="myFunction"
-              data-render="explicit"
-              data-size="compact"
-              ></div>
+              data-captcha="true"
+              data-callback="onCaptchaSuccess"
+              data-expired-callback="onCaptchaExpired"></div>
         </center>
       </form>
     </div>
