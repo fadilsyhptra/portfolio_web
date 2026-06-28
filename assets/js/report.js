@@ -207,8 +207,22 @@ document.addEventListener("DOMContentLoaded", () => {
         bugForm.reset();
         isCaptchaVerified = false;
 
-        if (typeof hcaptcha !== "undefined") {
-          hcaptcha.reset();
+        submitBtn.classList.remove("visible");
+
+        const captchaContainer = document.getElementById("captchaContainer");
+
+        captchaContainer.innerHTML = `
+        <div
+        class="h-captcha"
+        data-captcha="true"
+        data-theme="dark"
+        data-callback="onCaptchaSuccess"
+        data-expired-callback="onCaptchaExpired">
+        </div>
+        `;
+
+        if (window.web3forms && typeof window.web3forms.init === "function") {
+        window.web3forms.init();
         }
 
         handleInputVerification();
@@ -225,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.textContent = originalBtnText;
       submitBtn.disabled = false;
       submitBtn.style.opacity = "1";
+      submitBtn.classList.remove("visible");
     }
   });
 });
