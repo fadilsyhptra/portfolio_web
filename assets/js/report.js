@@ -48,9 +48,7 @@ function typeLogStream() {
   }
 
   const currentLine = logData[lineIndex];
-  const cursorSpan = document.createElement("span");
-  cursorSpan.className = "terminal-cursor";
-  cursorSpan.textContent = "_";
+  if (!terminalBody) return;
 
   if (!terminalBody.querySelector(".current-line-stream")) {
     const lineDiv = document.createElement("div");
@@ -59,6 +57,9 @@ function typeLogStream() {
   }
 
   const activeLineContainer = terminalBody.querySelector(".current-line-stream");
+  const cursorSpan = document.createElement("span");
+  cursorSpan.className = "terminal-cursor";
+  cursorSpan.textContent = "_";
 
   if (charIndex < currentLine.length) {
     activeLineContainer.textContent = currentLine.substring(0, charIndex + 1);
@@ -87,6 +88,8 @@ function triggerCyberAlert(title, message, isSuccess = false) {
   const msgEl = document.getElementById("cyberAlertMessage");
   const btnEl = document.getElementById("cyberAlertBtn");
 
+  if (!modal || !box || !titleEl || !msgEl || !btnEl) return;
+
   titleEl.textContent = title;
   msgEl.textContent = message;
 
@@ -105,39 +108,20 @@ function triggerCyberAlert(title, message, isSuccess = false) {
 }
 
 function closeCyberAlert() {
-  document.getElementById("cyberAlertModal").classList.remove("active");
+  const modal = document.getElementById("cyberAlertModal");
+  if (modal) modal.classList.remove("active");
 }
 
 let isCaptchaVerified = false;
 
 function onCaptchaSuccess() {
   isCaptchaVerified = true;
-
-  const captchaContainer = document.getElementById("captchaContainer");
-  const submitBtn = document.querySelector(".btn-submit");
-
-  if (captchaContainer) {
-    captchaContainer.style.display = "none";
-  }
-
-  if (submitBtn) {
-    submitBtn.classList.add("visible");
-  }
+  handleInputVerification();
 }
 
 function onCaptchaExpired() {
   isCaptchaVerified = false;
-
-  const captchaContainer = document.getElementById("captchaContainer");
-  const submitBtn = document.querySelector(".btn-submit");
-
-  if (captchaContainer) {
-    captchaContainer.style.display = "";
-  }
-
-  if (submitBtn) {
-    submitBtn.classList.remove("visible");
-  }
+  handleInputVerification();
 }
 
 function handleInputVerification() {
@@ -146,12 +130,17 @@ function handleInputVerification() {
 
   const bugDescription = bugForm.elements["bug_description"];
   const submitBtn = bugForm.querySelector(".btn-submit");
+  const captchaContainer = document.getElementById("captchaContainer");
 
   if (!bugDescription || !submitBtn) return;
 
-  if (bugDescription.value.trim() && isCaptchaVerified) {
+  const hasText = !!bugDescription.value.trim();
+
+  if (isCaptchaVerified) {
+    if (captchaContainer) captchaContainer.style.display = "none";
     submitBtn.classList.add("visible");
   } else {
+    if (captchaContainer) captchaContainer.style.display = "block";
     submitBtn.classList.remove("visible");
   }
 }
@@ -159,6 +148,8 @@ function handleInputVerification() {
 window.onCaptchaSuccess = onCaptchaSuccess;
 window.onCaptchaExpired = onCaptchaExpired;
 window.handleInputVerification = handleInputVerification;
+window.closeCyberAlert = closeCyberAlert;
+window.toggleMobileMenu = toggleMobileMenu;
 
 document.addEventListener("DOMContentLoaded", () => {
   if (terminalBody) {
@@ -180,11 +171,15 @@ document.addEventListener("DOMContentLoaded", () => {
   bugForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    if (!isCaptchaVerified || !bugDescription.value.trim()) {
+      triggerCyberAlert("SYS // VALIDATION_ERROR", "Mohon isi deskripsi bug dan selesaikan Captcha.", false);
+      return;
+    }
+
     const formData = new FormData(bugForm);
     formData.append("access_key", "eba50088-52db-40eb-b0d4-67fcb2cba479");
 
     const originalBtnText = submitBtn.textContent;
-
     submitBtn.textContent = "TRANSMITTING_LOG...";
     submitBtn.disabled = true;
     submitBtn.style.opacity = "0.6";
@@ -207,25 +202,12 @@ document.addEventListener("DOMContentLoaded", () => {
         bugForm.reset();
         isCaptchaVerified = false;
 
-        submitBtn.classList.remove("visible");
-
-        const captchaContainer = document.getElementById("captchaContainer");
-
-        captchaContainer.innerHTML = `
-        <div
-        class="h-captcha"
-        data-captcha="true"
-        data-theme="dark"
-        data-callback="onCaptchaSuccess"
-        data-expired-callback="onCaptchaExpired">
-        </div>
-        `;
-
-        if (window.web3forms && typeof window.web3forms.init === "function") {
-        window.web3forms.init();
+        if (window.hcaptcha) {
+          window.hcaptcha.reset();
         }
 
         handleInputVerification();
+
       } else {
         throw new Error(data.message || "Uplink node actively rejected the data packet.");
       }
@@ -239,7 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.textContent = originalBtnText;
       submitBtn.disabled = false;
       submitBtn.style.opacity = "1";
-      submitBtn.classList.remove("visible");
     }
   });
 });
