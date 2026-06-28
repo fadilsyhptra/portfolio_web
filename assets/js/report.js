@@ -70,8 +70,8 @@ function typeLogStream() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (terminalBody) {
+document.addEventListener('click', () => {
+  if (terminalBody && terminalBody.children.length === 0) {
     typeLogStream();
   }
 });
@@ -125,27 +125,37 @@ function onCaptchaExpired() {
   }
 }
 
+function handleInputVerification() {
+  const bugForm = document.forms["anonymous-bug-reports"];
+  if (!bugForm) return;
+  const bugDescription = bugForm.elements["bug_description"];
+  const submitBtn = bugForm.querySelector(".btn-submit");
+  if (!bugDescription || !submitBtn) return;
+
+  if (bugDescription.value.trim() !== "" && isCaptchaVerified) {
+    submitBtn.classList.add("visible");
+  } else {
+    submitBtn.classList.remove("visible");
+  }
+}
+
+window.onCaptchaSuccess = onCaptchaSuccess;
+window.onCaptchaExpired = onCaptchaExpired;
+window.handleInputVerification = handleInputVerification;
+
 document.addEventListener("DOMContentLoaded", () => {
   const bugForm = document.forms["anonymous-bug-reports"];
   if (bugForm) {
     const bugDescription = bugForm.elements["bug_description"];
     const submitBtn = bugForm.querySelector(".btn-submit");
 
-    function handleInputVerification() {
-      if (bugDescription.value.trim() !== "" && isCaptchaVerified) {
-        submitBtn.classList.add("visible");
-      } else {
-        submitBtn.classList.remove("visible");
-      }
+    if (terminalBody) {
+      typeLogStream();
     }
 
     bugDescription.addEventListener("input", handleInputVerification);
     bugDescription.addEventListener("change", handleInputVerification);
     bugForm.addEventListener("paste", () => { setTimeout(handleInputVerification, 10); });
-
-    window.onCaptchaSuccess = onCaptchaSuccess;
-    window.onCaptchaExpired = onCaptchaExpired;
-    window.handleInputVerification = handleInputVerification;
 
     bugForm.addEventListener("submit", async (e) => {
       e.preventDefault();
