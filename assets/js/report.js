@@ -87,42 +87,57 @@ function triggerCyberAlert(title, message, isSuccess = false) {
   const msgEl = document.getElementById("cyberAlertMessage");
   const btnEl = document.getElementById("cyberAlertBtn");
 
-  if (!modal || !box || !titleEl || !msgEl || !btnEl) return;
-
   titleEl.textContent = title;
   msgEl.textContent = message;
 
-  box.classList.remove("alert-success", "alert-failure");
-  btnEl.classList.remove("btn-alert-success", "btn-alert-failure");
+  box.classList.remove("alert-success", "alert-error");
+  btnEl.classList.remove("btn-alert-success", "btn-alert-error");
 
   if (isSuccess) {
     box.classList.add("alert-success");
     btnEl.classList.add("btn-alert-success");
   } else {
-    box.classList.add("alert-failure");
-    btnEl.classList.add("btn-alert-failure");
+    box.classList.add("alert-error");
+    btnEl.classList.add("btn-alert-error");
   }
 
-  modal.classList.add("visible");
+  modal.classList.add("active");
 }
 
 function closeCyberAlert() {
-  const modal = document.getElementById("cyberAlertModal");
-  if (modal) {
-    modal.classList.remove("visible");
-  }
+  document.getElementById("cyberAlertModal").classList.remove("active");
 }
 
 let isCaptchaVerified = false;
 
 function onCaptchaSuccess() {
   isCaptchaVerified = true;
-  handleInputVerification();
+
+  const captchaContainer = document.getElementById("captchaContainer");
+  const submitBtn = document.querySelector(".btn-submit");
+
+  if (captchaContainer) {
+    captchaContainer.style.display = "none";
+  }
+
+  if (submitBtn) {
+    submitBtn.classList.add("visible");
+  }
 }
 
 function onCaptchaExpired() {
   isCaptchaVerified = false;
-  handleInputVerification();
+
+  const captchaContainer = document.getElementById("captchaContainer");
+  const submitBtn = document.querySelector(".btn-submit");
+
+  if (captchaContainer) {
+    captchaContainer.style.display = "";
+  }
+
+  if (submitBtn) {
+    submitBtn.classList.remove("visible");
+  }
 }
 
 function handleInputVerification() {

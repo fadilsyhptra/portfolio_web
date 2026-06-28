@@ -58,16 +58,22 @@
           <textarea name="bug_description" class="form-textarea" rows="6" placeholder="Briefly describe how the bug happened here..." required></textarea>
         </div>
 
+        <center>
+           <div id="captchaContainer">
+                <div
+                    class="h-captcha"
+                    data-captcha="true"
+                    data-theme="dark"
+                    data-callback="onCaptchaSuccess"
+                    data-expired-callback="onCaptchaExpired">
+                </div>
+            </div>
+        </center>
+
         <div class="btn-group">
           <button type="submit" class="action-btn btn-submit">TRANSMIT LOG</button>
         </div>
         <br>
-        <center>
-           <div class="h-captcha" 
-              data-captcha="true"
-              data-callback="onCaptchaSuccess"
-              data-expired-callback="onCaptchaExpired"></div>
-        </center>
       </form>
     </div>
 
